@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Onder Druk · Duiken &amp; Decompressie begrijpen</title>
+<meta name="description" content="Begrijp wat er met de stikstof in je bloed gebeurt tijdens het duiken — en waarom je op weg naar boven moet stoppen. Met een echte Bühlmann ZHL-16C rekenkern, scenario's en een duikplanner.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --abyss:#03101a;
+  --deep:#062330;
+  --mid:#0c3849;
+  --surf:#1a6577;
+  --panel:#0a2230;
+  --panel-2:#0d2a3a;
+  --ink:#eaf6f6;
+  --muted:#8fb3bb;
+  --faint:#5b818b;
+  --line:rgba(143,179,187,.16);
+  --line-2:rgba(143,179,187,.30);
+  --aqua:#37e0c4;
+  --aqua-deep:#16a892;
+  --gold:#ffcf6b;
+  --coral:#ff7a5c;
+  --coral-deep:#e25438;
+  --o2:#ff8fab;
+  --maxw:1180px;
+  --r:16px;
+  --shadow:0 18px 50px -20px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Public Sans",ui-sans-serif,system-ui,sans-serif;
+  color:var(--ink);
+  background:var(--abyss);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* depth gradient wash + surface light + caustics + grain */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-3;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(120,224,224,.18), transparent 55%),
+    linear-gradient(180deg,#0a3142 0%, #072634 22%, #051c28 48%, #03131d 74%, #020b12 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+}
+.rays{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;opacity:.5}
+.rays i{
+  position:absolute;top:-30%;width:18vw;height:160vh;
+  background:linear-gradient(180deg,rgba(160,235,235,.10),transparent 70%);
+  transform:rotate(12deg);filter:blur(6px);
+  animation:sway 16s ease-in-out infinite alternate;
+}
+.rays i:nth-child(1){left:6%;animation-delay:-2s}
+.rays i:nth-child(2){left:34%;width:10vw;animation-delay:-6s;opacity:.7}
+.rays i:nth-child(3){left:62%;width:22vw;animation-delay:-9s}
+.rays i:nth-child(4){left:84%;width:8vw;animation-delay:-4s;opacity:.6}
+@keyframes sway{from{transform:rotate(9deg) translateX(-2vw)}to{transform:rotate(15deg) translateX(2vw)}}
+
+a{color:var(--aqua);text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+h1,h2,h3,.display{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.02}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+/* ---------- nav ---------- */
+nav{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(14px);
+  background:linear-gradient(180deg,rgba(4,18,26,.92),rgba(4,18,26,.55));
+  border-bottom:1px solid var(--line);
+}
+nav .wrap{display:flex;align-items:center;gap:18px;height:62px}
+nav .brand{display:flex;align-items:center;gap:10px;font-family:"Bricolage Grotesque";font-weight:800;letter-spacing:-.01em}
+nav .brand .dot{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--aqua),var(--aqua-deep));box-shadow:0 0 14px var(--aqua)}
+nav .links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav .links a{
+  color:var(--muted);font-size:.83rem;font-weight:500;padding:7px 12px;border-radius:999px;
+  transition:.2s;white-space:nowrap;
+}
+nav .links a:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+nav .links a.active{color:var(--abyss);background:var(--aqua);font-weight:600}
+@media(max-width:760px){nav .links{display:none}}
+
+/* ---------- hero ---------- */
+header.hero{position:relative;padding:90px 0 64px}
+.kicker{font-family:"IBM Plex Mono";font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;color:var(--aqua);margin-bottom:22px}
+header.hero h1{font-size:clamp(2.8rem,7.5vw,6rem);margin:0 0 22px}
+header.hero h1 .em{color:var(--aqua);font-style:italic;font-family:"Bricolage Grotesque"}
+header.hero .lede{font-size:clamp(1.05rem,2.2vw,1.4rem);max-width:62ch;color:#cfe8e8}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:none;
+  font-family:"Public Sans";font-weight:600;font-size:.96rem;
+  padding:13px 22px;border-radius:999px;transition:.2s;
+}
+.btn-primary{background:var(--aqua);color:#04222a;box-shadow:0 10px 30px -10px var(--aqua)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 38px -10px var(--aqua)}
+.btn-ghost{background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+
+.depthstrip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:54px;
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--line);
+}
+.depthstrip div{background:var(--panel);padding:18px 20px}
+.depthstrip .v{font-family:"IBM Plex Mono";font-size:1.5rem;font-weight:600;color:var(--aqua)}
+.depthstrip .l{font-size:.78rem;color:var(--muted);margin-top:2px}
+@media(max-width:680px){.depthstrip{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- disclaimer ---------- */
+.warnbar{
+  margin:30px auto 0;border:1px solid rgba(255,122,92,.4);
+  background:linear-gradient(90deg,rgba(255,122,92,.12),rgba(255,122,92,.04));
+  border-radius:14px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start;
+  font-size:.92rem;color:#ffd8cc;
+}
+.warnbar b{color:#ffb59f}
+.warnbar .ic{font-size:1.3rem;line-height:1}
+
+/* ---------- sections ---------- */
+section{padding:78px 0;position:relative}
+.sec-head{margin-bottom:38px;max-width:74ch}
+.sec-num{font-family:"IBM Plex Mono";color:var(--aqua);font-size:.85rem;letter-spacing:.2em}
+.sec-head h2{font-size:clamp(1.9rem,4.2vw,3rem);margin:.35em 0 .35em}
+.sec-head p{color:#c4dee0;font-size:1.06rem;margin:0}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--line-2),transparent)}
+
+.card{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* ---------- depth explorer ---------- */
+.explorer{display:grid;grid-template-columns:300px 1fr;gap:0;overflow:hidden}
+@media(max-width:860px){.explorer{grid-template-columns:1fr}}
+.watercol{
+  position:relative;min-height:440px;
+  background:linear-gradient(180deg,#1a6f82 0%,#0e4a5d 30%,#093647 60%,#062633 100%);
+  border-right:1px solid var(--line);
+}
+.watercol .surfline{position:absolute;left:0;right:0;top:0;height:2px;background:rgba(220,250,250,.7);box-shadow:0 0 12px rgba(220,250,250,.6)}
+.watercol .ticks{position:absolute;inset:0}
+.watercol .ticks span{position:absolute;left:8px;font-family:"IBM Plex Mono";font-size:.7rem;color:rgba(255,255,255,.55);transform:translateY(-50%)}
+.watercol .ticks span::after{content:"";position:absolute;left:34px;top:50%;width:18px;height:1px;background:rgba(255,255,255,.3)}
+.diverdot{
+  position:absolute;left:50%;transition:top .25s cubic-bezier(.4,0,.2,1);
+  width:46px;height:46px;margin-left:-23px;margin-top:-23px;
+  display:flex;align-items:center;justify-content:center;
+  color:#eafcff;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));
+}
+.bubble{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9),rgba(180,235,235,.25));animation:rise linear infinite}
+@keyframes rise{from{transform:translateY(0);opacity:.7}to{transform:translateY(-440px);opacity:0}}
+.exp-panel{padding:26px 28px}
+.exp-readout{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 22px}
+.ro{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.ro .l{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.ro .v{font-family:"IBM Plex Mono";font-size:1.55rem;font-weight:600;margin-top:3px}
+.ro .v small{font-size:.8rem;color:var(--muted);font-weight:400}
+.ro.n2 .v{color:var(--aqua)} .ro.o2 .v{color:var(--gold)} .ro.p .v{color:#cfe8e8} .ro.vol .v{color:#b6e0ff}
+.slider-row{margin-top:8px}
+.slider-row label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:8px}
+input[type=range]{
+  -webkit-appearance:none;width:100%;height:6px;border-radius:999px;
+  background:linear-gradient(90deg,var(--aqua),var(--aqua-deep));outline:none;
+}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#eafcff;border:3px solid var(--aqua-deep);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#eafcff;border:3px solid var(--aqua-deep);cursor:pointer}
+.lung{display:flex;align-items:center;gap:14px;margin-top:18px;padding:14px;border:1px dashed var(--line-2);border-radius:12px}
+.lung .ball{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(182,224,255,.9),rgba(120,180,220,.25));border:1px solid rgba(182,224,255,.5);transition:.3s;flex:none}
+.lung .lt{font-size:.86rem;color:#c4dee0}
+
+/* ---------- generic figure / facts ---------- */
+.fact{padding:24px 26px}
+.fact h3{font-size:1.18rem;margin:0 0 8px}
+.fact p{margin:0;color:#c4dee0;font-size:.96rem}
+.fact .big{font-family:"IBM Plex Mono";font-size:2rem;color:var(--aqua);font-weight:600;display:block;margin-bottom:4px}
+.lawcard{padding:26px 28px}
+.lawcard .tag{display:inline-block;font-family:"IBM Plex Mono";font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--abyss);background:var(--aqua);padding:4px 10px;border-radius:999px;margin-bottom:14px}
+.lawcard.b .tag{background:var(--gold)}
+.lawcard h3{font-size:1.35rem;margin:0 0 10px}
+.lawcard p{color:#c4dee0;margin:0 0 10px}
+
+/* soda analogy */
+.soda{display:flex;gap:18px;align-items:stretch;margin-top:6px}
+.soda figure{flex:1;margin:0;text-align:center;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:16px}
+.soda .glass{height:90px;display:flex;align-items:flex-end;justify-content:center;gap:5px}
+.soda .glass i{width:7px;background:var(--aqua);border-radius:999px;opacity:.85}
+.soda figcaption{font-size:.82rem;color:var(--muted);margin-top:10px}
+
+/* ---------- tissue compartments demo ---------- */
+.compbox{padding:22px 24px}
+.canvas-holder{position:relative;width:100%}
+canvas{display:block;width:100%}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* ---------- player ---------- */
+.player{padding:0;overflow:hidden}
+.player .top{display:grid;grid-template-columns:1.25fr 1fr;gap:0}
+@media(max-width:900px){.player .top{grid-template-columns:1fr}}
+.player .profile-pane{padding:20px 22px;border-right:1px solid var(--line)}
+.player .comps-pane{padding:20px 22px}
+.player .pane-t{font-family:"IBM Plex Mono";font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.readouts{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line)}
+.readouts .ro2{background:var(--panel);padding:12px 14px;text-align:center}
+.readouts .ro2 .l{font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.readouts .ro2 .v{font-family:"IBM Plex Mono";font-size:1.15rem;font-weight:600;margin-top:2px}
+@media(max-width:680px){.readouts{grid-template-columns:repeat(3,1fr)}}
+.controls{display:flex;align-items:center;gap:14px;padding:14px 22px;border-top:1px solid var(--line);background:rgba(0,0,0,.18)}
+.controls button.play{width:44px;height:44px;border-radius:50%;border:none;background:var(--aqua);color:#04222a;font-size:1.1rem;cursor:pointer;flex:none;display:flex;align-items:center;justify-content:center;transition:.2s}
+.controls button.play:hover{transform:scale(1.06)}
+.controls input[type=range]{flex:1}
+.controls .spd{font-family:"IBM Plex Mono";font-size:.78rem;color:var(--muted);cursor:pointer;border:1px solid var(--line);padding:6px 10px;border-radius:8px;background:transparent}
+.caption{padding:16px 22px;border-top:1px solid var(--line);min-height:64px;font-size:.96rem;color:#d6ecee}
+.caption .ph{font-family:"IBM Plex Mono";font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:999px;margin-right:10px;background:rgba(55,224,196,.16);color:var(--aqua)}
+.caption .ph.warn{background:rgba(255,122,92,.18);color:var(--coral)}
+
+.scenario{margin-bottom:40px}
+.scenario .intro{display:flex;gap:16px;align-items:flex-start;margin-bottom:18px}
+.scenario .intro .badge{font-family:"IBM Plex Mono";font-size:1.5rem;font-weight:600;color:var(--abyss);background:var(--aqua);width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex:none}
+.scenario.danger .intro .badge{background:var(--coral)}
+.scenario .intro h3{font-size:1.5rem;margin:0 0 4px}
+.scenario .intro p{margin:0;color:#c4dee0;max-width:70ch}
+.scenario .params{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.scenario .params span{font-family:"IBM Plex Mono";font-size:.76rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.verdict{margin-top:0;padding:16px 22px;border-top:1px solid var(--line);font-size:.95rem}
+.verdict.ok{background:linear-gradient(90deg,rgba(55,224,196,.1),transparent);color:#bff3e8}
+.verdict.bad{background:linear-gradient(90deg,rgba(255,122,92,.12),transparent);color:#ffd0c4}
+
+/* ---------- calculator ---------- */
+.calc{display:grid;grid-template-columns:340px 1fr;gap:0}
+@media(max-width:900px){.calc{grid-template-columns:1fr}}
+.calc .inputs{padding:26px 28px;border-right:1px solid var(--line)}
+.calc .outputs{padding:26px 28px}
+.field{margin-bottom:22px}
+.field>label{display:block;font-size:.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:9px}
+.field .val{font-family:"IBM Plex Mono";color:var(--aqua);float:right;font-size:.95rem}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:64px;background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--muted);padding:9px 8px;border-radius:10px;cursor:pointer;font-size:.85rem;font-family:"Public Sans";transition:.18s}
+.seg button.on{background:var(--aqua);color:#04222a;border-color:var(--aqua);font-weight:600}
+.statusbadge{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-family:"Bricolage Grotesque";font-size:1.05rem;padding:10px 16px;border-radius:12px;margin-bottom:18px}
+.statusbadge.ok{background:rgba(55,224,196,.14);color:var(--aqua);border:1px solid rgba(55,224,196,.4)}
+.statusbadge.deco{background:rgba(255,122,92,.14);color:var(--coral);border:1px solid rgba(255,122,92,.4)}
+.outgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:520px){.outgrid{grid-template-columns:repeat(2,1fr)}}
+.outgrid .o{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:14px}
+.outgrid .o .l{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.outgrid .o .v{font-family:"IBM Plex Mono";font-size:1.5rem;font-weight:600;margin-top:3px}
+.outgrid .o .v small{font-size:.74rem;color:var(--muted);font-weight:400}
+.outgrid .o.warn{border-color:rgba(255,122,92,.45)}.outgrid .o.warn .v{color:var(--coral)}
+.outgrid .o.good .v{color:var(--aqua)}
+.stops-table{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:.92rem}
+.stops-table th{text-align:left;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid var(--line)}
+.stops-table td{padding:9px 10px;border-bottom:1px solid var(--line);font-family:"IBM Plex Mono"}
+.stops-table tr.safety td{color:var(--aqua)}
+.stops-table tr.deco td{color:var(--coral)}
+.note{font-size:.88rem;color:var(--muted);margin-top:6px}
+.bar-load{height:10px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:8px}
+.bar-load i{display:block;height:100%;border-radius:999px;transition:.4s}
+
+/* ---------- rules ---------- */
+.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+@media(max-width:760px){.rules{grid-template-columns:1fr}}
+.rule{padding:22px 24px;display:flex;gap:16px}
+.rule .ic{font-size:1.6rem;flex:none;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(55,224,196,.12);color:var(--aqua)}
+.rule.alert .ic{background:rgba(255,122,92,.14);color:var(--coral)}
+.rule h3{margin:0 0 6px;font-size:1.1rem}
+.rule p{margin:0;color:#c4dee0;font-size:.92rem}
+.rule p b{color:var(--ink)}
+.symlist{columns:2;column-gap:26px;margin:6px 0 0;padding:0;list-style:none}
+@media(max-width:520px){.symlist{columns:1}}
+.symlist li{padding:5px 0 5px 22px;position:relative;font-size:.92rem;color:#d6ecee;break-inside:avoid}
+.symlist li::before{content:"";position:absolute;left:0;top:11px;width:8px;height:8px;border-radius:50%;background:var(--coral)}
+.emergency{margin-top:22px;border:1px solid rgba(255,122,92,.4);border-radius:14px;padding:20px 24px;background:linear-gradient(120deg,rgba(255,122,92,.1),transparent)}
+.emergency h3{margin:0 0 10px;color:#ffb59f}
+.emergency ol{margin:0;padding-left:20px;color:#ffd8cc}
+.emergency ol li{margin-bottom:6px}
+
+/* ndl table */
+.ndltable{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:6px}
+.ndltable th,.ndltable td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;font-family:"IBM Plex Mono"}
+.ndltable th{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;font-family:"Public Sans"}
+.ndltable td:first-child{color:var(--aqua)}
+.ndltable tr:hover td{background:rgba(255,255,255,.02)}
+
+footer{padding:60px 0 50px;border-top:1px solid var(--line);margin-top:40px;color:var(--muted);font-size:.9rem}
+footer h4{font-family:"Bricolage Grotesque";color:var(--ink);font-size:1.1rem;margin:0 0 12px}
+footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+@media(max-width:760px){footer .cols{grid-template-columns:1fr}}
+footer ul{margin:0;padding-left:18px}
+footer li{margin-bottom:5px}
+.fineprint{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font-size:.82rem;color:var(--faint)}
+::selection{background:var(--aqua);color:#04222a}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="rays"><i></i><i></i><i></i><i></i></div>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> Onder&nbsp;Druk</div>
+    <div class="links">
+      <a href="#druk">Druk</a>
+      <a href="#bloed">Stikstof</a>
+      <a href="#weefsels">Weefsels</a>
+      <a href="#planner">Duikplanner</a>
+      <a href="#scenarios">Scenario's</a>
+      <a href="#regels">Regels</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker reveal">Decompressie · uitgelegd voor duikers</div>
+    <h1 class="reveal">Wat de diepte doet<br>met de <span class="em">stikstof</span><br>in je bloed.</h1>
+    <p class="lede reveal">Hoe dieper je gaat, hoe meer stikstof er in je weefsels oplost. Ga je te snel naar boven, dan komt die stikstof als belletjes vrij — net als bij een fles bruis die je openrukt. Deze pagina laat je <b>zien en voelen</b> waarom je onderweg naar boven moet wachten, met een echte Bühlmann&nbsp;ZHL-16C rekenkern.</p>
+    <div class="hero-cta reveal">
+      <a class="btn btn-primary" href="#scenarios">▶ Bekijk een duik live</a>
+      <a class="btn btn-ghost" href="#planner">Open de duikplanner</a>
+    </div>
+
+    <div class="depthstrip reveal">
+      <div><div class="v">+1 bar</div><div class="l">druk per 10&nbsp;m diepte</div></div>
+      <div><div class="v">~79%</div><div class="l">stikstof in je perslucht</div></div>
+      <div><div class="v">16</div><div class="l">weefselcompartimenten</div></div>
+      <div><div class="v">9–10 m/min</div><div class="l">max. opstijgsnelheid</div></div>
+    </div>
+
+    <div class="warnbar reveal">
+      <span class="ic">⚠️</span>
+      <div><b>Leermiddel — geen duikcomputer.</b> Deze site legt de natuurkunde en fysiologie van decompressie uit. Plan een echte duik <b>nooit</b> op basis van deze pagina. Gebruik een gecertificeerde duikcomputer of -tabellen, duik binnen je brevet (CMAS&nbsp;/&nbsp;Nelos&nbsp;/&nbsp;NOB&nbsp;/&nbsp;PADI), en volg een erkende opleiding.</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- ========================= 1. DRUK ========================= -->
+<section id="druk">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">01 — DE NATUURKUNDE</div>
+      <h2>Onder water word je samengeperst</h2>
+      <p>Aan de oppervlakte drukt de atmosfeer met 1&nbsp;bar op je. Elke 10&nbsp;meter zeewater voegt er nog eens 1&nbsp;bar bij. Die druk bepaalt álles: hoeveel je longen krimpen (wet van Boyle) en hoeveel gas er in je bloed oplost (wet van Henry). Sleep de diepte en kijk wat er gebeurt.</p>
+    </div>
+
+    <div class="card explorer reveal">
+      <div class="watercol" id="watercol">
+        <div class="surfline"></div>
+        <div class="ticks" id="ticks"></div>
+        <div class="diverdot" id="diver" style="top:0%">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="6" r="2.2"/><path d="M11 8c2 .5 3 2 3.5 4l3-1.5"/><path d="M10.5 8.5 8 13l-3 1"/><path d="M11 12l1 4-1.5 3"/><path d="M12 16l2.5 2"/>
+          </svg>
+        </div>
+      </div>
+      <div class="exp-panel">
+        <div class="exp-readout">
+          <div class="ro p"><div class="l">Omgevingsdruk</div><div class="v" id="r-press">1.0 <small>bar</small></div></div>
+          <div class="ro vol"><div class="l">Longvolume <small>(Boyle)</small></div><div class="v" id="r-vol">100 <small>%</small></div></div>
+          <div class="ro n2"><div class="l">Partiële druk N₂</div><div class="v" id="r-pn2">0.79 <small>bar</small></div></div>
+          <div class="ro o2"><div class="l">Partiële druk O₂</div><div class="v" id="r-po2">0.21 <small>bar</small></div></div>
+        </div>
+        <div class="slider-row">
+          <label><span>Diepte</span><span class="mono" id="r-depth">0 m</span></label>
+          <input type="range" id="depthSlider" min="0" max="40" value="0" step="1">
+        </div>
+        <div class="lung">
+          <div class="ball" id="lungball"></div>
+          <div class="lt" id="lungtext">Aan de oppervlakte heeft een ademteug zijn volle volume. De druk knijpt je longen en alle gasruimtes samen naarmate je daalt — en de gassen die je inademt staan onder steeds hogere partiële druk.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-top:24px">
+      <div class="card lawcard reveal">
+        <span class="tag">Wet van Boyle</span>
+        <h3>Volume × druk = constant</h3>
+        <p>Op 30&nbsp;m (4&nbsp;bar) is een luchtbel nog maar ¼ van zijn oppervlaktevolume. Daarom moet je bij het opstijgen blijven uitademen: lucht in je longen zet weer uit.</p>
+      </div>
+      <div class="card lawcard b reveal">
+        <span class="tag">Wet van Henry</span>
+        <h3>Meer druk = meer opgelost gas</h3>
+        <p>Hoe hoger de partiële druk van een gas boven een vloeistof, hoe meer ervan oplost. Op diepte pers je dus extra stikstof in je bloed en weefsels.</p>
+      </div>
+      <div class="card lawcard reveal">
+        <span class="tag">Partiële druk</span>
+        <h3>Elk gas telt apart</h3>
+        <p>Perslucht is ~21%&nbsp;O₂ en ~79%&nbsp;N₂. Op 40&nbsp;m (5&nbsp;bar) is de partiële druk van zuurstof al 1.05&nbsp;bar en van stikstof bijna 4&nbsp;bar — beide kunnen gevaarlijk worden.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- ========================= 2. STIKSTOF ========================= -->
+<section id="bloed">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">02 — IN JE BLOED</div>
+      <h2>Stikstof lost op — en wil er weer uit</h2>
+      <p>Je verbruikt zuurstof, maar stikstof doet niets in je lichaam: het lost alleen maar op. Op diepte stroomt het je weefsels in (<b>opzadelen</b>). Kom je omhoog, dan keert de richting om en moet het er weer uit (<b>afzadelen</b>). Gaat dat te snel, dan vormen zich belletjes.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card lawcard reveal">
+        <h3 style="font-size:1.3rem">De frisdrankfles 🥤</h3>
+        <p>Een dichte fles bruis staat onder druk: het CO₂ zit onzichtbaar opgelost. Draai je de dop er <b>langzaam</b> af, dan ontsnapt het gas rustig. Ruk je hem <b>open</b>, dan bruist alles tegelijk over.</p>
+        <p style="margin-bottom:18px">Jouw bloed op weg naar boven is precies die fles. Langzaam opstijgen&nbsp;= dop langzaam losdraaien. Te snel = de bends.</p>
+        <div class="soda">
+          <figure>
+            <div class="glass" id="sodaSlow"></div>
+            <figcaption>Langzaam &mdash; gas ontsnapt rustig, opgelost blijft opgelost</figcaption>
+          </figure>
+          <figure>
+            <div class="glass" id="sodaFast"></div>
+            <figcaption>Te snel &mdash; explosieve belvorming</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="card lawcard reveal">
+        <h3 style="font-size:1.3rem">Opzadelen &amp; afzadelen</h3>
+        <p>Elk weefsel laadt stikstof op richting de partiële druk van de omgeving — maar niet meteen. Het verloopt <b>exponentieel</b>: snel in het begin, dan steeds trager naar verzadiging.</p>
+        <p>Bij het opstijgen daalt de omgevingsdruk. Nu staat er méér stikstof in je weefsel dan de omgeving "toelaat": het weefsel is <b>oververzadigd</b>. Een beetje oververzadiging is veilig — het gas diffundeert netjes naar je longen. Te véél oververzadiging en het vormt belletjes in bloed en gewricht: <b>decompressieziekte (DCS)</b>.</p>
+        <div class="card" style="padding:16px 18px;margin-top:8px;background:rgba(255,255,255,.02)">
+          <div class="pane-t" style="margin-bottom:8px">OP- EN AFZADELEN VAN ÉÉN WEEFSEL</div>
+          <div class="canvas-holder"><canvas id="loadCanvas" height="150"></canvas></div>
+          <div class="legend">
+            <span><i style="background:var(--aqua)"></i>stikstofspanning in het weefsel</span>
+            <span><i style="background:var(--gold)"></i>partiële druk in de omgeving (het "doel")</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- ========================= 3. WEEFSELS ========================= -->
+<section id="weefsels">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">03 — HET MODEL</div>
+      <h2>Je lichaam als 16 sponzen</h2>
+      <p>Niet elk weefsel verzadigt even snel. Bloed en hersenen zijn "snel", vet en botten "traag". Het Bühlmann&nbsp;ZHL-16C model — de basis van bijna elke duikcomputer — bootst je lichaam na met <b>16 compartimenten</b>, elk met een eigen halfwaardetijd van 4 tot 635&nbsp;minuten. Elk compartiment heeft ook een eigen <b>limiet</b> (M-waarde): de maximale spanning waarmee het veilig naar de oppervlakte mag.</p>
+    </div>
+
+    <div class="card compbox reveal">
+      <div class="pane-t">16 WEEFSELCOMPARTIMENTEN — sleep de diepte en tijd, kijk hoe ze vollopen</div>
+      <div class="canvas-holder"><canvas id="demoComps" height="240"></canvas></div>
+      <div class="legend">
+        <span><i style="background:var(--aqua)"></i>onder de limiet — veilig om op te stijgen</span>
+        <span><i style="background:var(--coral)"></i>boven de limiet — oververzadigd, niet opstijgen</span>
+        <span><i style="background:rgba(234,246,246,.6)"></i>M-waarde (max. spanning aan oppervlak)</span>
+        <span><i style="background:var(--gold)"></i>instroomniveau op deze diepte</span>
+      </div>
+      <div class="grid2" style="margin-top:18px;gap:18px">
+        <div class="slider-row">
+          <label><span>Diepte</span><span class="mono" id="dc-depth">20 m</span></label>
+          <input type="range" id="dcDepth" min="0" max="42" value="20" step="1">
+        </div>
+        <div class="slider-row">
+          <label><span>Tijd op diepte</span><span class="mono" id="dc-time">15 min</span></label>
+          <input type="range" id="dcTime" min="0" max="60" value="15" step="1">
+        </div>
+      </div>
+      <p class="note" id="dc-note"></p>
+    </div>
+
+    <div class="grid3" style="margin-top:24px">
+      <div class="card fact reveal"><div class="fact"><span class="big">4 min</span><h3>Snelle weefsels</h3><p>Bloed en zenuwweefsel laden razendsnel op én lossen weer snel af. Zij bepalen de limiet bij korte, diepe duiken.</p></div></div>
+      <div class="card fact reveal"><div class="fact"><span class="big">635 min</span><h3>Trage weefsels</h3><p>Vet, gewrichten en botten verzadigen pas na uren — maar geven hun stikstof ook traag af. Zij bepalen lange en herhaalde duiken.</p></div></div>
+      <div class="card fact reveal"><div class="fact"><span class="big">Het plafond</span><h3>Wat je computer bewaakt</h3><p>Het ondiepste punt waar je nú veilig mag zijn. Zolang je plafond dieper is dan 0&nbsp;m, mag je niet naar de oppervlakte — je moet eerst afzadelen.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- ========================= 4. PLANNER ========================= -->
+<section id="planner">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">04 — DE DUIKPLANNER</div>
+      <h2>Reken een duik door</h2>
+      <p>Kies diepte, bodemtijd, ademgas en hoe conservatief je wil rekenen. De kern gebruikt het Bühlmann&nbsp;ZHL-16C algoritme met gradiëntfactor en laat zien of je binnen de nuldecompressielimiet blijft, welke stops nodig zijn, en hoe je weefsels eruitzien.</p>
+    </div>
+
+    <div class="card calc reveal">
+      <div class="inputs">
+        <div class="field">
+          <label>Maximale diepte <span class="val" id="cv-depth">22 m</span></label>
+          <input type="range" id="cDepth" min="6" max="42" value="22" step="1">
+        </div>
+        <div class="field">
+          <label>Bodemtijd <span class="val" id="cv-time">25 min</span></label>
+          <input type="range" id="cTime" min="3" max="90" value="25" step="1">
+          <p class="note">Tijd vanaf het verlaten van de oppervlakte tot het begin van de opstijging (afdaling meegerekend).</p>
+        </div>
+        <div class="field">
+          <label>Ademgas</label>
+          <div class="seg" id="cGas">
+            <button data-o2="0.21" class="on">Lucht</button>
+            <button data-o2="0.32">EAN32</button>
+            <button data-o2="0.36">EAN36</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Conservatisme</label>
+          <div class="seg" id="cCons">
+            <button data-gf="0.95">Liberaal</button>
+            <button data-gf="0.85" class="on">Gematigd</button>
+            <button data-gf="0.70">Conservatief</button>
+          </div>
+          <p class="note">Lagere gradiëntfactor = meer marge, vroegere en langere stops.</p>
+        </div>
+      </div>
+
+      <div class="outputs">
+        <div id="cStatus" class="statusbadge ok">— </div>
+        <div class="outgrid" id="cOutGrid"></div>
+
+        <div class="pane-t" style="margin:6px 0 8px">OPSTIJGSCHEMA</div>
+        <table class="stops-table"><thead><tr><th>Stop</th><th>Diepte</th><th>Tijd</th><th>Type</th></tr></thead><tbody id="cStops"></tbody></table>
+        <p class="note" id="cStopsNote"></p>
+
+        <div class="pane-t" style="margin:18px 0 8px">STIKSTOFBELASTING BIJ BOVENKOMST</div>
+        <div class="bar-load"><i id="cLoadBar"></i></div>
+        <p class="note" id="cLoadNote"></p>
+
+        <div class="grid2" style="margin-top:18px;gap:16px">
+          <div class="card" style="padding:14px 16px;background:rgba(255,255,255,.02)">
+            <div class="pane-t" style="margin-bottom:8px">DUIKPROFIEL</div>
+            <div class="canvas-holder"><canvas id="cProfile" height="180"></canvas></div>
+          </div>
+          <div class="card" style="padding:14px 16px;background:rgba(255,255,255,.02)">
+            <div class="pane-t" style="margin-bottom:8px">WEEFSELS BIJ EINDE BODEMTIJD</div>
+            <div class="canvas-holder"><canvas id="cComps" height="180"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- ========================= 5. SCENARIOS ========================= -->
+<section id="scenarios">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">05 — SCENARIO'S</div>
+      <h2>Drie duiken, live afgespeeld</h2>
+      <p>Druk op afspelen en volg de stikstof. Links zie je het duikprofiel met het <span style="color:var(--coral)">plafond</span> dat je niet mag passeren; rechts vullen de 16 weefsels zich. Let op wanneer balken <span style="color:var(--coral)">rood</span> worden: dan is dat weefsel oververzadigd.</p>
+    </div>
+
+    <!-- scenario 1 -->
+    <div class="scenario reveal" id="sc1">
+      <div class="intro">
+        <div class="badge">1</div>
+        <div>
+          <h3>Het rif</h3>
+          <p>Een ontspannen duik op 14&nbsp;meter. Ruim binnen de grenzen — geen verplichte decompressie. Toch hang je 3&nbsp;minuten op 5&nbsp;meter. Waarom? Om de snelle weefsels alvast rustig te laten afzadelen vóór de laatste, drukgevoeligste meters.</p>
+          <div class="params"><span>14 m</span><span>50 min bodemtijd</span><span>lucht</span><span>gematigd (GF 85)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- scenario 2 -->
+    <div class="scenario reveal" id="sc2">
+      <div class="intro">
+        <div class="badge">2</div>
+        <div>
+          <h3>Het wrak</h3>
+          <p>30&nbsp;meter, 25&nbsp;minuten. Je gaat ruim over de nuldecompressielimiet. Kijk hoe het plafond tijdens de bodemtijd <b>boven de bodem uit stijgt</b>: je kunt niet meer rechtstreeks naar boven. De computer eist nu echte decompressiestops voor je mag opstijgen.</p>
+          <div class="params"><span>30 m</span><span>25 min bodemtijd</span><span>lucht</span><span>gematigd (GF 85)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- scenario 3 -->
+    <div class="scenario danger reveal" id="sc3">
+      <div class="intro">
+        <div class="badge">3</div>
+        <div>
+          <h3>De noodopstijging — wat je niét wil</h3>
+          <p>Dezelfde duik als het wrak, maar nu paniek: recht naar boven, geen stops. Kijk hoe alle weefsels <b>tegelijk rood</b> kleuren. De stikstof zit ver boven de limiet en kan nergens heen behalve in belletjes. Dit is hoe decompressieziekte ontstaat.</p>
+          <div class="params"><span>30 m</span><span>25 min</span><span>18 m/min recht omhoog</span><span>geen stops</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- ========================= 6. REGELS ========================= -->
+<section id="regels">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">06 — DE REGELS ONDER WATER</div>
+      <h2>De afspraken die je veilig houden</h2>
+      <p>De fysiologie hierboven vertaalt zich naar een handvol vuistregels. Geen ervan vervangt je opleiding of computer — maar als je begrijpt wáárom ze bestaan, vergeet je ze niet.</p>
+    </div>
+
+    <div class="rules">
+      <div class="card rule reveal"><div class="ic">🐢</div><div><h3>Stijg langzaam op — 9 à 10 m/min</h3><p>Nooit sneller dan je kleinste belletjes (<b>max. 18&nbsp;m/min</b>, en trager in de laatste meters). Langzaam opstijgen geeft de stikstof tijd om via je longen te ontsnappen in plaats van belletjes te vormen.</p></div></div>
+      <div class="card rule reveal"><div class="ic">⏸️</div><div><h3>Veiligheidsstop: 3 min op 5 m</h3><p>Aanbevolen na élke duik dieper dan ~10&nbsp;m. Geen verplichting, maar je laat de snelle weefsels afzadelen vlak voor het drukgevoeligste traject. Goedkope verzekering.</p></div></div>
+      <div class="card rule reveal"><div class="ic">🪜</div><div><h3>Decompressiestops zijn niet optioneel</h3><p>Ga je over de nuldecompressielimiet, dan eist je computer stops (meestal op 3/6/9&nbsp;m). Die overslaan = gegarandeerde oververzadiging. Plan je gas zo dat je ze altijd kunt uitzitten.</p></div></div>
+      <div class="card rule reveal"><div class="ic">📐</div><div><h3>Nuldecompressielimiet (NDL)</h3><p>De maximale tijd op een diepte waarna je nog recht naar boven mag. Hoe dieper, hoe korter: ~ <b>56&nbsp;min op 18&nbsp;m</b>, maar slechts ~<b>9&nbsp;min op 40&nbsp;m</b> (en strenger met marge).</p></div></div>
+      <div class="card rule alert reveal"><div class="ic">🥴</div><div><h3>Stikstofnarcose — vanaf ~30 m</h3><p>Onder hoge partiële stikstofdruk werkt je brein trager ("diepteroes"). Je merkt het zelf nauwelijks. Daarom dieptelimieten per brevet en het buddy-systeem. Ondieper gaan lost het meteen op.</p></div></div>
+      <div class="card rule alert reveal"><div class="ic">☢️</div><div><h3>Zuurstoftoxiciteit — ppO₂ max 1.4 bar</h3><p>Te veel zuurstof wordt giftig. Houd de partiële O₂-druk onder 1.4&nbsp;bar (1.6 als absolute noodgrens). Nitrox verlengt je bodemtijd, maar verlaagt je maximale diepte — let op de MOD.</p></div></div>
+    </div>
+
+    <div class="grid2" style="margin-top:24px;gap:24px">
+      <div class="card" style="padding:26px 28px">
+        <h3 style="font-size:1.3rem;margin:0 0 4px">Decompressieziekte herkennen</h3>
+        <p style="color:#c4dee0;margin:0 0 8px">Klachten verschijnen meestal binnen 1–6&nbsp;uur na de duik. Bij twijfel: behandel het áls DCS.</p>
+        <ul class="symlist">
+          <li>Gewrichts- of spierpijn ("the bends")</li>
+          <li>Extreme vermoeidheid</li>
+          <li>Tintelingen of gevoelloosheid</li>
+          <li>Duizeligheid, evenwichtsverlies</li>
+          <li>Jeuk of vlekkerige huiduitslag</li>
+          <li>Kortademigheid, hoesten</li>
+          <li>Spierzwakte of verlamming</li>
+          <li>Verwardheid, problemen met zien/spreken</li>
+        </ul>
+        <div class="emergency">
+          <h3>Wat te doen bij verdenking</h3>
+          <ol>
+            <li>Geef <b>100% zuurstof</b> en houd het slachtoffer plat en warm.</li>
+            <li>Laat veel (niet-alcoholische) vloeistof drinken indien helder bij bewustzijn.</li>
+            <li>Bel de noodlijn — <b>DAN duikongevallen</b> of lokaal noodnummer <b>112</b>.</li>
+            <li>Vervoer naar een <b>hyperbare (recompressie)kamer</b>. Niet meer duiken.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card" style="padding:26px 28px">
+        <h3 style="font-size:1.3rem;margin:0 0 4px">Nuldecompressielimieten (lucht)</h3>
+        <p style="color:#c4dee0;margin:0 0 4px">Berekend met deze ZHL-16C kern. Let op: verschillende modellen en marges geven andere getallen — dit is een conservatieve referentie, geen tabel om op te duiken.</p>
+        <table class="ndltable">
+          <thead><tr><th>Diepte</th><th>NDL · gematigd (GF85)</th><th>NDL · liberaal (GF95)</th></tr></thead>
+          <tbody id="ndlBody"></tbody>
+        </table>
+        <p class="note">Nitrox verlengt deze tijden doordat je minder stikstof inademt — maar verandert niets aan de fysica van het opstijgen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Onder Druk</h4>
+        <p style="margin:0 0 10px">Een gratis leermiddel over de fysiologie van decompressie, gemaakt om te delen binnen de Nederlandse en Vlaamse duikgemeenschap. Deel hem gerust — sla de pagina op en open ze in elke browser, ook offline.</p>
+        <p style="margin:0;color:var(--faint)">Reken-kern: Bühlmann ZHL-16C (stikstof), één instelbare gradiëntfactor.</p>
+      </div>
+      <div>
+        <h4>Modellen &amp; bronnen</h4>
+        <ul>
+          <li>A.A. Bühlmann — <i>Tauchmedizin</i> (ZHL-16)</li>
+          <li>Wet van Henry &amp; wet van Boyle</li>
+          <li>Haldane — compartimentenmodel</li>
+          <li>CMAS · Nelos · NOB opleidingsnormen</li>
+          <li>DAN — Divers Alert Network</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Onthoud</h4>
+        <ul>
+          <li>Duik binnen je brevet</li>
+          <li>Plan met een computer of tabel</li>
+          <li>Stijg traag op, doe je veiligheidsstop</li>
+          <li>Sla nooit een decostop over</li>
+          <li>Bij twijfel: behandel als DCS</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fineprint">
+      <b>Disclaimer.</b> Deze website is uitsluitend educatief. De berekeningen zijn een vereenvoudigde implementatie van een decompressiemodel en kunnen afwijken van je duikcomputer. Niets op deze pagina is een vervanging voor een gecertificeerde duikopleiding, een goedgekeurde duikcomputer of duiktabellen, of medisch advies. Duik op eigen verantwoordelijkheid. © Onder Druk — vrij te delen en te gebruiken.
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+/* ============================================================
+   Bühlmann ZHL-16C rekenkern (stikstof) — gevalideerd in engine.test.mjs
+   ============================================================ */
+const HT = [4.0,8.0,12.5,18.5,27.0,38.3,54.3,77.0,109.0,146.0,187.0,239.0,305.0,390.0,498.0,635.0];
+const AC = [1.2599,1.0,0.8618,0.7562,0.62,0.5043,0.441,0.4,0.375,0.35,0.3295,0.3065,0.2835,0.261,0.248,0.2327];
+const BC = [0.505,0.6514,0.7222,0.7825,0.8126,0.8434,0.8693,0.891,0.9092,0.9222,0.9319,0.9403,0.9477,0.9544,0.9602,0.9653];
+const PH2O = 0.0627, PSURF = 1.0, FN2_AIR = 0.79;
+
+const pAmb   = d => PSURF + d * 0.1;
+const dFromP = p => (p - PSURF) / 0.1;
+const pN2insp = (d, fN2) => (pAmb(d) - PH2O) * fN2;
+const surfaceComp = () => HT.map(() => (PSURF - PH2O) * FN2_AIR);
+// spanning waarmee compartiment i nog veilig naar het oppervlak mag, bij gradiëntfactor gf
+const mSurface = (i, gf) => PSURF * (gf / BC[i] - gf + 1) + AC[i] * gf;
+
+function tick(comp, d, fN2, dt) {
+  const pi = pN2insp(d, fN2);
+  const out = new Array(16);
+  for (let i = 0; i < 16; i++) out[i] = comp[i] + (pi - comp[i]) * (1 - Math.pow(2, -dt / HT[i]));
+  return out;
+}
+function ceilAmb(comp, gf) { // hoogst getolereerde omgevingsdruk (bar) over alle compartimenten
+  let m = 0;
+  for (let i = 0; i < 16; i++) {
+    const tol = (comp[i] - AC[i] * gf) / (gf / BC[i] - gf + 1);
+    if (tol > m) m = tol;
+  }
+  return m;
+}
+function ndl(depth, fN2, gf) {
+  let comp = surfaceComp(); const dt = 0.1; let t = 0;
+  while (t < 999) {
+    comp = tick(comp, depth, fN2, dt); t += dt;
+    if (ceilAmb(comp, gf) > PSURF + 1e-9) return t;
+  }
+  return 999;
+}
+function tissueLoadPct(comp, gf) { // hoogste belasting t.o.v. oppervlaktelimiet, in %
+  let m = 0;
+  for (let i = 0; i < 16; i++) { const r = comp[i] / mSurface(i, gf); if (r > m) m = r; }
+  return m * 100;
+}
+function simulate(maxDepth, bottomTime, fO2, gf, opts) {
+  opts = opts || {};
+  const fN2 = 1 - fO2, dt = 0.1, SAMP = 0.25;
+  let comp = surfaceComp(), t = 0, depth = 0, nextSample = 0;
+  const tl = [];
+  const push = () => tl.push({ t, depth, comp: comp.slice() });
+  const adv = () => { if (t >= nextSample) { push(); nextSample += SAMP; } };
+  push();
+  // afdaling 18 m/min
+  while (depth < maxDepth) { depth = Math.min(maxDepth, depth + 18 * dt); comp = tick(comp, depth, fN2, dt); t += dt; adv(); }
+  // bodemtijd
+  while (t < bottomTime) { comp = tick(comp, depth, fN2, dt); t += dt; adv(); }
+  const bottomEndT = t;
+  const firstCeil = dFromP(ceilAmb(comp, gf));
+  let firstStop = firstCeil > 0 ? Math.ceil(firstCeil / 3) * 3 : 0;
+  const stops = [];
+  const ascRate = opts.ascentRate || 9;
+  if (opts.ignoreStops) {
+    while (depth > 0) { depth = Math.max(0, depth - ascRate * dt); comp = tick(comp, depth, fN2, dt); t += dt; adv(); }
+    const end = t + 6; while (t < end) { comp = tick(comp, 0, fN2, dt); t += dt; adv(); }
+  } else if (firstStop <= 0) {
+    while (depth > 5) { depth = Math.max(5, depth - 9 * dt); comp = tick(comp, depth, fN2, dt); t += dt; adv(); }
+    if (maxDepth >= 10) {
+      const end = t + 3; while (t < end) { comp = tick(comp, 5, fN2, dt); t += dt; adv(); }
+      stops.push({ depth: 5, min: 3, type: 'safety' });
+    }
+    while (depth > 0) { depth = Math.max(0, depth - 9 * dt); comp = tick(comp, depth, fN2, dt); t += dt; adv(); }
+  } else {
+    let stop = firstStop;
+    while (stop > 0) {
+      while (depth > stop) { depth = Math.max(stop, depth - 9 * dt); comp = tick(comp, depth, fN2, dt); t += dt; adv(); }
+      let waited = 0; const target = stop - 3;
+      while (waited <= 400) {
+        if (dFromP(ceilAmb(comp, gf)) <= target + 1e-6) break;
+        comp = tick(comp, stop, fN2, dt); t += dt; waited += dt; adv();
+      }
+      stops.push({ depth: stop, min: Math.max(1, Math.ceil(waited)), type: 'deco' });
+      stop -= 3;
+    }
+    while (depth > 0) { depth = Math.max(0, depth - 9 * dt); comp = tick(comp, depth, fN2, dt); t += dt; adv(); }
+  }
+  push();
+  let maxCeil = 0;
+  for (const s of tl) { s.ceil = dFromP(ceilAmb(s.comp, gf)); if (s.ceil > maxCeil) maxCeil = s.ceil; }
+  const surfLoad = tissueLoadPct(comp, gf);
+  return { tl, stops, firstStop, runtime: t, bottomEndT, maxCeil, surfLoad, fN2, gf, maxDepth };
+}
+
+/* ============================================================
+   Canvas helpers
+   ============================================================ */
+const COL = { ink:'#eaf6f6', muted:'#8fb3bb', aqua:'#37e0c4', aquaDeep:'#16a892', gold:'#ffcf6b', coral:'#ff7a5c', line:'rgba(143,179,187,.18)', water:'rgba(40,150,170,.18)' };
+function prep(cv, h) {
+  const dpr = window.devicePixelRatio || 1;
+  const w = cv.clientWidth || cv.parentElement.clientWidth;
+  const hh = h || cv.height;
+  cv.width = w * dpr; cv.height = hh * dpr;
+  cv.style.height = hh + 'px';
+  const ctx = cv.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, W: w, H: hh };
+}
+
+/* ---- duikprofiel ---- */
+function drawProfile(cv, sim, idx) {
+  const { ctx, W, H } = prep(cv, cv.clientHeight || 180);
+  ctx.clearRect(0, 0, W, H);
+  const tl = sim.tl;
+  const padL = 34, padR = 12, padT = 12, padB = 20;
+  const pw = W - padL - padR, ph = H - padT - padB;
+  const tMax = tl[tl.length - 1].t || 1;
+  let dMax = sim.maxDepth; for (const s of tl) if (s.ceil > dMax) dMax = s.ceil;
+  dMax = Math.max(dMax, sim.maxDepth) * 1.12 + 1;
+  const X = t => padL + (t / tMax) * pw;
+  const Y = d => padT + (d / dMax) * ph;
+  // water achtergrond
+  const g = ctx.createLinearGradient(0, padT, 0, padT + ph);
+  g.addColorStop(0, 'rgba(60,180,200,.16)'); g.addColorStop(1, 'rgba(6,30,42,.30)');
+  ctx.fillStyle = g; ctx.fillRect(padL, padT, pw, ph);
+  // diepte-assen
+  ctx.strokeStyle = COL.line; ctx.fillStyle = COL.muted; ctx.font = '10px "IBM Plex Mono",monospace'; ctx.lineWidth = 1;
+  const step = dMax > 30 ? 10 : (dMax > 15 ? 5 : 3);
+  for (let d = 0; d <= dMax; d += step) {
+    const y = Y(d); ctx.globalAlpha = .5; ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + pw, y); ctx.stroke(); ctx.globalAlpha = 1;
+    ctx.textAlign = 'right'; ctx.fillText(d + 'm', padL - 5, y + 3);
+  }
+  // verboden zone (boven plafond) — rood
+  ctx.beginPath();
+  let started = false;
+  for (const s of tl) { if (s.ceil > 0) { const x = X(s.t); if (!started) { ctx.moveTo(x, Y(0)); started = true; } ctx.lineTo(x, Y(s.ceil)); } }
+  if (started) {
+    for (let i = tl.length - 1; i >= 0; i--) if (tl[i].ceil > 0) ctx.lineTo(X(tl[i].t), Y(0));
+    ctx.closePath(); ctx.fillStyle = 'rgba(255,122,92,.14)'; ctx.fill();
+    // plafondlijn
+    ctx.beginPath(); started = false;
+    for (const s of tl) { const x = X(s.t), y = Y(Math.max(0, s.ceil)); if (s.ceil > 0) { if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y); } else started = false; }
+    ctx.strokeStyle = COL.coral; ctx.setLineDash([4, 3]); ctx.lineWidth = 1.5; ctx.stroke(); ctx.setLineDash([]);
+  }
+  // volledige profiel (flauw)
+  ctx.beginPath(); ctx.moveTo(X(0), Y(0));
+  for (const s of tl) ctx.lineTo(X(s.t), Y(s.depth));
+  ctx.lineTo(X(tMax), Y(0));
+  ctx.fillStyle = 'rgba(55,224,196,.10)'; ctx.fill();
+  // getraceerd deel (helder)
+  const cut = idx == null ? tl.length - 1 : idx;
+  ctx.beginPath(); ctx.moveTo(X(tl[0].t), Y(tl[0].depth));
+  for (let i = 1; i <= cut && i < tl.length; i++) ctx.lineTo(X(tl[i].t), Y(tl[i].depth));
+  ctx.strokeStyle = COL.aqua; ctx.lineWidth = 2.4; ctx.lineJoin = 'round'; ctx.stroke();
+  // huidige punt
+  if (idx != null && tl[cut]) {
+    const cx = X(tl[cut].t), cy = Y(tl[cut].depth);
+    ctx.beginPath(); ctx.arc(cx, cy, 5.5, 0, 7); ctx.fillStyle = '#eafcff'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, cy, 5.5, 0, 7); ctx.strokeStyle = COL.aquaDeep; ctx.lineWidth = 2; ctx.stroke();
+  }
+}
+
+/* ---- 16 compartimenten ---- */
+function drawComps(cv, comp, depth, fN2, gf) {
+  const h = cv.clientHeight || 200;
+  const { ctx, W, H } = prep(cv, h);
+  ctx.clearRect(0, 0, W, H);
+  const padL = 6, padR = 6, padT = 14, padB = 18;
+  const pw = W - padL - padR, ph = H - padT - padB;
+  const n = 16, bw = pw / n, PMAX = 4.4;
+  const y0 = padT + ph;
+  const sY = v => y0 - Math.min(v, PMAX) / PMAX * ph;
+  const pi = pN2insp(depth, fN2);
+  // instroomlijn (doel op deze diepte)
+  ctx.strokeStyle = COL.gold; ctx.setLineDash([3, 3]); ctx.lineWidth = 1.2; ctx.globalAlpha = .8;
+  ctx.beginPath(); ctx.moveTo(padL, sY(pi)); ctx.lineTo(padL + pw, sY(pi)); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+  for (let i = 0; i < n; i++) {
+    const x = padL + i * bw + 1.5, w = bw - 3;
+    const mS = mSurface(i, gf);
+    const over = comp[i] > mS;
+    const top = sY(comp[i]);
+    const grd = ctx.createLinearGradient(0, top, 0, y0);
+    if (over) { grd.addColorStop(0, '#ff9576'); grd.addColorStop(1, 'rgba(226,84,56,.55)'); }
+    else { grd.addColorStop(0, COL.aqua); grd.addColorStop(1, 'rgba(22,168,146,.45)'); }
+    ctx.fillStyle = grd; ctx.fillRect(x, top, w, y0 - top);
+    // M-waarde tick
+    ctx.strokeStyle = 'rgba(234,246,246,.7)'; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(x - .5, sY(mS)); ctx.lineTo(x + w + .5, sY(mS)); ctx.stroke();
+  }
+  // baseline
+  ctx.strokeStyle = COL.line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padL, y0); ctx.lineTo(padL + pw, y0); ctx.stroke();
+  // labels snelle/trage
+  ctx.fillStyle = COL.muted; ctx.font = '9px "IBM Plex Mono",monospace';
+  ctx.textAlign = 'left'; ctx.fillText('snel ◀ 4 min', padL + 1, H - 5);
+  ctx.textAlign = 'right'; ctx.fillText('635 min ▶ traag', padL + pw, H - 5);
+}
+
+/* ============================================================
+   1 · Diepte-verkenner
+   ============================================================ */
+(function () {
+  const slider = document.getElementById('depthSlider');
+  const diver = document.getElementById('diver');
+  const ticks = document.getElementById('ticks');
+  const col = document.getElementById('watercol');
+  for (let d = 0; d <= 40; d += 10) {
+    const s = document.createElement('span'); s.textContent = (d === 0 ? '0 m' : d + ' m');
+    s.style.top = (d / 40 * 100) + '%'; ticks.appendChild(s);
+  }
+  // bubbles
+  for (let i = 0; i < 7; i++) {
+    const b = document.createElement('div'); b.className = 'bubble';
+    const sz = 3 + Math.random() * 6;
+    b.style.width = b.style.height = sz + 'px';
+    b.style.left = (12 + Math.random() * 70) + '%';
+    b.style.bottom = '0'; b.style.animationDuration = (5 + Math.random() * 6) + 's';
+    b.style.animationDelay = (-Math.random() * 8) + 's';
+    col.appendChild(b);
+  }
+  const fmt = (x, n) => x.toFixed(n);
+  function upd() {
+    const d = +slider.value;
+    const p = pAmb(d);
+    diver.style.top = (d / 40 * 100) + '%';
+    document.getElementById('r-depth').textContent = d + ' m';
+    document.getElementById('r-press').innerHTML = fmt(p, 1) + ' <small>bar</small>';
+    document.getElementById('r-pn2').innerHTML = fmt(p * FN2_AIR, 2) + ' <small>bar</small>';
+    document.getElementById('r-po2').innerHTML = fmt(p * 0.21, 2) + ' <small>bar</small>';
+    const vol = 100 / p;
+    document.getElementById('r-vol').innerHTML = Math.round(vol) + ' <small>%</small>';
+    const ball = document.getElementById('lungball');
+    const sc = Math.sqrt(vol / 100); ball.style.transform = 'scale(' + sc.toFixed(2) + ')';
+    const lt = document.getElementById('lungtext');
+    if (d === 0) lt.textContent = 'Aan de oppervlakte heeft een ademteug zijn volle volume. Naarmate je daalt knijpt de druk alle gasruimtes samen.';
+    else lt.innerHTML = 'Op ' + d + ' m sta je onder ' + fmt(p, 1) + ' bar. Diezelfde ademteug is nog maar <b>' + Math.round(vol) + '%</b> van zijn oppervlaktevolume — en je perst ' + fmt(p * FN2_AIR, 2) + ' bar stikstof in je weefsels.';
+  }
+  slider.addEventListener('input', upd); upd();
+})();
+
+/* ---- soda glazen ---- */
+(function () {
+  const slow = document.getElementById('sodaSlow'), fast = document.getElementById('sodaFast');
+  const hsSlow = [20,28,22,30,25,32,26,24], hsFast = [70,90,60,85,95,72,88,80];
+  hsSlow.forEach(h => { const i = document.createElement('i'); i.style.height = h + '%'; slow.appendChild(i); });
+  hsFast.forEach(h => { const i = document.createElement('i'); i.style.height = h + '%'; i.style.background = COL.coral; fast.appendChild(i); });
+})();
+
+/* ============================================================
+   2 · Op/afzadelen van één weefsel (compartiment 5, 27 min)
+   ============================================================ */
+(function () {
+  const cv = document.getElementById('loadCanvas');
+  const ht = 27.0, a = AC[4], b = BC[4];
+  function draw() {
+    const { ctx, W, H } = prep(cv, 150);
+    ctx.clearRect(0, 0, W, H);
+    const padL = 8, padR = 8, padT = 10, padB = 16;
+    const pw = W - padL - padR, ph = H - padT - padB;
+    // profiel: 0-2 min afdalen naar 30m, tot 30 min op diepte, daarna omhoog
+    const total = 70; // min
+    const targetDepth = t => t < 2 ? 30 * (t / 2) : (t < 34 ? 30 : Math.max(0, 30 - (t - 34) * 9));
+    const Pmax = 3.4;
+    const X = t => padL + t / total * pw;
+    const Y = v => padT + ph - (v / Pmax) * ph;
+    // omgevings-instroom (goud)
+    ctx.beginPath();
+    for (let t = 0; t <= total; t += 0.5) { const pi = pN2insp(targetDepth(t), FN2_AIR); const x = X(t), y = Y(pi); t === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+    ctx.strokeStyle = COL.gold; ctx.lineWidth = 1.6; ctx.setLineDash([4, 3]); ctx.stroke(); ctx.setLineDash([]);
+    // weefselspanning (aqua)
+    let comp = (PSURF - PH2O) * FN2_AIR;
+    ctx.beginPath(); ctx.moveTo(X(0), Y(comp));
+    for (let t = 0; t <= total; t += 0.2) {
+      const pi = pN2insp(targetDepth(t), FN2_AIR);
+      comp = comp + (pi - comp) * (1 - Math.pow(2, -0.2 / ht));
+      ctx.lineTo(X(t), Y(comp));
+    }
+    ctx.strokeStyle = COL.aqua; ctx.lineWidth = 2.4; ctx.lineJoin = 'round'; ctx.stroke();
+    // fase-labels
+    ctx.fillStyle = COL.muted; ctx.font = '9px "IBM Plex Mono",monospace'; ctx.textAlign = 'center';
+    ctx.fillText('opzadelen ▲', X(18), H - 3);
+    ctx.fillText('afzadelen ▼', X(52), H - 3);
+  }
+  draw();
+  window.addEventListener('resize', draw);
+  window.__redraws = window.__redraws || []; window.__redraws.push(draw);
+})();
+
+/* ============================================================
+   3 · Compartimenten-demo (sectie 3)
+   ============================================================ */
+(function () {
+  const dEl = document.getElementById('dcDepth'), tEl = document.getElementById('dcTime');
+  const cv = document.getElementById('demoComps');
+  function run() {
+    const depth = +dEl.value, time = +tEl.value, gf = 0.85;
+    document.getElementById('dc-depth').textContent = depth + ' m';
+    document.getElementById('dc-time').textContent = time + ' min';
+    // laad weefsels: afdaling + bodemtijd
+    let comp = surfaceComp(); const dt = 0.1; let dep = 0, t = 0;
+    while (dep < depth) { dep = Math.min(depth, dep + 18 * dt); comp = tick(comp, dep, FN2_AIR, dt); t += dt; }
+    while (t < time) { comp = tick(comp, depth, FN2_AIR, dt); t += dt; }
+    drawComps(cv, comp, depth, FN2_AIR, gf);
+    const ceil = dFromP(ceilAmb(comp, gf));
+    const nd = ndl(depth, FN2_AIR, gf);
+    const note = document.getElementById('dc-note');
+    if (ceil > 0)
+      note.innerHTML = 'Je plafond ligt op <b style="color:var(--coral)">' + ceil.toFixed(1) + ' m</b>: rechtstreeks opstijgen mag niet meer, je bent over de nuldecompressielimiet (~' + Math.round(nd) + ' min op deze diepte). Eerst afzadelen.';
+    else
+      note.innerHTML = 'Plafond op 0 m: je mag (langzaam) naar de oppervlakte. Nog ~<b>' + Math.max(0, Math.round(nd - time)) + ' min</b> speling tot de nuldecompressielimiet (~' + Math.round(nd) + ' min op ' + depth + ' m).';
+  }
+  dEl.addEventListener('input', run); tEl.addEventListener('input', run); run();
+  window.__redraws.push(run);
+})();
+
+/* ============================================================
+   4 · Duikplanner
+   ============================================================ */
+(function () {
+  let fO2 = 0.21, gf = 0.85;
+  const dEl = document.getElementById('cDepth'), tEl = document.getElementById('cTime');
+  function segWire(id, cb) {
+    document.querySelectorAll('#' + id + ' button').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('#' + id + ' button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on'); cb(b); run();
+    }));
+  }
+  segWire('cGas', b => fO2 = +b.dataset.o2);
+  segWire('cCons', b => gf = +b.dataset.gf);
+
+  function run() {
+    const depth = +dEl.value, time = +tEl.value;
+    document.getElementById('cv-depth').textContent = depth + ' m';
+    document.getElementById('cv-time').textContent = time + ' min';
+    const sim = simulate(depth, time, fO2, gf, {});
+    const nd = ndl(depth, sim.fN2, gf);
+    const overNDL = sim.stops.some(s => s.type === 'deco');
+
+    // status
+    const sb = document.getElementById('cStatus');
+    if (overNDL) { sb.className = 'statusbadge deco'; sb.innerHTML = '⚠ DECOMPRESSIE VEREIST'; }
+    else { sb.className = 'statusbadge ok'; sb.innerHTML = '✓ BINNEN NULDECOMPRESSIE'; }
+
+    // kerncijfers
+    const p = pAmb(depth), ppo2 = p * fO2, ppn2 = p * sim.fN2;
+    const mod14 = ((1.4 / fO2) - 1) * 10, mod16 = ((1.6 / fO2) - 1) * 10;
+    const tts = (sim.runtime - sim.bottomEndT);
+    const o2cls = ppo2 > 1.6 ? 'warn' : (ppo2 > 1.4 ? 'warn' : 'good');
+    const grid = document.getElementById('cOutGrid');
+    grid.innerHTML =
+      cell('Nuldeco-limiet', (nd >= 999 ? '∞' : Math.round(nd)), 'min op ' + depth + ' m', overNDL ? 'warn' : 'good') +
+      cell('Opstijgtijd', tts.toFixed(0), 'min tot oppervlak', '') +
+      cell('Totale looptijd', sim.runtime.toFixed(0), 'min', '') +
+      cell('Omgevingsdruk', p.toFixed(1), 'bar', '') +
+      cell('ppO₂', ppo2.toFixed(2), 'bar' + (ppo2 > 1.4 ? ' — te hoog!' : ''), o2cls) +
+      cell('ppN₂', ppn2.toFixed(2), 'bar' + (depth >= 30 ? ' — narcose' : ''), depth >= 30 ? 'warn' : '');
+
+    // stops
+    const tb = document.getElementById('cStops');
+    if (sim.stops.length === 0) {
+      tb.innerHTML = '<tr><td colspan="4" style="color:var(--muted)">Geen stops vereist — toch een veiligheidsstop aangeraden.</td></tr>';
+    } else {
+      tb.innerHTML = sim.stops.map((s, i) =>
+        '<tr class="' + s.type + '"><td>' + (i + 1) + '</td><td>' + s.depth + ' m</td><td>' + s.min + ' min</td><td>' + (s.type === 'safety' ? 'veiligheid' : 'deco') + '</td></tr>'
+      ).join('');
+    }
+    document.getElementById('cStopsNote').textContent = overNDL
+      ? 'Decompressiestops zijn verplicht: je weefsels moeten afzadelen voor je hoger mag. Opstijgen met 9–10 m/min tussen de stops.'
+      : 'Stijg op met 9–10 m/min en hang 3 min op 5 m als veiligheidsstop.';
+
+    // belasting
+    const load = sim.surfLoad;
+    const bar = document.getElementById('cLoadBar');
+    bar.style.width = Math.min(100, load) + '%';
+    bar.style.background = load > 100 ? 'linear-gradient(90deg,#ff9576,#e25438)' : (load > 85 ? 'linear-gradient(90deg,var(--gold),var(--coral))' : 'linear-gradient(90deg,var(--aqua),var(--aqua-deep))');
+    document.getElementById('cLoadNote').innerHTML = load > 100
+      ? 'Het zwaarst belaste weefsel zou bij dít opstijgschema op <b style="color:var(--coral)">' + Math.round(load) + '%</b> van zijn limiet zitten — daarom de stops.'
+      : 'Het zwaarst belaste weefsel komt op <b>' + Math.round(load) + '%</b> van zijn oppervlaktelimiet boven. Onder 100% = binnen de marge.';
+
+    // grafieken
+    drawProfile(document.getElementById('cProfile'), sim, null);
+    // weefsels bij einde bodemtijd
+    let endComp = sim.tl[0].comp;
+    for (const s of sim.tl) { if (s.t <= sim.bottomEndT + 1e-6) endComp = s.comp; }
+    drawComps(document.getElementById('cComps'), endComp, depth, sim.fN2, gf);
+  }
+  function cell(l, v, sub, cls) {
+    return '<div class="o ' + (cls || '') + '"><div class="l">' + l + '</div><div class="v">' + v + ' <small>' + sub + '</small></div></div>';
+  }
+  dEl.addEventListener('input', run); tEl.addEventListener('input', run);
+  run();
+  window.__planRun = run;
+})();
+
+/* ============================================================
+   5 · Scenario-spelers
+   ============================================================ */
+class DivePlayer {
+  constructor(rootId, sim, narrate) {
+    this.sim = sim; this.narrate = narrate;
+    this.idx = 0; this.playing = false; this.speed = 8; // sim-min per sec
+    this.tCur = 0; this.last = 0;
+    const root = document.getElementById(rootId);
+    const danger = root.classList.contains('danger');
+    const wrap = document.createElement('div'); wrap.className = 'card player';
+    wrap.innerHTML =
+      '<div class="top"><div class="profile-pane"><div class="pane-t">Duikprofiel &amp; plafond</div><div class="canvas-holder"><canvas class="prof" height="200"></canvas></div></div>' +
+      '<div class="comps-pane"><div class="pane-t">16 weefsels</div><div class="canvas-holder"><canvas class="comps" height="200"></canvas></div></div></div>' +
+      '<div class="readouts">' +
+        ro('Tijd', 't') + ro('Diepte', 'd') + ro('Plafond', 'c') + ro('ppN₂', 'pn') + ro('Belasting', 'l') +
+      '</div>' +
+      '<div class="controls"><button class="play">▶</button><input type="range" class="scrub" min="0" max="' + (sim.tl.length - 1) + '" value="0"><button class="spd">8×</button></div>' +
+      '<div class="caption"><span class="ph">—</span><span class="captxt"></span></div>';
+    root.appendChild(wrap);
+    function ro(l, k) { return '<div class="ro2"><div class="l">' + l + '</div><div class="v" data-k="' + k + '">—</div></div>'; }
+    this.prof = wrap.querySelector('.prof');
+    this.comps = wrap.querySelector('.comps');
+    this.scrub = wrap.querySelector('.scrub');
+    this.playBtn = wrap.querySelector('.play');
+    this.spdBtn = wrap.querySelector('.spd');
+    this.cap = wrap.querySelector('.captxt');
+    this.phEl = wrap.querySelector('.ph');
+    this.ros = {};
+    wrap.querySelectorAll('[data-k]').forEach(e => this.ros[e.dataset.k] = e);
+    this.danger = danger;
+    this.playBtn.addEventListener('click', () => this.toggle());
+    this.scrub.addEventListener('input', () => { this.pause(); this.idx = +this.scrub.value; this.tCur = sim.tl[this.idx].t; this.render(); });
+    const speeds = [4, 8, 16, 32];
+    this.spdBtn.addEventListener('click', () => { let i = speeds.indexOf(this.speed); this.speed = speeds[(i + 1) % speeds.length]; this.spdBtn.textContent = this.speed + '×'; });
+    this.draw = () => this.render();
+    window.__redraws.push(this.draw);
+    this.render();
+  }
+  toggle() { this.playing ? this.pause() : this.play(); }
+  play() {
+    if (this.idx >= this.sim.tl.length - 1) { this.idx = 0; this.tCur = 0; }
+    this.playing = true; this.playBtn.textContent = '❚❚';
+    this.last = performance.now();
+    const loop = (now) => {
+      if (!this.playing) return;
+      const dtReal = (now - this.last) / 1000; this.last = now;
+      this.tCur += dtReal * this.speed;
+      const tl = this.sim.tl;
+      while (this.idx < tl.length - 1 && tl[this.idx + 1].t <= this.tCur) this.idx++;
+      this.scrub.value = this.idx;
+      this.render();
+      if (this.idx >= tl.length - 1) { this.pause(); return; }
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+  pause() { this.playing = false; this.playBtn.textContent = '▶'; }
+  render() {
+    const tl = this.sim.tl, s = tl[this.idx];
+    drawProfile(this.prof, this.sim, this.idx);
+    drawComps(this.comps, s.comp, s.depth, this.sim.fN2, this.sim.gf);
+    const ppn2 = pN2insp(s.depth, this.sim.fN2);
+    const load = tissueLoadPct(s.comp, this.sim.gf);
+    this.ros.t.textContent = s.t.toFixed(1) + "'";
+    this.ros.d.textContent = s.depth.toFixed(0) + ' m';
+    this.ros.c.innerHTML = s.ceil > 0 ? '<span style="color:var(--coral)">' + s.ceil.toFixed(1) + ' m</span>' : '0 m';
+    this.ros.pn.textContent = ppn2.toFixed(2);
+    this.ros.l.innerHTML = '<span style="color:' + (load > 100 ? 'var(--coral)' : 'var(--aqua)') + '">' + Math.round(load) + '%</span>';
+    const { phase, warn, text } = this.narrate(s, this.sim, load);
+    this.phEl.textContent = phase; this.phEl.className = 'ph' + (warn ? ' warn' : '');
+    this.cap.innerHTML = text;
+  }
+}
+
+function phaseOf(s, sim) {
+  const tl = sim.tl, i = tl.indexOf(s);
+  const prev = tl[Math.max(0, i - 2)], next = tl[Math.min(tl.length - 1, i + 2)];
+  if (s.depth < 0.5 && s.t > sim.bottomEndT) return 'surface';
+  if (next.depth > s.depth + 0.3) return 'descend';
+  if (prev.depth > s.depth + 0.3 || next.depth < s.depth - 0.3) return 'ascend';
+  if (s.t <= sim.bottomEndT + 0.3) return 'bottom';
+  return 'stop';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // scenario 1 — rif
+  new DivePlayer('sc1', simulate(14, 50, 0.21, 0.85, {}), (s, sim, load) => {
+    const ph = phaseOf(s, sim);
+    if (ph === 'descend') return { phase: 'Afdalen', warn: false, text: 'Je daalt naar 14 m. De druk stijgt en stikstof begint je weefsels in te stromen — de balken rechts lopen op.' };
+    if (ph === 'bottom') return { phase: 'Op diepte', warn: false, text: 'Op 14 m laden je weefsels rustig op. Je blijft ruim onder de limiet: alle balken blijven onder hun M-waarde. Je plafond blijft 0 m.' };
+    if (ph === 'ascend') return { phase: 'Opstijgen', warn: false, text: 'Langzaam omhoog (9–10 m/min). De stikstof keert om en zadelt af richting je longen.' };
+    if (ph === 'stop') return { phase: 'Veiligheidsstop', warn: false, text: '3 minuten op 5 m. Niet verplicht hier, maar je laat de snelle weefsels afzadelen vóór de drukgevoeligste laatste meters. Goedkope marge.' };
+    return { phase: 'Aan de oppervlakte', warn: false, text: '<b>Veilig boven.</b> Je weefsels bleven de hele duik binnen hun limiet — daarom was dit een nuldecompressieduik.' };
+  });
+
+  // scenario 2 — wrak
+  new DivePlayer('sc2', simulate(30, 25, 0.21, 0.85, {}), (s, sim, load) => {
+    const ph = phaseOf(s, sim);
+    if (ph === 'descend') return { phase: 'Afdalen', warn: false, text: 'Snel naar 30 m. De partiële stikstofdruk is hier bijna 3 bar — de weefsels laden veel sneller op dan op het rif.' };
+    if (ph === 'bottom') {
+      const w = s.ceil > 0;
+      return { phase: 'Op diepte', warn: w, text: w
+        ? 'Let op het <span style="color:var(--coral)">plafond</span>: het komt los van de bodem en stijgt. Je bent nu over de nuldecompressielimiet — rechtstreeks opstijgen mag niet meer.'
+        : 'Op 30 m loopt de stikstof er snel in. Het plafond staat op het punt los te komen van de bodem…' };
+    }
+    if (ph === 'ascend') return { phase: 'Opstijgen', warn: s.ceil > 0, text: 'Je stijgt tot je eerste stop — niet verder! Je mag het rode plafond nooit passeren.' };
+    if (ph === 'stop') return { phase: 'Decostop', warn: true, text: 'Verplichte decompressiestop. Je wacht hier tot genoeg stikstof is afgezadeld en het plafond verder zakt. Pas dan mag je hoger.' };
+    return { phase: 'Aan de oppervlakte', warn: false, text: '<b>Veilig boven — dankzij de stops.</b> Je gaf de stikstof de tijd om netjes te ontsnappen in plaats van te bruisen.' };
+  });
+
+  // scenario 3 — noodopstijging
+  new DivePlayer('sc3', simulate(30, 25, 0.21, 0.85, { ignoreStops: true, ascentRate: 18 }), (s, sim, load) => {
+    const ph = phaseOf(s, sim);
+    if (ph === 'descend') return { phase: 'Afdalen', warn: false, text: 'Dezelfde duik als het wrak: 30 m, 25 min. Onthoud de decostops die hier eigenlijk verplicht waren.' };
+    if (ph === 'bottom') return { phase: 'Op diepte', warn: s.ceil > 0, text: 'Dezelfde stikstofbelasting als scenario 2. Het plafond staat boven de bodem — er zijn stops nodig. Maar dan… paniek.' };
+    if (ph === 'ascend') return { phase: 'NOODOPSTIJGING', warn: true, text: 'Recht naar boven, geen stops. Kijk: de omgevingsdruk valt weg terwijl de weefsels nog vol stikstof zitten. De balken schieten <span style="color:var(--coral)">boven hun M-waarde</span>.' };
+    return { phase: 'Decompressieziekte', warn: true, text: '<b style="color:var(--coral)">Oververzadigd ver boven de limiet (' + Math.round(load) + '%).</b> De stikstof kan niet snel genoeg weg en vormt belletjes in bloed en gewrichten: dit is hoe DCS — "de bends" — ontstaat. Dít is waarom je de stops uit scenario 2 nooit overslaat.' };
+  });
+});
+
+/* ============================================================
+   NDL-referentietabel
+   ============================================================ */
+(function () {
+  const body = document.getElementById('ndlBody');
+  let rows = '';
+  for (const d of [9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42]) {
+    const a = ndl(d, FN2_AIR, 0.85), b = ndl(d, FN2_AIR, 0.95);
+    const f = v => v >= 999 ? '∞' : Math.round(v) + ' min';
+    rows += '<tr><td>' + d + ' m</td><td>' + f(a) + '</td><td>' + f(b) + '</td></tr>';
+  }
+  body.innerHTML = rows;
+})();
+
+/* ============================================================
+   Scroll-reveal + nav active + resize redraw
+   ============================================================ */
+(function () {
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(e => io.observe(e));
+
+  const secs = [...document.querySelectorAll('section[id]')];
+  const links = [...document.querySelectorAll('nav .links a')];
+  const navio = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+    }
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  secs.forEach(s => navio.observe(s));
+
+  let to;
+  window.addEventListener('resize', () => {
+    clearTimeout(to);
+    to = setTimeout(() => { (window.__redraws || []).forEach(f => { try { f(); } catch (e) {} }); if (window.__planRun) window.__planRun(); }, 150);
+  });
+})();
+</script>
+</body>
+</html>
