@@ -51,7 +51,71 @@
     footer{background:#051511;color:white;padding:70px 0 30px}.footer-grid{display:grid;grid-template-columns:1.3fr .7fr .7fr;gap:50px}.footer-grid p,.footer-grid a{color:#8fa7a1;font-size:13px}.footer-grid a{display:block;margin:8px 0}.footer-bottom{border-top:1px solid #254139;margin-top:50px;padding-top:25px;display:flex;justify-content:space-between;color:#6f8982;font-size:11px}
     .toast{position:fixed;right:20px;bottom:20px;background:var(--ink);color:white;padding:14px 18px;border-radius:12px;z-index:30;transform:translateY(100px);opacity:0;transition:.25s;font-size:13px}.toast.show{transform:none;opacity:1}
     @media(max-width:900px){.navlinks{display:none}.hero{grid-template-columns:1fr;padding-top:80px}.dashboard{max-width:500px}.principles,.session-cards{grid-template-columns:repeat(2,1fr)}.explainer,.planner-grid,.timer-wrap,.progress-grid{grid-template-columns:1fr}.oxygen-chain{position:static}.form-grid{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:600px){.wrap{width:min(100% - 24px,1180px)}section{padding:75px 0}header{min-height:auto}.hero{gap:45px}.dashboard{padding:16px}.gauge{height:230px}.rings{width:205px;height:205px}.rings::before{width:160px;height:160px}.principles,.session-cards,.form-grid{grid-template-columns:1fr}.section-head{display:block}.section-head p{margin-top:18px}.calculator,.timer-wrap{padding:22px}.zone{grid-template-columns:50px 1fr}.zone span:nth-child(3),.zone span:nth-child(4){grid-column:2}.day{grid-template-columns:55px 8px 1fr}.duration{display:none}.timer-circle{width:240px;height:240px}.timer-time{font-size:45px}.footer-grid{grid-template-columns:1fr}.footer-bottom{display:block}.mini-grid{gap:5px}.mini{padding:10px}.mini b{font-size:14px}}
+    @media(max-width:600px){
+      .wrap{width:min(100% - 24px,1180px)}
+      nav .wrap{height:64px;gap:12px}
+      .logo{font-size:17px;gap:8px;white-space:nowrap}
+      .logo-mark{width:30px;height:30px}
+      .nav-cta{padding:10px 13px;font-size:11px}
+      section{padding:68px 0}
+      header{min-height:auto}
+      header::after{width:420px;height:420px;right:-260px;top:120px}
+      .hero{gap:38px;padding:68px 0 60px}
+      h1{font-size:clamp(43px,14vw,58px);margin:20px 0 24px}
+      .lead{font-size:16px}
+      .hero-actions{display:grid}
+      .hero .btn{text-align:center}
+      .dashboard{width:100%;padding:15px;transform:none}
+      .dash-top{gap:10px;margin-bottom:16px;font-size:11px}
+      .status{font-size:9px}
+      .gauge{height:220px}
+      .rings{width:198px;height:198px}
+      .rings::before{width:154px;height:154px}
+      .gauge-value strong{font-size:58px}
+      .mini-grid{gap:5px}
+      .mini{padding:9px 7px}
+      .mini b{font-size:13px}
+      .mini span{font-size:8px}
+      .principles,.session-cards,.form-grid{grid-template-columns:1fr}
+      .principle{min-height:auto}
+      .principle svg{margin:24px 0 8px}
+      .section-head{display:block;margin-bottom:34px}
+      .section-head h2{font-size:clamp(36px,12vw,48px)}
+      .section-head p{margin-top:18px}
+      .calculator,.timer-wrap{padding:18px;border-radius:22px}
+      .field input,.field select{font-size:16px}
+      .tabs{overflow-x:auto;padding-bottom:2px}
+      .tab{flex:0 0 auto;min-height:44px}
+      .zone{grid-template-columns:46px minmax(0,1fr);gap:8px 12px;padding:14px 4px}
+      .zone span:nth-child(3),.zone span:nth-child(4){grid-column:2}
+      .sport-switch{display:grid;grid-template-columns:1fr 1fr}
+      .sport-switch button{min-width:0;padding:14px 8px}
+      .controls,.log-card,.chart-card,.quiz-card,.session{padding:22px}
+      .day{grid-template-columns:46px 8px minmax(0,1fr);gap:10px;padding:15px 12px}
+      .duration{display:none}
+      .timer-circle{width:min(230px,100%);height:auto;aspect-ratio:1}
+      .timer-time{font-size:42px}
+      .timer-actions{gap:8px}
+      .timer-actions button{min-width:0;flex:1}
+      .timer-wrap h2{font-size:34px!important}
+      .preset{gap:10px;padding:13px 12px}
+      .preset > span:first-child{min-width:0}
+      .preset > span:last-child{flex:0 0 auto;font-size:12px}
+      .chart{gap:5px}
+      .warning{padding:18px}
+      .footer-grid{grid-template-columns:1fr}
+      .footer-bottom{display:block;margin-top:36px}
+      .footer-bottom span{display:block}
+      .footer-bottom span+span{margin-top:10px}
+      .toast{right:12px;bottom:12px;left:12px;text-align:center}
+      button,.btn,.nav-cta{min-height:44px}
+    }
+    @media(max-width:360px){
+      .nav-cta{font-size:0}
+      .nav-cta::after{content:"Plan →";font-size:11px}
+      .dash-top .status{max-width:110px;text-align:right}
+      .timer-wrap h2{font-size:30px!important}
+    }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
   </style>
 </head>
