@@ -135,11 +135,14 @@
     .advies p{margin:0;font-size:14px;color:#c4d5cf}
     .advies .route-badge{margin-bottom:10px}
     .checks{display:grid;gap:10px;margin-top:20px}
-    .check{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;background:#eef0e6;border-radius:12px;font-size:13.5px;cursor:pointer;font-family:var(--sans)}
+    .check{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;background:#eef0e6;border-radius:12px;font-size:13.5px;cursor:pointer;font-family:var(--sans);color:var(--ink)}
     .check input{accent-color:var(--leaf);margin-top:4px;flex:none}
     .meter{height:14px;border-radius:100px;background:var(--viz-grid);overflow:hidden;margin-top:18px}
     .meter i{display:block;height:100%;background:var(--viz-2);border-radius:100px;transition:width .3s}
     .meter-label{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px}
+    .dark .meter-label{color:#a9beb7}
+    .dark .chip{color:#cdddd6;border-color:#3c5a51}
+    .dark .chip.must{background:#0e1f1b;color:var(--gold);border-color:#0e1f1b}
     .normrows{display:grid;gap:10px;margin-top:24px}
     .normrow{display:grid;grid-template-columns:64px 1fr 210px;gap:14px;align-items:center}
     .normrow .yr{font-family:var(--mono);font-size:12px;color:var(--muted)}
@@ -523,7 +526,7 @@
         <p style="margin-top:12px">Sinds 1 januari 2025 is de aansprakelijkheid van personeelsleden zelf sterk ingeperkt (enkel zware fout, opzet of gewoonlijke lichte fout) — schade door toevallige fouten van je team landt dus bij de VZW. Nóg een reden om de polissen op orde te hebben. <a class="src" href="https://pro.katholiekonderwijs.vlaanderen/bestuurdersaansprakelijkheid/wie-is-aansprakelijk" target="_blank" rel="noopener">[KathOndVla pro]</a></p>
       </div>
       <div class="kaart">
-        <h4 style="display:flex;justify-content:space-between;gap:10px">Het bestuurdersschild <span class="chip" style="color:var(--leaf);border-color:var(--leaf)">zelftest</span></h4>
+        <h4 style="display:flex;justify-content:space-between;gap:10px">Het bestuurdersschild <span class="chip" style="color:var(--gold);border-color:var(--gold)">zelftest</span></h4>
         <p>Vrijwel elk reëel aansprakelijkheidsscenario begint bij een gemiste basisverplichting. Vink af wat geregeld is:</p>
         <div class="checks" id="schildChecks">
           <label class="check"><input type="checkbox"> <span>Statuten actueel, doel ruim geformuleerd, bestuursmandaten gepubliceerd</span></label>
