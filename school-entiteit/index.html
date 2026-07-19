@@ -74,6 +74,9 @@
     .field input:focus,.field select:focus{outline:2px solid var(--gold);border-color:var(--ink)}
     .field .hint{font-size:11px;color:var(--muted);margin-top:6px}
     .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 8px}
+    .tiles.cols2{grid-template-columns:repeat(2,1fr)}
+    .tiles.cols3{grid-template-columns:repeat(3,1fr)}
+    .form-grid.cols2{grid-template-columns:repeat(2,1fr)}
     .tile{background:#eef0e6;border-radius:16px;padding:18px}
     .tile b{display:block;font-size:clamp(19px,2vw,26px);letter-spacing:-.02em}
     .tile span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
@@ -177,9 +180,11 @@
       .section-head{flex-direction:column;align-items:flex-start}
     }
     @media(max-width:620px){
-      .principles,.cards3,.tiles,.form-grid,.flow{grid-template-columns:1fr}
+      .principles,.cards3,.tiles,.form-grid,.flow,.tiles.cols2,.tiles.cols3,.form-grid.cols2{grid-template-columns:1fr}
       .normrow{grid-template-columns:50px 1fr;grid-template-rows:auto auto}
       .normrow .normstatus{grid-column:2}
+      .normval{display:none}
+      table.data{display:block;overflow-x:auto}
       .step-body{padding-left:22px}
       .footer-grid{grid-template-columns:1fr}
       section{padding:64px 0}
@@ -454,7 +459,7 @@
           <div class="hint">Vernietigd door GwH 159/2025; gevolgen gehandhaafd tot 31/12/2026.</div>
         </div>
       </div>
-      <div class="tiles" style="grid-template-columns:repeat(3,1fr)">
+      <div class="tiles cols3">
         <div class="tile hero-tile"><span>Taks per jaar</span><b id="outTaks">—</b></div>
         <div class="tile"><span>Belastbare grondslag</span><b id="outGrondslag">—</b></div>
         <div class="tile"><span>Effectief tarief op vermogen</span><b id="outEffectief">—</b></div>
@@ -492,7 +497,7 @@
       <div class="eyebrow">Interactief</div>
       <h3 style="font-size:24px;margin:10px 0 6px">Het aansprakelijkheidsplafond van jullie VZW</h3>
       <p style="color:var(--muted);font-size:14px;max-width:780px;margin:0 0 20px">Het plafond hangt af van de gemiddelde omzet en het balanstotaal van de voorbije drie boekjaren. Voor een startende school-VZW zonder eigen personeelskosten blijven beide doorgaans bescheiden — en het plafond dus laag.</p>
-      <div class="form-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="form-grid cols2">
         <div class="field">
           <label for="inOmzet">Gemiddelde jaaromzet / ontvangsten (€, excl. btw)</label>
           <input id="inOmzet" type="number" min="0" max="100000000" step="10000" value="250000" inputmode="numeric">
@@ -504,7 +509,7 @@
           <div class="hint">Met een eigen schoolgebouw op de balans stijgt dit — en dus ook het plafond — snel.</div>
         </div>
       </div>
-      <div class="tiles" style="grid-template-columns:repeat(2,1fr)">
+      <div class="tiles cols2">
         <div class="tile hero-tile"><span>Wettelijk plafond (alle bestuurders samen, per feit)</span><b id="outCap">—</b></div>
         <div class="tile"><span>Richtsnoer verzekerd kapitaal D&amp;O</span><b id="outDeO">—</b></div>
       </div>
@@ -837,7 +842,7 @@
     </div>
     <div class="footer-bottom">
       <span>Onder Druk — educatieve demo's · school-entiteit</span>
-      <span>Deze pagina is gegenereerd met AI (Claude). Controleer cijfers vóór je beslist.</span>
+      <span>Deze pagina is gegenereerd met AI research. Controleer cijfers vóór je beslist.</span>
     </div>
   </div>
 </footer>
@@ -948,8 +953,8 @@ if (typeof document !== "undefined") {
       const barW = (r.verwacht / schaal * 100).toFixed(1);
       const tickX = (r.norm / schaal * 100).toFixed(1);
       const status = r.haalt
-        ? '<span class="normstatus ok">✓ gehaald (norm ' + r.norm + ")</span>"
-        : '<span class="normstatus nok">✗ ' + (r.norm - r.verwacht) + " te weinig (norm " + r.norm + ")</span>";
+        ? '<span class="normstatus ok">✓ ' + r.verwacht + " lln ≥ norm " + r.norm + "</span>"
+        : '<span class="normstatus nok">✗ ' + r.verwacht + " lln, " + (r.norm - r.verwacht) + " onder norm " + r.norm + "</span>";
       return '<div class="normrow"><span class="yr">Jaar ' + r.jaar + '</span>' +
         '<div class="normtrack"><div class="normbar" style="width:' + barW + '%"></div>' +
         '<div class="normtick" style="left:' + tickX + '%"></div>' +
