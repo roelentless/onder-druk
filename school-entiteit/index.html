@@ -1,0 +1,999 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#152b26">
+  <meta name="description" content="Interactieve wegwijzer voor oudergroepen die in Vlaanderen een school willen starten, overnemen of redden: de VZW als schoolbestuur, bestuurdersrisico's, subsidies, normen en stappenplan (stand juli 2026).">
+  <title>De School als VZW — wegwijzer voor schoolstichters in Vlaanderen</title>
+  <style>
+    :root{
+      --ink:#152b26;--ink-2:#1e3a33;--muted:#5b6d67;--paper:#f3f4ee;--card:#fdfefa;
+      --gold:#e9a13b;--leaf:#2e7d64;--rose:#c94f63;--line:#dcded2;
+      --shadow:0 20px 60px rgba(21,43,38,.10);--radius:22px;
+      --sans:"Avenir Next","Segoe UI",Arial,sans-serif;
+      --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+      /* dataviz rollen — gevalideerd op --card (validate_palette.js: PASS; groen/amber vragen direct labels) */
+      --viz-1:#2a78d6;--viz-2:#1baf7a;--viz-3:#eda100;--viz-4:#4a3aa7;
+      --viz-grid:#e3e5d9;--viz-muted:#87938e;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    a{color:inherit}
+    .wrap{width:min(1180px,calc(100% - 40px));margin:auto}
+    .mono,.eyebrow,.tag,button,label,input,select,.step-num,.chip{font-family:var(--mono)}
+    nav{position:sticky;top:0;z-index:20;background:rgba(243,244,238,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(21,43,38,.1)}
+    nav .wrap{height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .logo{font-weight:800;font-size:18px;display:flex;gap:10px;align-items:center;text-decoration:none}
+    .logo-mark{width:33px;height:33px;border-radius:50%;background:var(--ink);display:grid;place-items:center;color:var(--gold);font-size:15px;flex:none}
+    .navlinks{display:flex;gap:20px;font-size:13px;font-weight:700}
+    .navlinks a{text-decoration:none}.navlinks a:hover{color:var(--leaf)}
+    .nav-cta,.btn{border:0;border-radius:100px;padding:12px 18px;background:var(--ink);color:white;font-weight:600;text-decoration:none;cursor:pointer;transition:.2s transform,.2s background;font-size:14px}
+    .btn:hover,.nav-cta:hover{transform:translateY(-2px);background:var(--leaf)}
+    .btn.gold{background:var(--gold);color:var(--ink)}
+    .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+    header{background:var(--ink);color:white;position:relative;overflow:hidden;display:flex;align-items:center}
+    header::after{content:"";position:absolute;width:650px;height:650px;border:1px solid rgba(233,161,59,.22);border-radius:50%;right:-160px;top:40px;box-shadow:0 0 0 90px rgba(233,161,59,.04),0 0 0 180px rgba(233,161,59,.025)}
+    .hero{position:relative;z-index:2;padding:96px 0 88px;display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center}
+    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:var(--leaf);font-weight:500}
+    .eyebrow.light{color:var(--gold)}
+    h1{font-size:clamp(44px,6vw,80px);line-height:.98;letter-spacing:-.045em;margin:24px 0 26px;max-width:720px}
+    h1 em{color:var(--gold);font-style:normal}
+    .lead{font-size:18px;color:#bccfc8;max-width:580px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+    .hero .btn{padding:16px 22px}
+    .hero .btn.ghost{border-color:#3c5a51;color:white}
+    .hero-card{background:var(--ink-2);border:1px solid #34544a;border-radius:28px;padding:28px;box-shadow:0 35px 90px rgba(0,0,0,.3);transform:rotate(1.5deg)}
+    .hero-card h3{margin:0 0 4px;font-size:16px}
+    .hero-card .sub{font-size:12px;color:#8fa8a0}
+    .hero-stat{margin:22px 0 6px}
+    .hero-stat strong{display:block;font-size:60px;line-height:1;letter-spacing:-.03em}
+    .hero-stat small{color:#8fa8a0}
+    .hero-minis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+    .hero-mini{background:var(--ink);border-radius:14px;padding:14px}
+    .hero-mini b{display:block;font-size:17px}
+    .hero-mini span{font-size:10px;color:#7e988f;text-transform:uppercase;letter-spacing:.05em}
+    section{padding:96px 0}
+    .section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:46px}
+    .section-head h2{font-size:clamp(34px,4.4vw,56px);line-height:1;letter-spacing:-.04em;margin:12px 0 0;max-width:780px}
+    .section-head p{max-width:420px;color:var(--muted);margin:0}
+    .dark{background:var(--ink);color:white}
+    .dark .section-head p{color:#9db4ac}
+    .principles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .principle{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;transition:.25s}
+    .principle:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+    .num{font-size:12px;color:var(--rose)}
+    .principle h3{font-size:19px;margin:16px 0 8px}
+    .principle p{font-size:14px;color:var(--muted);margin:0}
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:30px;padding:34px;box-shadow:var(--shadow)}
+    .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .field label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;color:var(--muted)}
+    .field input,.field select{width:100%;border:1px solid var(--line);border-radius:12px;background:#f7f8f1;padding:14px;color:var(--ink);font-size:14px}
+    .field input:focus,.field select:focus{outline:2px solid var(--gold);border-color:var(--ink)}
+    .field .hint{font-size:11px;color:var(--muted);margin-top:6px}
+    .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 8px}
+    .tile{background:#eef0e6;border-radius:16px;padding:18px}
+    .tile b{display:block;font-size:clamp(19px,2vw,26px);letter-spacing:-.02em}
+    .tile span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .tile.hero-tile{background:var(--ink);color:white}
+    .tile.hero-tile span{color:#8fa8a0}
+    .tile.good{background:#e7f3ea}
+    .tile.good b{color:#0c6b32}
+    .note{font-size:12.5px;color:var(--muted);padding:14px 18px;background:#eef0e6;border-radius:12px;margin-top:22px}
+    .warning{border-left:5px solid var(--rose);background:#fbeef0;padding:20px 22px;border-radius:0 14px 14px 0;margin-top:26px;font-size:14px}
+    .warning b{display:block;margin-bottom:4px}
+    .dark .warning{background:#3a2530;color:#f4dfe4}
+    .unsure{border-left:5px solid var(--gold);background:#fbf3e2;padding:16px 20px;border-radius:0 14px 14px 0;margin-top:22px;font-size:13.5px}
+    .unsure b{display:block;margin-bottom:3px}
+    .src{font-size:10.5px;font-family:var(--mono);color:var(--leaf);text-decoration:none;white-space:nowrap;border-bottom:1px dotted var(--leaf)}
+    .src:hover{color:var(--ink)}
+    .dark .src{color:#e9c884;border-color:#e9c884}
+    table.data{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px}
+    table.data th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:9px 8px;border-bottom:1px solid var(--line);font-weight:600}
+    table.data td{padding:10px 8px;border-bottom:1px solid #e7e9dd;vertical-align:top}
+    table.data td.n,table.data th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:13px}
+    table.data tr.total td{font-weight:700;border-top:2px solid var(--ink);border-bottom:0}
+    .steps{display:grid;gap:12px;max-width:880px}
+    .step{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+    .step summary{display:grid;grid-template-columns:52px 1fr auto;gap:16px;align-items:center;padding:18px 22px;cursor:pointer;list-style:none}
+    .step summary::-webkit-details-marker{display:none}
+    .step-num{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--gold);display:grid;place-items:center;font-size:14px;font-weight:700;flex:none}
+    .step summary strong{font-size:16.5px}
+    .step summary .when{font-size:11px;color:var(--muted);font-family:var(--mono);white-space:nowrap}
+    .step-body{padding:0 22px 22px 90px;font-size:14px;color:#3c4f49}
+    .step-body ul{margin:8px 0 0;padding-left:18px}
+    .step-body li{margin:5px 0}
+    .step[open]{border-color:var(--leaf)}
+    .step-body .docs{margin-top:14px;padding:13px 16px;background:#eef0e6;border-radius:10px;font-size:13px}
+    .chip{display:inline-block;font-size:11px;padding:4px 10px;border-radius:100px;border:1px solid var(--line);color:var(--muted);margin:2px 4px 2px 0}
+    .chip.must{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+    .chip.ok{background:#e7f3ea;color:#0c6b32;border-color:#bfdec8}
+    .chip.no{background:#fbeef0;color:#a03048;border-color:#eccdd4}
+    .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .cards2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .kaart{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+    .kaart h3{margin:0 0 8px;font-size:18px}
+    .kaart h4{margin:0 0 8px;font-size:16px}
+    .kaart p,.kaart li{font-size:13.5px;color:var(--muted)}
+    .kaart ul{margin:8px 0 0;padding-left:18px}
+    .kaart li{margin:4px 0}
+    .dark .kaart{background:var(--ink-2);border-color:#34544a}
+    .dark .kaart p,.dark .kaart li{color:#a9beb7}
+    .route-badge{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;padding:5px 12px;border-radius:100px;margin-bottom:12px}
+    .route-a{background:#e2ecf9;color:#1c4f8f}
+    .route-b{background:#e2f4ec;color:#0d6b4a}
+    .route-c{background:#f3e9f7;color:#6b3a8a}
+    .radio-set{display:grid;gap:8px;margin-top:10px}
+    .radio-set label{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:#eef0e6;border:1px solid transparent;border-radius:12px;font-size:13.5px;cursor:pointer;color:var(--ink);font-family:var(--sans)}
+    .radio-set label:has(input:checked){border-color:var(--leaf);background:#e7f3ea}
+    .radio-set input{accent-color:var(--leaf);margin-top:3px;flex:none}
+    .advies{margin-top:26px;padding:24px;border-radius:18px;background:var(--ink);color:white;display:none}
+    .advies.show{display:block}
+    .advies h3{margin:0 0 6px}
+    .advies p{margin:0;font-size:14px;color:#c4d5cf}
+    .advies .route-badge{margin-bottom:10px}
+    .checks{display:grid;gap:10px;margin-top:20px}
+    .check{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;background:#eef0e6;border-radius:12px;font-size:13.5px;cursor:pointer;font-family:var(--sans)}
+    .check input{accent-color:var(--leaf);margin-top:4px;flex:none}
+    .meter{height:14px;border-radius:100px;background:var(--viz-grid);overflow:hidden;margin-top:18px}
+    .meter i{display:block;height:100%;background:var(--viz-2);border-radius:100px;transition:width .3s}
+    .meter-label{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px}
+    .normrows{display:grid;gap:10px;margin-top:24px}
+    .normrow{display:grid;grid-template-columns:64px 1fr 210px;gap:14px;align-items:center}
+    .normrow .yr{font-family:var(--mono);font-size:12px;color:var(--muted)}
+    .normtrack{position:relative;height:26px;background:var(--viz-grid);border-radius:6px}
+    .normbar{position:absolute;left:0;top:0;height:100%;background:var(--viz-1);border-radius:4px 6px 6px 4px;min-width:2px;transition:width .3s}
+    .normtick{position:absolute;top:-5px;bottom:-5px;width:3px;background:var(--ink);border-radius:2px}
+    .normval{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11.5px;color:var(--ink);padding-left:8px;white-space:nowrap}
+    .normstatus{font-size:12.5px;font-family:var(--mono)}
+    .normstatus.ok{color:#0c6b32}
+    .normstatus.nok{color:#a03048}
+    .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px}
+    .flow .kaart{position:relative}
+    .flow-title{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--leaf);margin-bottom:10px}
+    .faq{display:grid;gap:10px;max-width:880px}
+    .faq details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:0 22px}
+    .faq summary{padding:18px 0;cursor:pointer;font-weight:700;font-size:15.5px;list-style:none;display:flex;justify-content:space-between;gap:14px}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary::after{content:"+";font-family:var(--mono);color:var(--leaf)}
+    .faq details[open] summary::after{content:"–"}
+    .faq .body{padding:0 0 20px;font-size:14px;color:#3c4f49}
+    footer{background:#0e1f1b;color:white;padding:70px 0 30px}
+    .footer-grid{display:grid;grid-template-columns:1.3fr .9fr .9fr;gap:50px}
+    .footer-grid p,.footer-grid a{color:#93aca4;font-size:13px}
+    .footer-grid a{display:block;margin:8px 0}
+    .footer-grid h4{margin:0 0 12px;font-size:14px}
+    .footer-bottom{border-top:1px solid #26433b;margin-top:50px;padding-top:25px;display:flex;justify-content:space-between;gap:20px;color:#6f8781;font-size:11px;flex-wrap:wrap}
+    @media(max-width:960px){
+      .hero{grid-template-columns:1fr;padding:70px 0 60px}
+      .navlinks{display:none}
+      .principles,.cards3,.tiles,.form-grid,.flow{grid-template-columns:1fr 1fr}
+      .cards2{grid-template-columns:1fr}
+      .section-head{flex-direction:column;align-items:flex-start}
+    }
+    @media(max-width:620px){
+      .principles,.cards3,.tiles,.form-grid,.flow{grid-template-columns:1fr}
+      .normrow{grid-template-columns:50px 1fr;grid-template-rows:auto auto}
+      .normrow .normstatus{grid-column:2}
+      .step-body{padding-left:22px}
+      .footer-grid{grid-template-columns:1fr}
+      section{padding:64px 0}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="logo-mark">✎</span> De School als VZW</a>
+    <div class="navlinks">
+      <a href="#routewijzer">Routewijzer</a>
+      <a href="#vzw">De VZW</a>
+      <a href="#risico">Bestuurdersrisico</a>
+      <a href="#geld">Geldstromen</a>
+      <a href="#stappen">Stappenplan</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="nav-cta" href="#routewijzer">Vind jullie route</a>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow light">Interactieve wegwijzer · Vlaanderen · stand juli 2026</div>
+      <h1>Achter elke vrije school staat een <em>VZW</em>.</h1>
+      <p class="lead">Een dorpsschool die sluit, een oudergroep die niet wil opgeven, een plan voor iets nieuws: in Vlaanderen begint dat allemaal bij dezelfde vraag — <strong>wie wordt het schoolbestuur?</strong> Deze gids legt uit hoe je die entiteit opzet, wat het kost, welke subsidies er zijn, en welke risico's je als bestuurder écht loopt.</p>
+      <div class="hero-actions">
+        <a class="btn gold" href="#routewijzer">Start de routewijzer</a>
+        <a class="btn ghost" href="#risico">Bekijk de bestuurdersrisico's</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Het misverstand dat alles verandert</h3>
+      <div class="sub">Wie betaalt de leerkrachten van een gesubsidieerde vrije school?</div>
+      <div class="hero-stat"><strong>€ 0</strong><small>loonkost gesubsidieerd personeel via jouw VZW — AGODI betaalt de wedden rechtstreeks aan de leerkrachten</small></div>
+      <div class="hero-minis">
+        <div class="hero-mini"><b>70%</b><span>AGION-subsidie schoolbouw</span></div>
+        <div class="hero-mini"><b>≥ 3</b><span>bestuurders in de VZW</span></div>
+        <div class="hero-mini"><b>± €177</b><span>oprichtingskost VZW (digitaal, 2026)</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="principes">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Eerst dit</div>
+        <h2>Vier zaken die alles bepalen</h2>
+      </div>
+      <p>Wie deze vier principes begrijpt, leest de rest van deze gids — en elk gesprek met AGODI, een koepel of een notaris — met de juiste bril.</p>
+    </div>
+    <div class="principles">
+      <div class="principle">
+        <div class="num">01</div>
+        <h3>De school is juridisch een VZW</h3>
+        <p>Een vrije school wordt georganiseerd door een <em>schoolbestuur</em> (de „inrichtende macht"): een rechtspersoon, in de praktijk vrijwel altijd een VZW. Die VZW is werkgever, eigenaar of huurder van het gebouw, en eindverantwoordelijke — niet de directeur, niet de ouders.</p>
+      </div>
+      <div class="principle">
+        <div class="num">02</div>
+        <h3>Overnemen ≠ nieuw beginnen</h3>
+        <p>Een bestaande erkende school kan van schoolbestuur wisselen mét behoud van erkenning en subsidies (besturenwissel). Een gloednieuwe school moet zes jaar lang oplopende leerlingennormen halen — zonder vangnet. Het verschil tussen die twee routes is enorm.</p>
+      </div>
+      <div class="principle">
+        <div class="num">03</div>
+        <h3>De grote kosten draagt Vlaanderen</h3>
+        <p>Wedden van gesubsidieerd personeel betaalt AGODI rechtstreeks; werkingsmiddelen komen per leerling; schoolbouw wordt tot 70% gesubsidieerd. De VZW draagt de rest: het gebouwaandeel, de voorfinanciering van het eerste jaar en alles wat je extra wil.</p>
+      </div>
+      <div class="principle">
+        <div class="num">04</div>
+        <h3>Bestuurdersrisico is beheersbaar</h3>
+        <p>Bestuurders zijn aansprakelijk voor échte bestuursfouten — onbezoldigd of niet. Maar de wet plafonneert de aansprakelijkheid, de sector verzekert ze standaard, en vrijwel alle reële risico's zijn af te dekken met discipline: verzekeringen, jaarrekening, UBO, notulen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="routewijzer" class="dark">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow light">Interactief</div>
+        <h2>Welke route past bij jullie situatie?</h2>
+      </div>
+      <p>Vier vragen. Het advies hieronder verwijst naar de routes die verderop volledig worden uitgewerkt.</p>
+    </div>
+    <div class="panel" style="color:var(--ink)">
+      <div class="cards2">
+        <div>
+          <div class="field"><label>1 · Is er een bestaande erkende school die sluit of dreigt te sluiten?</label></div>
+          <div class="radio-set" id="rwQ1">
+            <label><input type="radio" name="rwQ1" value="ja"> <span>Ja — er is (of was tot voor kort) een erkende school die we willen voortzetten</span></label>
+            <label><input type="radio" name="rwQ1" value="nee" checked> <span>Nee — we beginnen van een wit blad</span></label>
+          </div>
+        </div>
+        <div>
+          <div class="field"><label>2 · Werkt het huidige schoolbestuur mee aan een overdracht?</label></div>
+          <div class="radio-set" id="rwQ2">
+            <label><input type="radio" name="rwQ2" value="ja"> <span>Ja, of het gesprek is mogelijk</span></label>
+            <label><input type="radio" name="rwQ2" value="nee"> <span>Nee, of de school is al opgeheven</span></label>
+            <label><input type="radio" name="rwQ2" value="nvt" checked> <span>Niet van toepassing / weten we nog niet</span></label>
+          </div>
+        </div>
+        <div>
+          <div class="field"><label>3 · Hoeveel leerlingen verwacht je realistisch op 1 oktober van het startjaar?</label></div>
+          <div class="radio-set" id="rwQ3">
+            <label><input type="radio" name="rwQ3" value="laag"> <span>Minder dan 25</span></label>
+            <label><input type="radio" name="rwQ3" value="mid" checked> <span>25 à 50</span></label>
+            <label><input type="radio" name="rwQ3" value="hoog"> <span>Meer dan 50</span></label>
+          </div>
+        </div>
+        <div>
+          <div class="field"><label>4 · Wil je erkenning en subsidies, of maximale vrijheid?</label></div>
+          <div class="radio-set" id="rwQ4">
+            <label><input type="radio" name="rwQ4" value="subsidie" checked> <span>Erkend en gesubsidieerd — gratis onderwijs, wedden en werkingsmiddelen van de overheid, mét eindtermen en inspectie</span></label>
+            <label><input type="radio" name="rwQ4" value="vrij"> <span>Volledig eigen koers, ook zonder subsidie — ouders financieren alles zelf</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="advies show" id="rwAdvies"></div>
+      <div class="note">Deze routewijzer is een denkkader, geen juridisch advies. De routes sluiten elkaar niet uit: veel initiatieven verkennen route A en B parallel, en kiezen pas na het gesprek met het zittende bestuur en de koepel.</div>
+    </div>
+  </div>
+</section>
+
+<section id="routes">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">De drie routes</div>
+        <h2>Overnemen, nieuw starten, of los van subsidie</h2>
+      </div>
+      <p>Zelfde droom, drie totaal verschillende juridische werkelijkheden. De route bepaalt je tijdlijn, je risico en je financieringsmodel.</p>
+    </div>
+    <div class="cards3">
+      <div class="kaart">
+        <span class="route-badge route-a">ROUTE A — OVERNAME</span>
+        <h3>Besturenwissel van een bestaande school</h3>
+        <p>Een erkende school is niet gebonden aan haar huidige bestuur: bij een wissel van schoolbestuur <strong>behoudt de school haar erkenning en subsidies</strong>, zolang aan alle erkenningsvoorwaarden voldaan blijft. De wissel wordt gemeld aan het schoolbeheerteam van AGODI met een meldingsformulier. <a class="src" href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=9284" target="_blank" rel="noopener">[BaO/97/3]</a></p>
+        <ul>
+          <li><strong>Snelste route naar een gesubsidieerde school</strong> — leerlingen, personeel en erkenning lopen door.</li>
+          <li>Vereist medewerking van het zittende bestuur (algemene vergadering van beide VZW's beslist). Bij een katholieke school beslist ook de <strong>DPCC</strong> van het bisdom mee over overdrachten. <a class="src" href="https://www.vcov.be/ouderinfotheek/vcov-infomateriaal/dpcc-planning-en-co%C3%B6rdinatie-van-het-katholiek-onderwijsaanbod" target="_blank" rel="noopener">[VCOV]</a></li>
+          <li>Gebouwen met AGION-subsidie kunnen mee overgedragen worden; dat kan in bepaalde gevallen zonder terugvordering van subsidies, maar heeft gevolgen voor leningen en eigendomsrechten. <a class="src" href="https://www.agion.be/overdracht" target="_blank" rel="noopener">[AGION]</a></li>
+          <li>Vast benoemd personeel is beschermd (reaffectatieregels); een overnemend bestuur mag opgebouwde anciënniteit meenemen. <a class="src" href="https://www.hetacv.be/je-rechten/werken-in-het-onderwijs/werken-in-het-gesubsidieerd-basisonderwijs/rechten-en-plichten/terbeschikkingstelling-wegens-ontstentenis-van-betrekking-(tbsob)" target="_blank" rel="noopener">[ACV]</a></li>
+          <li>De overgenomen school blijft wél onderworpen aan de <strong>rationalisatienormen</strong>: te weinig leerlingen op de teldag betekent op termijn alsnog verlies van subsidie (met maximaal twee „genadejaren" als buffer). <a class="src" href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=9304" target="_blank" rel="noopener">[BaO/97/10]</a></li>
+        </ul>
+      </div>
+      <div class="kaart">
+        <span class="route-badge route-b">ROUTE B — NIEUWE SCHOOL</span>
+        <h3>Programmatie: een school van nul</h3>
+        <p>Een nieuwe vrije basisschool vraagt vóór de start erkenning én subsidiëring aan bij AGODI. De onderwijsinspectie onderzoekt de school vóór de opening (voorlopige erkenning); de definitieve erkenning volgt uiterlijk op 31 maart van het eerste schooljaar. <a class="src" href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=9284" target="_blank" rel="noopener">[BaO/97/3]</a></p>
+        <ul>
+          <li>Sinds 2003 programmeer je in het gewoon basisonderwijs enkel nog een volledige <strong>basisschool</strong> (kleuter + lager), eventueel geleidelijk uitgebouwd. <a class="src" href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=9304" target="_blank" rel="noopener">[BaO/97/10]</a></li>
+          <li><strong>Afstandsvoorwaarde:</strong> voldoende ver van elke school van dezelfde groep — 3 km (gemeente ≤ 500 inw/km²), 2 km (501–1.500) of 250 m (&gt; 1.500), gemeten langs de rijbaan. <a class="src" href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=9304" target="_blank" rel="noopener">[BaO/97/10]</a></li>
+          <li><strong>Zes jaar oplopende leerlingennormen</strong>, geteld op de eerste schooldag van oktober — zie de normen-checker hieronder. Geen enkele afwijking mogelijk, en tijdens die zes jaar géén genadejaren.</li>
+          <li>Erkenning zonder normen = school zonder subsidie: dat mag, maar dan betaalt de VZW alles zelf.</li>
+        </ul>
+      </div>
+      <div class="kaart">
+        <span class="route-badge route-c">ROUTE C — ZONDER ERKENNING</span>
+        <h3>Privéschool onder het huisonderwijsregime</h3>
+        <p>Een niet-erkende privéschool (zoals de Vlaamse Sudbury-scholen) valt juridisch onder <strong>collectief huisonderwijs</strong>: toegelaten — leerplicht is geen schoolplicht — maar zonder subsidie en zonder het recht om erkende getuigschriften uit te reiken. <a class="src" href="https://www.sudbury.be/veel-gestelde-vragen" target="_blank" rel="noopener">[Sudbury]</a></p>
+        <ul>
+          <li>Ouders leggen een verklaring van huisonderwijs af bij AGODI en aanvaarden daarmee controle door de onderwijsinspectie; na twee negatieve controles moet het kind naar een erkende school. <a class="src" href="https://vhov.be/wat-is-huisonderwijs/" target="_blank" rel="noopener">[VHOV]</a></li>
+          <li>Getuigschrift basisonderwijs en diploma's haalt de leerling via de <strong>Examencommissie</strong>. <a class="src" href="https://www.examencommissie.be/" target="_blank" rel="noopener">[Examencommissie]</a></li>
+          <li>Alle kosten — gebouw, personeel, werking — komen bij de ouders terecht; er is geen maximumfactuur, maar ook geen schooltoeslag.</li>
+          <li>Realistisch als bewuste pedagogische keuze, zelden als noodoplossing voor een sluitende dorpsschool: het businessmodel steunt volledig op ouderbijdragen.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:46px" id="normen">
+      <div class="eyebrow">Interactief · route B</div>
+      <h3 style="font-size:24px;margin:10px 0 6px">Haal je de programmatienormen?</h3>
+      <p style="color:var(--muted);font-size:14px;max-width:760px;margin:0 0 20px">Een nieuwe school wordt pas gefinancierd of gesubsidieerd als ze op de teldag (eerste schooldag van oktober) genoeg <em>regelmatige</em> leerlingen telt — zes jaar lang, met oplopende drempels. De categorie hangt af van de bevolkingsdichtheid van de gemeente. <a class="src" href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=9304" target="_blank" rel="noopener">[BaO/97/10, §5.2 — normen dubbel geverifieerd]</a></p>
+      <div class="form-grid">
+        <div class="field">
+          <label for="inCategorie">Bevolkingsdichtheid van de gemeente</label>
+          <select id="inCategorie">
+            <option value="A">Minder dan 75 inw/km² — dunbevolkt platteland</option>
+            <option value="B" selected>75 tot 500 inw/km² — landelijk / kleinstedelijk</option>
+            <option value="C">Meer dan 500 inw/km² — (rand)stedelijk</option>
+          </select>
+          <div class="hint">Opzoeken: statistieken van je gemeente (Statbel / provincies.incijfers.be).</div>
+        </div>
+        <div class="field">
+          <label for="inStart">Leerlingen op de eerste teldag (jaar 1)</label>
+          <input id="inStart" type="number" min="0" max="500" step="1" value="45" inputmode="numeric">
+          <div class="hint">Enkel regelmatige leerlingen tellen mee.</div>
+        </div>
+        <div class="field">
+          <label for="inGroei">Verwachte groei per jaar (leerlingen)</label>
+          <input id="inGroei" type="number" min="-50" max="200" step="1" value="12" inputmode="numeric">
+          <div class="hint">Nieuwe instroom min vertrekkers, per schooljaar.</div>
+        </div>
+      </div>
+      <div class="normrows" id="normRows" role="img" aria-label="Verwachte leerlingen per bestaansjaar tegenover de programmatienorm"></div>
+      <div class="warning" id="normWarning" style="display:none"><b>⚠︎ In dit scenario val je onder de norm.</b><span id="normWarningText"></span></div>
+      <div class="note" id="normNote"></div>
+    </div>
+  </div>
+</section>
+
+<section id="vzw">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">De entiteit</div>
+        <h2>De VZW oprichten en gezond houden</h2>
+      </div>
+      <p>De VZW is geen formaliteit maar het fundament: zij draagt de contracten, het gebouw, het personeel en de aansprakelijkheid. Goed nieuws — oprichten is goedkoop en snel; de discipline zit in het jaarlijkse ritme.</p>
+    </div>
+    <div class="cards2">
+      <div class="kaart">
+        <h3>Oprichting: wat er echt nodig is</h3>
+        <ul>
+          <li><strong>Minstens 2 oprichters</strong> (leden) volstaan sinds het Wetboek van vennootschappen en verenigingen; het bestuursorgaan telt <strong>minstens 3 bestuurders</strong> (2 mag zolang de VZW maar 2 leden heeft). <a class="src" href="https://vi.be/advies/een-vzw-oprichten-stappenplan" target="_blank" rel="noopener">[VI.BE]</a> <a class="src" href="https://www.ksa.be/financi%C3%ABn/vzw-oprichten" target="_blank" rel="noopener">[KSA]</a></li>
+          <li><strong>Onderhandse akte volstaat</strong> — een notaris is pas verplicht bij inbreng van onroerend goed (reken dan op ± €1.000 ereloon). Voor een schoolbestuur dat een gebouw huurt, is geen notaris nodig.</li>
+          <li>Statuten met een <strong>belangeloos doel</strong>, ruim genoeg geformuleerd (onderwijs, opvoeding, vorming, flankerende activiteiten). Koepels zoals FOPEM en Katholiek Onderwijs Vlaanderen bieden modelstatuten voor schoolbesturen.</li>
+          <li>Neerlegging bij de griffie van de ondernemingsrechtbank (digitaal via e-griffie), publicatie in het Belgisch Staatsblad, automatische inschrijving in de KBO → ondernemingsnummer.</li>
+          <li><strong>UBO-register:</strong> binnen 30 dagen na oprichting registreren, daarna <strong>elk jaar</strong> bevestigen — ook zonder wijziging. Vergeten is de klassieke beginnersfout: boetes van €250 tot €50.000, persoonlijk voor de bestuurder. <a class="src" href="https://www.jubel.be/ubo-register-verplichte-jaarlijkse-bevestiging/" target="_blank" rel="noopener">[Jubel]</a></li>
+        </ul>
+        <table class="data">
+          <thead><tr><th>Oprichtingskost (publicatie Staatsblad)</th><th class="n">Bedrag</th></tr></thead>
+          <tbody>
+            <tr><td>Digitale neerlegging via e-griffie (tarief 2026)</td><td class="n">€ 177,27</td></tr>
+            <tr><td>Neerlegging op papier (tarief 2026)</td><td class="n">€ 245,39</td></tr>
+            <tr><td colspan="2" style="font-size:12px;color:var(--muted)">Forfait incl. btw, jaarlijks geïndexeerd op 1 maart. <a class="src" href="https://vzw-oprichten.be/vzw-oprichten-kostprijs/" target="_blank" rel="noopener">[vzw-oprichten.be]</a> <a class="src" href="https://www.vlaamsesportfederatie.be/kennisbank/publicatiekosten-voor-een-vzw" target="_blank" rel="noopener">[VSF]</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="kaart">
+        <h3>Het jaarlijkse ritme (boekhouding &amp; neerlegging)</h3>
+        <p>De zwaarte van je verplichtingen hangt af van de grootte van de VZW (criteria verhoogd in 2024): <a class="src" href="https://www.cbn-cnc.be/nl/adviezen/gevolgen-verhoging-groottecriteria-voor-ivzws-en-stichtingen" target="_blank" rel="noopener">[CBN/CNC]</a></p>
+        <table class="data">
+          <thead><tr><th>Categorie</th><th>Drempels (max. 1 overschrijden)</th><th>Gevolg</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Vereenvoudigde boekhouding</strong></td><td>≤ 5 VTE personeel · ontvangsten ≤ €391.000 · bezittingen én schulden ≤ €1.562.000</td><td>Kasboekhouding; jaarrekening gratis neerleggen bij de griffie</td></tr>
+            <tr><td><strong>Kleine VZW</strong> (dubbel boekhouden)</td><td>≤ 50 VTE · omzet ≤ €11,25 mln · balans ≤ €6 mln</td><td>Dubbele boekhouding; neerlegging bij de Nationale Bank; verkort schema</td></tr>
+            <tr><td><strong>Grote VZW</strong></td><td>meer dan 1 „kleine" drempel overschreden</td><td>Volledig schema + verplichte commissaris (bedrijfsrevisor)</td></tr>
+          </tbody>
+        </table>
+        <div class="unsure"><b>Te verifiëren voor jouw dossier</b>Of gesubsidieerd personeel (juridisch in dienst van de VZW, maar rechtstreeks door AGODI betaald) meetelt voor deze personeelsdrempels, is niet eenduidig gedocumenteerd. Vraag het na bij je koepel of accountant vóór je de categorie bepaalt.</div>
+        <ul>
+          <li>Jaarrekening neerleggen binnen <strong>6 maanden</strong> na afsluiting van het boekjaar.</li>
+          <li>Algemene vergadering: jaarrekening en begroting goedkeuren, <strong>kwijting (decharge)</strong> aan bestuurders verlenen.</li>
+          <li>Aangifte rechtspersonenbelasting (meestal beperkt) en de patrimoniumtaks hieronder.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:46px" id="patrimonium">
+      <div class="eyebrow">Interactief · fiscaal</div>
+      <h3 style="font-size:24px;margin:10px 0 6px">De patrimoniumtaks, in euro's</h3>
+      <p style="color:var(--muted);font-size:14px;max-width:820px;margin:0 0 20px">VZW's betalen jaarlijks een taks op hun vermogen („taks tot vergoeding der successierechten"), hervormd in 2024: vrijstelling tot €50.000, daarboven progressief 0,15% / 0,30% / 0,45%. <strong>Gebouwen die uitsluitend voor onderwijs worden gebruikt, zijn volledig vrijgesteld</strong> — tel ze hieronder dus niet mee. Onderwijsinstellingen genieten bovendien een gunstregeling die de grondslag beperkt tot 37,7% — maar het Grondwettelijk Hof vernietigde die op 4 december 2025, met behoud van de gevolgen tot eind 2026. <a class="src" href="https://www.moore.be/nl/nieuws/patrimoniumtaks-voor-vzws-en-private-stichtingen-hervormd-in-2024" target="_blank" rel="noopener">[Moore]</a> <a class="src" href="https://www.tiberghien.com/nl/3868/forse-verhoging-van-de-patrimoniumtaks-gevolgen-voor-sport-cultuur-en-onderwijsinstellingen" target="_blank" rel="noopener">[Tiberghien]</a> <a class="src" href="https://nl.const-court.be/public/n/2025/2025-159n-info.pdf" target="_blank" rel="noopener">[GwH 159/2025]</a></p>
+      <div class="form-grid">
+        <div class="field">
+          <label for="inVermogen">Vermogen van de VZW (€) — zonder vrijgestelde onderwijsgebouwen</label>
+          <input id="inVermogen" type="number" min="0" max="50000000" step="10000" value="300000" inputmode="numeric">
+          <div class="hint">Roerend + overig onroerend bezit op 1 januari van het aanslagjaar.</div>
+        </div>
+        <div class="field">
+          <label for="inGunst">Gunstregeling onderwijs (grondslag × 37,7%)</label>
+          <select id="inGunst">
+            <option value="ja" selected>Toepassen — geldig t.e.m. aanslagjaar 2026</option>
+            <option value="nee">Niet toepassen — situatie vanaf 2027 (tenzij nieuwe wet)</option>
+          </select>
+          <div class="hint">Vernietigd door GwH 159/2025; gevolgen gehandhaafd tot 31/12/2026.</div>
+        </div>
+      </div>
+      <div class="tiles" style="grid-template-columns:repeat(3,1fr)">
+        <div class="tile hero-tile"><span>Taks per jaar</span><b id="outTaks">—</b></div>
+        <div class="tile"><span>Belastbare grondslag</span><b id="outGrondslag">—</b></div>
+        <div class="tile"><span>Effectief tarief op vermogen</span><b id="outEffectief">—</b></div>
+      </div>
+      <div class="note">Aangifte en betaling vóór 31 maart van het aanslagjaar bij het kantoor Rechtszekerheid. De schijfgrenzen (0,15% tot €250.000 · 0,30% tot €500.000 · 0,45% daarboven) volgen de wet van 28/12/2023; onder €50.000 hoeft geen aangifte. Raming — leg de exacte berekening voor aan je boekhouder.</div>
+    </div>
+  </div>
+</section>
+
+<section id="risico" class="dark">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow light">De kernvraag</div>
+        <h2>Wat riskeer je als bestuurder?</h2>
+      </div>
+      <p>Het eerlijke antwoord: minder dan de meeste ouders vrezen, maar meer dan „niets". De wet beschermt wie behoorlijk bestuurt — en is streng voor wie de basics verwaarloost.</p>
+    </div>
+    <div class="cards3">
+      <div class="kaart">
+        <h4>1 · De VZW vangt de klappen op</h4>
+        <p>Schuldeisers van de school verhalen zich op het vermogen van de VZW, niet op jouw huis of spaargeld. Dat is precies waarom niemand een school als feitelijke vereniging organiseert: daar zijn de leden wél hoofdelijk persoonlijk aansprakelijk. <a class="src" href="https://www.vsdc.be/nl/algemeen/112/feitelijke-vereniging-of-vzw" target="_blank" rel="noopener">[VSDC]</a></p>
+      </div>
+      <div class="kaart">
+        <h4>2 · Persoonlijk pas bij bestuursfouten</h4>
+        <p>Bestuurders zijn aansprakelijk voor beslissingen die een normaal voorzichtig bestuurder in dezelfde omstandigheden niet zou nemen (art. 2:56 WVV) — collegiaal bestuur betekent hoofdelijke aansprakelijkheid. <strong>Onbezoldigd of vrijwillig besturen geeft géén milder regime</strong>: een hardnekkige misvatting. <a class="src" href="https://vlaamspleitgenootschap.be/aansprakelijkheid-van-bestuurders/" target="_blank" rel="noopener">[Vlaams Pleitgenootschap]</a></p>
+      </div>
+      <div class="kaart">
+        <h4>3 · Met een wettelijk plafond</h4>
+        <p>Art. 2:57 WVV plafonneert de aansprakelijkheid voor álle bestuurders samen — bereken het plafond hieronder. Maar let op de uitzonderingen: bij zware fout, opzet, gewoonlijk voorkomende lichte fout en fiscale/RSZ-schulden geldt het plafond <em>niet</em>. <a class="src" href="https://www.accofisc.be/nieuws/bestuurdersaansprakelijkheid-in-het-wvv" target="_blank" rel="noopener">[Accofisc]</a></p>
+      </div>
+    </div>
+
+    <div class="panel" style="color:var(--ink);margin-top:40px">
+      <div class="eyebrow">Interactief</div>
+      <h3 style="font-size:24px;margin:10px 0 6px">Het aansprakelijkheidsplafond van jullie VZW</h3>
+      <p style="color:var(--muted);font-size:14px;max-width:780px;margin:0 0 20px">Het plafond hangt af van de gemiddelde omzet en het balanstotaal van de voorbije drie boekjaren. Voor een startende school-VZW zonder eigen personeelskosten blijven beide doorgaans bescheiden — en het plafond dus laag.</p>
+      <div class="form-grid" style="grid-template-columns:repeat(2,1fr)">
+        <div class="field">
+          <label for="inOmzet">Gemiddelde jaaromzet / ontvangsten (€, excl. btw)</label>
+          <input id="inOmzet" type="number" min="0" max="100000000" step="10000" value="250000" inputmode="numeric">
+          <div class="hint">Werkingsmiddelen + ouderbijdragen + giften; wedden die AGODI rechtstreeks betaalt lopen hier niet door.</div>
+        </div>
+        <div class="field">
+          <label for="inBalans">Gemiddeld balanstotaal (€)</label>
+          <input id="inBalans" type="number" min="0" max="100000000" step="10000" value="400000" inputmode="numeric">
+          <div class="hint">Met een eigen schoolgebouw op de balans stijgt dit — en dus ook het plafond — snel.</div>
+        </div>
+      </div>
+      <div class="tiles" style="grid-template-columns:repeat(2,1fr)">
+        <div class="tile hero-tile"><span>Wettelijk plafond (alle bestuurders samen, per feit)</span><b id="outCap">—</b></div>
+        <div class="tile"><span>Richtsnoer verzekerd kapitaal D&amp;O</span><b id="outDeO">—</b></div>
+      </div>
+      <div class="warning">
+        <b>Waar het plafond níét geldt — en waar het echte risico zit</b>
+        Zware fout, bedrieglijk opzet, lichte fouten die eerder gewoonlijk dan toevallig voorkomen, en de bijzondere aansprakelijkheid voor onbetaalde bedrijfsvoorheffing, btw en RSZ. Bij die laatste geldt zelfs een wettelijk foutvermoeden zodra drie maandaangiftes binnen één jaar onbetaald blijven (art. 51 WMGI) — en voor RSZ-schulden bij faillissement een objectieve aansprakelijkheid (art. XX.226 WER). Vertaling: <strong>hou belastingen en RSZ altijd betaald, wat er ook gebeurt.</strong> <a class="src" href="https://www.elfri.be/artikel/hoofdelijke-aansprakelijkheid-voor-fiscale-schulden" target="_blank" rel="noopener">[elfri.be]</a>
+      </div>
+    </div>
+
+    <div class="cards2" style="margin-top:40px">
+      <div class="kaart">
+        <h4>De verzekeringslaag (deels wettelijk verplicht)</h4>
+        <ul>
+          <li><span class="chip must">VERPLICHT</span> <strong>Schoolpolis</strong> — burgerlijke aansprakelijkheid + rechtsbijstand voor leerlingen, personeel, vrijwilligers én bestuurders (decreet 27/03/1991, art. 17bis). <a class="src" href="https://www.ovsg.be/onze-themas/schoolorganisatie/aansprakelijkheid/schoolpolis" target="_blank" rel="noopener">[OVSG]</a></li>
+          <li><span class="chip must">VERPLICHT</span> <strong>Objectieve aansprakelijkheid brand &amp; ontploffing</strong> — scholen staan expliciet op de lijst van publiek toegankelijke inrichtingen; dekking tot €15 mln lichamelijke en €0,75 mln materiële schade; attest vereist vóór opening, controle door de burgemeester. <a class="src" href="https://www.assuralia.be/nl/thema/werk-onderneming/verzekering-objectieve-ba-brand-of-ontploffing" target="_blank" rel="noopener">[Assuralia]</a></li>
+          <li><span class="chip must">VERPLICHT</span> <strong>Arbeidsongevallen</strong> — zodra de VZW zelf personeel in dienst heeft.</li>
+          <li><span class="chip">AANGERADEN</span> <strong>Bestuurdersaansprakelijkheid (D&amp;O)</strong> — afgesloten en betaald door de VZW zelf, dekt ook verdedigingskosten. De collectieve polis van Katholiek Onderwijs Vlaanderen verzekert standaard €2,5 mln per schadegeval / €5 mln per jaar. <a class="src" href="https://www.katholiekonderwijs.vlaanderen/nieuws/verzekeringen-burgerlijke-aansprakelijkheid-bestuurders" target="_blank" rel="noopener">[KathOndVla]</a></li>
+        </ul>
+        <p style="margin-top:12px">Sinds 1 januari 2025 is de aansprakelijkheid van personeelsleden zelf sterk ingeperkt (enkel zware fout, opzet of gewoonlijke lichte fout) — schade door toevallige fouten van je team landt dus bij de VZW. Nóg een reden om de polissen op orde te hebben. <a class="src" href="https://pro.katholiekonderwijs.vlaanderen/bestuurdersaansprakelijkheid/wie-is-aansprakelijk" target="_blank" rel="noopener">[KathOndVla pro]</a></p>
+      </div>
+      <div class="kaart">
+        <h4 style="display:flex;justify-content:space-between;gap:10px">Het bestuurdersschild <span class="chip" style="color:var(--leaf);border-color:var(--leaf)">zelftest</span></h4>
+        <p>Vrijwel elk reëel aansprakelijkheidsscenario begint bij een gemiste basisverplichting. Vink af wat geregeld is:</p>
+        <div class="checks" id="schildChecks">
+          <label class="check"><input type="checkbox"> <span>Statuten actueel, doel ruim geformuleerd, bestuursmandaten gepubliceerd</span></label>
+          <label class="check"><input type="checkbox"> <span>Jaarrekening elk jaar tijdig neergelegd (griffie of Nationale Bank)</span></label>
+          <label class="check"><input type="checkbox"> <span>UBO-register jaarlijks bevestigd</span></label>
+          <label class="check"><input type="checkbox"> <span>Patrimoniumtaks-aangifte (indien vermogen &gt; €50.000)</span></label>
+          <label class="check"><input type="checkbox"> <span>Schoolpolis (BA + rechtsbijstand) afgesloten</span></label>
+          <label class="check"><input type="checkbox"> <span>Attest objectieve aansprakelijkheid brand &amp; ontploffing</span></label>
+          <label class="check"><input type="checkbox"> <span>D&amp;O-polis voor bestuurders, betaald door de VZW</span></label>
+          <label class="check"><input type="checkbox"> <span>Bedrijfsvoorheffing, btw en RSZ: nooit als „krediet" gebruikt</span></label>
+          <label class="check"><input type="checkbox"> <span>Notulen van elke bestuursvergadering; belangenconflicten gemeld (dubbele petten ouder/bestuurder!)</span></label>
+          <label class="check"><input type="checkbox"> <span>Meerjarenbegroting met overbrugging van het eerste schooljaar</span></label>
+          <label class="check"><input type="checkbox"> <span>Jaarlijkse kwijting (decharge) door de algemene vergadering</span></label>
+        </div>
+        <div class="meter"><i id="schildMeter" style="width:0%"></i></div>
+        <div class="meter-label" id="schildLabel">0 van 11 afgedekt</div>
+      </div>
+    </div>
+    <div class="note" style="background:#1e3a33;color:#a9beb7">Nuchtere vaststelling uit de research voor deze gids: er werd géén gepubliceerde Belgische rechtspraak gevonden waarin een schoolbestuurder van een VZW persoonlijk werd veroordeeld voor een gewone bestuursfout. De reële incidenten in de non-profit draaien vrijwel altijd rond onbetaalde RSZ/fiscus, ontbrekende verzekeringen of doorgaan met een virtueel failliete werking. Dat is precies wat de checklist hierboven afdekt.</div>
+  </div>
+</section>
+
+<section id="geld">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Financiering</div>
+        <h2>Hoe het geld stroomt</h2>
+      </div>
+      <p>Drie stromen lopen grotendeels búiten je VZW om; drie zaken moet je zelf dragen. Wie dit onderscheid kent, schrijft een realistisch financieel plan.</p>
+    </div>
+    <div class="flow">
+      <div class="kaart">
+        <div class="flow-title">Stroom 1 · Wedden</div>
+        <h4>AGODI → rechtstreeks naar je leerkrachten</h4>
+        <p>De wedden van gesubsidieerd personeel worden maandelijks rechtstreeks door AGODI aan de personeelsleden betaald — ze raken je rekening nooit. De VZW blijft wél juridisch werkgever (aanwerving, benoeming, ontslag). Hoeveel personeel je krijgt, bepaalt het <strong>lestijdenpakket</strong>: berekend per niveau op basis van leerlingenaantal en SES-kenmerken, met een richtratio van maximaal 18,5 leerlingen per voltijdse leerkracht. In dunbevolkte gebieden telt een leerling zelfs voor 1,05. <a class="src" href="https://www.hetacv.be/je-rechten/werken-in-het-onderwijs/werken-in-het-gesubsidieerd-basisonderwijs/salaris-en-vergoedingen/salaris" target="_blank" rel="noopener">[ACV]</a> <a class="src" href="https://www.agodi.be/nieuwe-omkadering-basisonderwijs" target="_blank" rel="noopener">[AGODI]</a></p>
+        <p style="margin-top:10px"><strong>Uitzondering:</strong> personeel „ten laste van het werkingsbudget" betaalt AGODI ook rechtstreeks, maar vordert het integraal terug van de VZW. <a class="src" href="https://pro.katholiekonderwijs.vlaanderen/omkaderingsmiddelen-1/personeelsleden-ten-laste-van-het-werkingsbudget" target="_blank" rel="noopener">[KathOndVla]</a></p>
+      </div>
+      <div class="kaart">
+        <div class="flow-title">Stroom 2 · Werking</div>
+        <h4>Werkingsmiddelen → naar de VZW</h4>
+        <p>Jaarlijkse toelage per leerling (sinds 2019-2020 evenveel voor een kleuter als voor een leerling lager onderwijs; totale pot basisonderwijs ± €602 mln). Uitbetaald in <strong>twee schijven: voorschot in januari, saldo in juni</strong> — een startende school overbrugt dus minstens het eerste trimester zelf. <a class="src" href="https://www.vrt.be/vrtnws/nl/2019/04/24/kleuteronderwijs-krijgt-evenveel-werkingsmiddelen-als-basisonder/" target="_blank" rel="noopener">[VRT]</a> <a class="src" href="https://schoolportaal.be/organisatie-school-en-klas/werkingstoelagen/werkingstoelagen/" target="_blank" rel="noopener">[Schoolportaal]</a></p>
+        <div class="unsure" style="margin-top:14px"><b>Cijfer met voorbehoud</b>Een actueel officieel „bedrag per leerling" bestaat niet als los cijfer: de verdeling loopt via school- en leerlingenkenmerken. De vaak geciteerde vuistregel van ± €665 per leerling per jaar dateert van ± 2012 — gebruik ze enkel als grootteorde en reken je dossier door met AGODI of je koepel.</div>
+      </div>
+      <div class="kaart">
+        <div class="flow-title">Stroom 3 · Gebouwen</div>
+        <h4>AGION → 70% van je infrastructuur</h4>
+        <p>Voor het vrij gesubsidieerd basisonderwijs subsidieert AGION <strong>70% van de subsidiabele kostprijs</strong> van bouwen, verbouwen of kopen — én 70% van de huur via de huursubsidie. Voor de resterende 30% kan de VZW lenen met gewestwaarborg. <a class="src" href="https://www.agion.be/hoeveel-bedragen-de-subsidies" target="_blank" rel="noopener">[AGION]</a></p>
+        <ul>
+          <li><strong>Keerzijde:</strong> reguliere dossiers passeren een chronologische wachtlijst die jaren duurt. <a class="src" href="https://www.agion.be/subsidiering-0" target="_blank" rel="noopener">[AGION]</a></li>
+          <li>Alternatief: DBFM-programma's (zoals „Scholen van Vlaanderen") met een beschikbaarheidsvergoeding over 30 jaar, betoelaagd aan 81,5% voor het basisonderwijs. <a class="src" href="https://www.agion.be/dbfm-concept" target="_blank" rel="noopener">[AGION DBFM]</a></li>
+          <li>Bij overname van een bestaand schoolgebouw: aankoop is subsidieerbaar en kan in bepaalde gevallen vóór de wachtlijstchronologie gaan. <a class="src" href="https://www.agion.be/procedure-aankoop-en-werken-na-aankoop" target="_blank" rel="noopener">[AGION aankoop]</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cards2" style="margin-top:40px">
+      <div class="kaart">
+        <h4>Wat je van ouders mag vragen: de maximumfactuur</h4>
+        <p>Inschrijven is gratis en materiaal dat nodig is voor de eindtermen moet de school zelf voorzien (kosteloosheidsbeginsel). Daarbovenop gelden plafonds per schooljaar 2025-2026: <a class="src" href="https://www.vcov.be/ouderinfotheek/vcov-infomateriaal/nieuw2526" target="_blank" rel="noopener">[VCOV]</a></p>
+        <table class="data">
+          <thead><tr><th>Bijdrage</th><th class="n">Kleuter</th><th class="n">Lager</th></tr></thead>
+          <tbody>
+            <tr><td>Scherpe maximumfactuur (uitstappen, zwemmen, toneel — per jaar)</td><td class="n">€ 55</td><td class="n">€ 110</td></tr>
+            <tr><td>Minder scherpe maximumfactuur (meerdaagse klassen — hele lagere school)</td><td class="n">€ 0</td><td class="n">€ 550</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px">Buiten de maximumfactuur mag je wél kostendekkend aanrekenen: opvang, middagtoezicht, maaltijden, drank en de schoolbus. Voor een oudergroep die „iets extra's" wil: dat extra moet uit deze marges, giften of vrijwilligerswerk komen — niet uit hogere schoolfacturen.</p>
+      </div>
+      <div class="kaart">
+        <h4>Extra geldbronnen — wat realistisch is</h4>
+        <ul>
+          <li><strong>Giften:</strong> de gever krijgt 30% belastingvermindering (verlaagd van 45%, vanaf inkomstenjaar 2025; minimum €40/jaar) — maar een gewone school-VZW mag zelf géén fiscale attesten uitreiken. De standaardoplossing is een projectrekening bij de <strong>Koning Boudewijnstichting</strong>, die de attesten verzorgt. <a class="src" href="https://pro.katholiekonderwijs.vlaanderen/financieringsmethoden/giften-en-schenkingen" target="_blank" rel="noopener">[KathOndVla]</a></li>
+          <li><strong>Gemeentelijke steun</strong> aan een vrije school kan (de Schoolpactwet waarborgt subsidiëring als recht; het grondwettelijk neutraliteitsvereiste richt zich op het officieel onderwijs) — maar toets een concreet gemeentereglement altijd juridisch af. <a class="src" href="https://nl.wikipedia.org/wiki/Schoolpact" target="_blank" rel="noopener">[Schoolpact]</a></li>
+          <li><strong>Crowdfunding, sponsoring en ouderacties:</strong> vrij besteedbaar, maar structureel onvoorspelbaar — begroot ze als bonus, nooit als fundament.</li>
+          <li><strong>Vergeet de schooltoeslag niet</strong> voor je ouders: die loopt via het Groeipakket en kost de school niets.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stappen">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Het traject</div>
+        <h2>Van oudergroep tot schoolpoort: 9 stappen</h2>
+      </div>
+      <p>Reken op minstens anderhalf tot twee jaar. De maanden zijn indicatief, geteld naar een opening op 1 september („M0").</p>
+    </div>
+    <div class="steps">
+      <details class="step" open>
+        <summary><span class="step-num">1</span><strong>Vorm de kerngroep en schrijf het pedagogisch project</strong><span class="when">M-24 → M-18</span></summary>
+        <div class="step-body">Alles begint bij een stabiele groep trekkers en een uitgeschreven visie op leren en opvoeden: dat document stuurt elk later gesprek — met AGODI, de inspectie, een koepel, de gemeente en toekomstige ouders. De koepels van methodescholen waarschuwen unaniem: dit vraagt mensen die zich <em>jaren</em> willen engageren, niet één verontwaardigde zomer.
+          <div class="docs">Tip: bezoek scholen die je bewondert. Vrijwel alle Vlaamse methodescholen zijn ooit precies zo begonnen — door ouders en leerkrachten, van De Appeltuin (Leuven, 1979) tot Villa Zonnebloem (Mechelen, 1998). <a class="src" href="https://www.vrt.be/vrtnws/nl/2025/02/21/freinetonderwijs-vlaanderen-appeltuin-leuven/" target="_blank" rel="noopener">[VRT]</a></div>
+        </div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">2</span><strong>Kies de route: overname of nieuwe school</strong><span class="when">M-24 → M-16</span></summary>
+        <div class="step-body">Praat éérst met het zittende schoolbestuur als er een school sluit (route A) en parallel met een koepel over programmatie (route B). Bij een katholieke school hoort ook de DPCC van het bisdom vroeg in dat gesprek. De routewijzer bovenaan helpt de opties ordenen.</div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">3</span><strong>Richt de VZW op</strong><span class="when">M-18</span></summary>
+        <div class="step-body">Minstens twee oprichters, drie bestuurders, modelstatuten van een koepel als vertrekpunt, neerlegging via e-griffie (± €177), UBO binnen 30 dagen. Vanaf nu bestaat het „schoolbestuur" dat alle aanvragen kan ondertekenen.</div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">4</span><strong>Regel het gebouw</strong><span class="when">M-18 → M-10</span></summary>
+        <div class="step-body">Het gebouw is in de praktijk hét struikelblok: het moet voldoen aan bewoonbaarheid, veiligheid en hygiëne (inspectie!), bij een nieuwe school aan de afstandsvoorwaarde, en het moet betaalbaar zijn vóór er ook maar één euro subsidie binnenkomt. Denk aan huur (70% huursubsidie mogelijk), overname van het bestaande schoolgebouw, of gemeentelijk patrimonium.</div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">5</span><strong>Schrijf het financieel plan</strong><span class="when">M-16 → M-12</span></summary>
+        <div class="step-body">Kernvraag: hoe overbrug je de periode tot de eerste werkingsmiddelen (voorschot pas in januari van het eerste schooljaar)? Begroot: gebouw, inrichting en didactisch materiaal (kosteloosheidsbeginsel!), verzekeringen, eventueel eigen personeel. Zet giften en acties als bonus in de marge, niet in het fundament.</div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">6</span><strong>Dien de aanvraag in bij AGODI</strong><span class="when">M-13</span></summary>
+        <div class="step-body">Nieuwe school: aanvraag erkenning + subsidiëring bij het schoolbeheerteam Basisonderwijs, klassiek <strong>vóór 1 april</strong> van het voorafgaande schooljaar. Besturenwissel: melding met het formulier bij dezelfde dienst.
+          <div class="docs">⚠︎ De indieningsdata zitten in een lopende hervorming van de programmatieregels (wijzigingen aangekondigd vanaf 2025-2026). Check altijd de actuele omzendbrief BaO/97/3 en BaO/97/10 of vraag je koepel. <a class="src" href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=9284" target="_blank" rel="noopener">[BaO/97/3]</a></div>
+        </div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">7</span><strong>Doorsta het inspectieonderzoek, werf je team</strong><span class="when">M-6 → M0</span></summary>
+        <div class="step-body">De onderwijsinspectie onderzoekt de voorwaarden voor de voorlopige erkenning (gebouw, structuur, bestuur). Intussen: samenwerkingscontract met een CLB (verplicht), aansluiting scholengemeenschap overwegen, verzekeringen afsluiten (schoolpolis, objectieve BA brand — attest vóór opening), leerplan kiezen dat de eindtermen dekt, team samenstellen — hou rekening met het lerarentekort.</div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">8</span><strong>Open de school — en haal de teldag</strong><span class="when">M0 → M+1</span></summary>
+        <div class="step-body">1 september: de deuren open. Eerste schooldag van oktober: de teldag die bepaalt of je dat jaar gefinancierd wordt. Voor een nieuwe school is dit zes jaar lang het spannendste moment van het jaar — zonder genadejaren.</div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">9</span><strong>Veranker het bestuur voor de lange termijn</strong><span class="when">jaar 1 en verder</span></summary>
+        <div class="step-body">Definitieve erkenning volgt uiterlijk 31 maart van het eerste schooljaar. Daarna telt het ritme: jaarrekening, UBO, kwijting, verzekeringen — en bestuursvernieuwing. Plan de opvolging van bestuurders expliciet: ouder-bestuurders vertrekken gemiddeld samen met hun jongste kind, en vrijwilligersuitputting is de stilste doodsoorzaak van ouderinitiatieven.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="ecosysteem">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Je staat er niet alleen voor</div>
+        <h2>Koepels, CLB en het ecosysteem</h2>
+      </div>
+      <p>Wat moet, wat mag en wat helpt. Aansluiten bij een koepel is niet verplicht — maar bijna elk geslaagd ouderinitiatief deed het wél.</p>
+    </div>
+    <div class="cards2">
+      <div class="kaart">
+        <h4>Verplicht vs. vrij</h4>
+        <ul>
+          <li><span class="chip must">VERPLICHT</span> <strong>CLB-samenwerking</strong> — elke erkende school legt afspraken vast met een centrum voor leerlingenbegeleiding (decreet leerlingenbegeleiding 2018). <a class="src" href="https://pro.katholiekonderwijs.vlaanderen/samenwerking-rond-leerlingenbegeleiding/afspraken-tussen-school-gewoon-onderwijs-clb-pbd-en-lsc" target="_blank" rel="noopener">[KathOndVla]</a></li>
+          <li><span class="chip must">VERPLICHT</span> <strong>Leerplan dat eindtermen en ontwikkelingsdoelen dekt</strong> — eigen leerplannen kunnen, maar moeten alle door het parlement vastgelegde doelen bevatten.</li>
+          <li><span class="chip ok">VRIJ, STERK AANGERADEN</span> <strong>Koepel</strong> — modelstatuten, leerplannen, pedagogische begeleiding, juridische en verzekeringssteun.</li>
+          <li><span class="chip ok">VRIJ</span> <strong>Scholengemeenschap</strong> — extra omkaderingspunten („stimulus", vanaf 900 gewogen leerlingen samen) en gedeelde administratie; de facto moeilijk te vermijden voordeel. <a class="src" href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=13620" target="_blank" rel="noopener">[BaO/2005/11]</a></li>
+          <li><span class="chip no">ENKEL KATHOLIEK NET</span> <strong>DPCC</strong> — de diocesane planningscommissie beslist mee over oprichting, fusie en overdracht van katholieke scholen.</li>
+        </ul>
+      </div>
+      <div class="kaart">
+        <h4>De koepels voor een nieuw vrij initiatief</h4>
+        <ul>
+          <li><strong>Katholiek Onderwijs Vlaanderen</strong> — de grootste; volledige dienstverlening, collectieve verzekeringen, maar ook het DPCC-kader. <a class="src" href="https://www.katholiekonderwijs.vlaanderen/bestuur-organisatie" target="_blank" rel="noopener">[site]</a></li>
+          <li><strong>FOPEM</strong> (± 37 scholen) — dé federatie voor onafhankelijke methodescholen en ouderinitiatieven; organiseert infodagen voor nieuwe initiatieven. <a class="src" href="https://fopem1.jimdoweb.com/starten/" target="_blank" rel="noopener">[FOPEM]</a></li>
+          <li><strong>Federatie Steinerscholen</strong> — begeleidt oudergroepen die een steinerschool willen starten. <a class="src" href="https://steinerscholen.be/vraagbaak/" target="_blank" rel="noopener">[site]</a></li>
+          <li><strong>VOOP</strong> (± 14 scholen) en <strong>IPCO</strong> (protestants-christelijk) — samen met FOPEM en Steiner verenigd in het overlegplatform <strong>OKO</strong>, dat kleine onderwijsverstrekkers vertegenwoordigt bij de overheid. <a class="src" href="https://www.oko.be/" target="_blank" rel="noopener">[OKO]</a></li>
+          <li>Zakelijke steun buiten het onderwijs: <strong>VSDC</strong> en <strong>Scwitch</strong> voor VZW-administratie, het <strong>Verenigingsloket</strong> voor verzekeringsadvies, <strong>VCOV</strong> als ouderkoepel. Lidgelden van onderwijskoepels zijn niet publiek — vraag ze op bij het eerste gesprek.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="beleid" class="dark">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow light">Beleidsradar 2024-2026</div>
+        <h2>Wat er nú beweegt in Brussel²</h2>
+      </div>
+      <p>De regels hieronder veranderen terwijl je leest — de Vlaamse regering (2024-2029, minister van Onderwijs Zuhal Demir) hervormt op meerdere fronten tegelijk. Plan je traject met deze radar naast de omzendbrieven.</p>
+    </div>
+    <div class="cards3">
+      <div class="kaart">
+        <h4>Programmatie &amp; rationalisatie op de schop</h4>
+        <p>Een voorontwerp van decreet vereenvoudigt en verstrengt de regels voor het oprichten en rationaliseren van scholen; ook de indieningsdata schuiven. Aangekondigde uitwerking vanaf 2025-2026, programmatie vanaf 2026-2027 — onder voorbehoud van goedkeuring. <strong>Check vóór elke stap de actuele omzendbrief.</strong> <a class="src" href="https://pro.g-o.be/download/GOPRO-1830562155-29864/Op%20Stapel%202026-07" target="_blank" rel="noopener">[GO! Op Stapel 2026-07]</a></p>
+      </div>
+      <div class="kaart">
+        <h4>Dorpsscholen: bescherming blijft, druk ook</h4>
+        <p>Vorig schooljaar werden 29 basisscholen met sluiting bedreigd. De bestaande buffers blijven (lagere normen en 1,05-weging in dunbevolkt gebied, twee genadejaren), en de minister kondigde een regeling aan om <strong>netoverschrijdende fusies</strong> mogelijk te maken — vandaag kan een school onder de norm niet fuseren met een school van een ander net. <a class="src" href="https://www.vlaamsparlement.be/nl/parlementair-werk/commissies/commissievergaderingen/1875643/verslag/1880767" target="_blank" rel="noopener">[Commissie Onderwijs 13/03/2025]</a> <a class="src" href="https://visie.net/artikel/een-basisschool-in-elk-dorp" target="_blank" rel="noopener">[Visie]</a></p>
+      </div>
+      <div class="kaart">
+        <h4>Patrimoniumtaks: gunstregeling vernietigd</h4>
+        <p>Het Grondwettelijk Hof vernietigde op 4 december 2025 de gunstregeling (grondslag 37,7%) voor o.a. onderwijs, met behoud van de gevolgen tot eind 2026. Zonder nieuwe wet betaalt een school-VZW vanaf 2027 de volle progressieve taks op haar niet-vrijgestelde vermogen. De volledige vrijstelling voor onderwijsgebouwen zelf blijft bestaan. <a class="src" href="https://nl.const-court.be/public/n/2025/2025-159n-info.pdf" target="_blank" rel="noopener">[GwH 159/2025]</a></p>
+      </div>
+      <div class="kaart">
+        <h4>Besparingsmechaniek werkingsmiddelen</h4>
+        <p>Het basisonderwijs bleef bij de besparingsronde van eind 2024 grotendeels gespaard, maar vanaf begrotingsjaar 2027 wordt een deel van de werkingsmiddelen via een kasschuif vertraagd uitbetaald. Alle sociale partners en koepels tekenden protest aan. Begroot dus behoudend. <a class="src" href="https://g-o.be/pers/go-hekelt-besparingen-in-onderwijs/" target="_blank" rel="noopener">[GO!]</a></p>
+      </div>
+      <div class="kaart">
+        <h4>Inhoudelijke accenten regeerakkoord</h4>
+        <p>Minstens de helft van de lestijd naar Nederlands en wiskunde, voor het eerst minimumdoelen Nederlands in de kleuterklas, en een verbod op smartphones dat als erkenningsvoorwaarde geldt. Een nieuw pedagogisch project moet hier vanaf dag één mee sporen. <a class="src" href="https://onderwijs.vlaanderen.be/nl/nieuws/wat-zegt-het-vlaams-regeerakkoord-over-onderwijs" target="_blank" rel="noopener">[Onderwijs Vlaanderen]</a></p>
+      </div>
+      <div class="kaart">
+        <h4>Giftenaftrek gehalveerd</h4>
+        <p>De federale belastingvermindering voor giften daalde van 45% naar 30% vanaf inkomstenjaar 2025 — reken fondsenwerving via de Koning Boudewijnstichting dus iets conservatiever door. <a class="src" href="https://www.giften-legaten.be/v2/de-fiscale-aftrekbare-giften-2/" target="_blank" rel="noopener">[giften-legaten.be]</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="balans">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">De eerlijke balans</div>
+        <h2>Waarom doen — en waar het schuurt</h2>
+      </div>
+    </div>
+    <div class="cards2">
+      <div class="kaart" style="border-top:5px solid var(--viz-2)">
+        <h4>Troeven van het Vlaamse model</h4>
+        <ul>
+          <li><strong>De vrijheid van onderwijs is grondwettelijk</strong> (art. 24): iedereen mag een school oprichten, en subsidiëring van erkende scholen is een afdwingbaar recht — geen gunst.</li>
+          <li><strong>De zwaarste kost (lonen) draagt de overheid volledig</strong>, rechtstreeks betaald door AGODI — het financiële risico van een school-VZW is daardoor fundamenteel kleiner dan dat van een gewone werkgever met dezelfde omvang.</li>
+          <li>Werkingsmiddelen per leerling, 70% infrastructuursubsidie, koepels met kant-en-klare begeleiding.</li>
+          <li>De VZW-vorm schermt het persoonlijke vermogen van ouders en bestuurders af; het restrisico is verzekerbaar en met discipline beheersbaar.</li>
+          <li>Het kan écht: tientallen Vlaamse methodescholen zijn ooit door oudergroepen gestart en bestaan vandaag nog — een school houdt een dorp aantoonbaar levend en jong.</li>
+        </ul>
+      </div>
+      <div class="kaart" style="border-top:5px solid var(--rose)">
+        <h4>Waar initiatieven op stranden</h4>
+        <ul>
+          <li><strong>De normen zijn onverbiddelijk:</strong> zes jaar oplopende leerlingenaantallen zonder afwijking of genadejaar — precies het probleem (te weinig kinderen) dat veel dorpsscholen de das omdeed, en dat een doorstart niet automatisch oplost.</li>
+          <li><strong>Het gebouw:</strong> vinden, keuren, betalen — vóór er subsidie is, en met een AGION-wachtlijst van jaren voor wie wil bouwen.</li>
+          <li><strong>Vrijwilligersbestuur:</strong> dubbele petten (ouder én bestuurder én werkgever van de juf van je kind), uitputting en opvolging zijn de stilste risico's.</li>
+          <li><strong>Cashflow jaar één:</strong> werkingsmiddelen komen pas vanaf januari; alles daarvóór is eigen geld.</li>
+          <li><strong>Beleid in beweging:</strong> deadlines, normen en fiscale gunstregimes veranderen deze legislatuur — wie op oude informatie plant, mist vervaltermijnen.</li>
+          <li>Het lerarentekort treft een jonge, kleine school extra hard: geen anciënniteitsvoordelen, weinig uren, veel onzekerheid.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Veelgestelde vragen</div>
+        <h2>Kort en concreet</h2>
+      </div>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Ben ik als onbezoldigd ouder-bestuurder persoonlijk aansprakelijk als de school failliet gaat?</summary>
+        <div class="body">Niet automatisch — schulden van de VZW blijven bij de VZW. Persoonlijke aansprakelijkheid vereist een bestuursfout (art. 2:56 WVV), en dat je onbezoldigd werkt verandert daar niets aan. De reële gevaren zijn specifiek: onbetaalde bedrijfsvoorheffing, btw of RSZ (daar geldt een wettelijk foutvermoeden), doorgaan met een virtueel failliete werking, en ontbrekende verplichte verzekeringen. Wie het bestuurdersschild hierboven afvinkt en een D&amp;O-polis heeft, heeft het risico teruggebracht tot een aanvaardbaar restrisico.</div>
+      </details>
+      <details>
+        <summary>Kan onze oudergroep de sluitende dorpsschool gewoon „overnemen"?</summary>
+        <div class="body">Juridisch bestaat het mechanisme: een besturenwissel of overdracht van de school naar jullie nieuwe VZW, met behoud van erkenning en subsidies. Maar het vereist dat het zittende bestuur meewerkt (beide algemene vergaderingen beslissen), bij katholieke scholen ook de DPCC, en de school moet daarna nog steeds de rationalisatienormen halen. Is de school al opgeheven, dan rest enkel route B: een nieuwe school programmeren met de strengere opstartnormen. Begin het gesprek met het bestuur dus vroeg — vóór de sluiting definitief is.</div>
+      </details>
+      <details>
+        <summary>Wat als we de leerlingennorm nét niet halen?</summary>
+        <div class="body">Bij een <em>nieuwe</em> school (eerste zes jaar): geen subsidie dat schooljaar — er bestaan geen afwijkingen en geen genadejaren tijdens de programmatieperiode. Bij een <em>bestaande</em> school: maximaal twee genadejaren, daarna verlies van financiering. Een erkende school zonder subsidie mag blijven bestaan en getuigschriften uitreiken, maar moet alles zelf betalen — voor de meeste ouderinitiatieven is dat geen houdbaar model.</div>
+      </details>
+      <details>
+        <summary>Wie betaalt onze leerkrachten, en zijn wij dan hun baas?</summary>
+        <div class="body">AGODI betaalt de wedden van het gesubsidieerd personeel maandelijks rechtstreeks uit — het geld passeert nooit langs de VZW. Maar de VZW is wél de juridische werkgever: zij werft aan, benoemt en ontslaat, en draagt de werkgeversverantwoordelijkheid (welzijnswet, arbeidsongevallenverzekering, sociale verkiezingen boven de drempels). Sinds 2025 is de persoonlijke aansprakelijkheid van personeelsleden bovendien beperkt, waardoor fouten van het team sneller bij de VZW landen.</div>
+      </details>
+      <details>
+        <summary>Moeten we bij een koepel aansluiten?</summary>
+        <div class="body">Nee — de vrijheid van onderwijs laat volledig onafhankelijke schoolbesturen toe. In de praktijk sluit bijna iedereen aan: een koepel levert modelstatuten, leerplannen die de eindtermen dekken, pedagogische begeleiding, juridische bijstand en collectieve verzekeringen. Voor ouderinitiatieven zonder katholiek profiel is FOPEM de klassieke thuishaven; steinerinitiatieven kloppen aan bij de Federatie Steinerscholen.</div>
+      </details>
+      <details>
+        <summary>Wat kost het een ouder om zijn kind naar onze school te sturen?</summary>
+        <div class="body">Inschrijven is gratis, materiaal voor de eindtermen is kosteloos, en de bijdragen zijn geplafonneerd: maximaal €55 per jaar in de kleuterklas en €110 in de lagere school (schooljaar 2025-2026), plus maximaal €550 voor meerdaagse uitstappen over de hele lagere school. Enkel diensten zoals opvang, maaltijden en vervoer mogen daarbovenop kostendekkend aangerekend worden. Een gesubsidieerde school „duurder maken voor rijkere ouders" kan dus niet — extra ambitie financier je met giften en vrijwilligers.</div>
+      </details>
+      <details>
+        <summary>Hoe snel kan dit, op z'n vroegst?</summary>
+        <div class="body">Bij een besturenwissel van een bestaande school: in principe tegen het eerstvolgende schooljaar, als beide besturen akkoord zijn en de melding tijdig bij AGODI ligt. Bij een nieuwe school: de aanvraag moet in het voorjaar vóór het startjaar ingediend zijn (klassiek vóór 1 april — maar de data zitten in hervorming), de inspectie komt langs vóór de opening, en op de eerste schooldag van oktober moet de norm gehaald zijn. Realistisch traject inclusief visie, VZW, gebouw en team: anderhalf à twee jaar.</div>
+      </details>
+      <details>
+        <summary>Mag onze VZW winst maken of vermogen opbouwen?</summary>
+        <div class="body">Een VZW mag overschotten boeken en reserves aanleggen — ze mag ze alleen nooit uitkeren aan leden of bestuurders; alles blijft voor het belangeloos doel. Hou wel de patrimoniumtaks in het oog zodra het niet-vrijgestelde vermogen boven €50.000 uitkomt, en weet dat werkingsmiddelen aan onderwijsdoeleinden besteed moeten worden (verificatie door AGODI is mogelijk).</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>✎ De School als VZW</h4>
+        <p>Educatieve, interactieve wegwijzer voor wie in Vlaanderen een school wil starten, overnemen of redden — met focus op de rechtsvorm, de financiering en de bestuurdersrisico's. Alle cijfers weerspiegelen de stand van juli 2026 en zijn per bewering gelinkt aan hun bron; regelgeving in beweging is als dusdanig gemarkeerd.</p>
+      </div>
+      <div>
+        <h4>Officiële bronnen</h4>
+        <a href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=9284" target="_blank" rel="noopener">Omzendbrief BaO/97/3 — erkenning &amp; subsidiëring</a>
+        <a href="https://data-onderwijs.vlaanderen.be/edulex/document.aspx?docid=9304" target="_blank" rel="noopener">Omzendbrief BaO/97/10 — programmatie &amp; rationalisatie</a>
+        <a href="https://onderwijs.vlaanderen.be/nl/een-school-centrum-of-opleiding-oprichten-programmatie" target="_blank" rel="noopener">AGODI — een school oprichten</a>
+        <a href="https://www.agion.be/" target="_blank" rel="noopener">AGION — schoolinfrastructuur</a>
+        <a href="https://codex.vlaanderen.be/Portals/Codex/documenten/1005384.html" target="_blank" rel="noopener">Decreet basisonderwijs (Vlaamse Codex)</a>
+        <a href="https://nl.const-court.be/public/n/2025/2025-159n-info.pdf" target="_blank" rel="noopener">Grondwettelijk Hof, arrest 159/2025</a>
+      </div>
+      <div>
+        <h4>Belangrijk</h4>
+        <p>Dit is géén juridisch of fiscaal advies. Onderwijsregelgeving verandert deze legislatuur snel; vervaltermijnen zijn onverbiddelijk. Toets elke stap aan de actuele omzendbrieven en laat je begeleiden door een koepel, AGODI en een boekhouder of notaris. De calculators geven ramingen, geen beslissingen.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Onder Druk — educatieve demo's · school-entiteit</span>
+      <span>Deze pagina is gegenereerd met AI (Claude). Controleer cijfers vóór je beslist.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ---------- zuivere logica (geen DOM) ---------- */
+
+/* Programmatienormen gewoon basisonderwijs per bestaansjaar (BaO/97/10, dubbel geverifieerd).
+   Categorie o.b.v. bevolkingsdichtheid gemeente: A < 75 inw/km², B 75-500, C > 500. */
+const PROGRAMMATIE_NORMEN = {
+  A: [25, 40, 55, 60, 65, 70],
+  B: [37, 60, 82, 89, 97, 105],
+  C: [50, 80, 110, 120, 130, 140],
+};
+
+/* Aansprakelijkheidsplafond art. 2:57 WVV: trap o.b.v. gemiddelde omzet én balanstotaal
+   (laatste 3 boekjaren); het hoogste van beide criteria bepaalt de trap. */
+const CAP_TRAPPEN = [
+  { cap:    125000, omzetTot:   350000, balansTot:   175000 },
+  { cap:    250000, omzetTot:   700000, balansTot:   350000 },
+  { cap:   1000000, omzetTot:  9000000, balansTot:  4500000 },
+  { cap:   3000000, omzetTot: 50000000, balansTot: 43000000 },
+  { cap:  12000000, omzetTot: Infinity, balansTot: Infinity },
+];
+
+function wettelijkeCap(omzet, balans) {
+  if (!(omzet >= 0) || !(balans >= 0)) throw new Error("omzet en balans moeten ≥ 0 zijn");
+  const trapOmzet  = CAP_TRAPPEN.findIndex(t => omzet  < t.omzetTot  || t.omzetTot  === Infinity);
+  const trapBalans = CAP_TRAPPEN.findIndex(t => balans <= t.balansTot || t.balansTot === Infinity);
+  return CAP_TRAPPEN[Math.max(trapOmzet, trapBalans)].cap;
+}
+
+/* Patrimoniumtaks (wet 28/12/2023): voetvrijstelling €50.000, daarboven
+   0,15% tot €250.000 · 0,30% tot €500.000 · 0,45% erboven.
+   Gunstregeling onderwijs (t.e.m. AJ 2026, GwH 159/2025): grondslag × 37,7%. */
+function patrimoniumtaks(vermogen, gunstregeling) {
+  if (!(vermogen >= 0)) throw new Error("vermogen moet ≥ 0 zijn");
+  const grondslag = gunstregeling ? vermogen * 0.377 : vermogen;
+  if (grondslag <= 50000) return { grondslag, taks: 0 };
+  const s1 = (Math.min(grondslag, 250000) - 50000) * 0.0015;
+  const s2 = Math.max(Math.min(grondslag, 500000) - 250000, 0) * 0.0030;
+  const s3 = Math.max(grondslag - 500000, 0) * 0.0045;
+  return { grondslag, taks: s1 + s2 + s3 };
+}
+
+function normProjectie(categorie, start, groei) {
+  const normen = PROGRAMMATIE_NORMEN[categorie];
+  if (!normen) throw new Error("onbekende categorie: " + categorie);
+  return normen.map((norm, i) => {
+    const verwacht = Math.max(0, Math.round(start + groei * i));
+    return { jaar: i + 1, norm, verwacht, haalt: verwacht >= norm };
+  });
+}
+
+function routeAdvies({ sluitend, bestuurBereid, leerlingen, subsidie }) {
+  if (subsidie === "vrij") return {
+    route: "C", badge: "route-c", titel: "Route C — privéschool onder het huisonderwijsregime",
+    tekst: "Zonder erkenning geen normen, geen eindtermen-inspectie — maar ook geen subsidie en geen erkende getuigschriften (Examencommissie). Reken het businessmodel op louter ouderbijdragen eerlijk door vóór je hiervoor kiest.",
+  };
+  if (sluitend === "ja" && bestuurBereid !== "nee") return {
+    route: "A", badge: "route-a", titel: "Route A — besturenwissel van de bestaande school",
+    tekst: "Verken eerst de overdracht van de school naar jullie nieuwe VZW: erkenning, subsidies, leerlingen en personeel lopen door, en je vermijdt de zes jaar opstartnormen. Start het gesprek met het zittende bestuur (en bij een katholieke school met de DPCC) vóór de sluiting definitief is. Hou route B als terugvalplan.",
+  };
+  const normJaar1 = { laag: null, mid: "haalbaar in categorie A of B", hoog: "haalbaar in elke categorie" }[leerlingen];
+  if (leerlingen === "laag") return {
+    route: "B", badge: "route-b", titel: "Route B — maar de eerste norm wordt (te) krap",
+    tekst: "Onder de 25 leerlingen haal je zelfs in de dunstbevolkte gemeenten de eerste programmatienorm niet. Werk eerst aan draagvlak en instroom (of overweeg samenwerking met een bestaand bestuur); een erkende-maar-niet-gesubsidieerde start is wettelijk mogelijk maar financieel zelden houdbaar.",
+  };
+  return {
+    route: "B", badge: "route-b", titel: "Route B — programmeer een nieuwe school",
+    tekst: "Zonder over te nemen school is programmatie de weg naar subsidie: VZW oprichten, gebouw dat de inspectie doorstaat, afstandsvoorwaarde checken, aanvraag tijdig bij AGODI, en zes jaar lang de oplopende normen halen (jouw inschatting: " + normJaar1 + "). Toets het scenario in de normen-checker hieronder.",
+  };
+}
+
+/* ---------- DOM ---------- */
+
+if (typeof document !== "undefined") {
+  const eur = new Intl.NumberFormat("nl-BE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+  const eur2 = new Intl.NumberFormat("nl-BE", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const $ = id => {
+    const el = document.getElementById(id);
+    if (!el) throw new Error("element ontbreekt: " + id);
+    return el;
+  };
+
+  /* Routewijzer */
+  const rwAdvies = $("rwAdvies");
+  function renderRoute() {
+    const val = name => document.querySelector('input[name="' + name + '"]:checked').value;
+    const a = routeAdvies({ sluitend: val("rwQ1"), bestuurBereid: val("rwQ2"), leerlingen: val("rwQ3"), subsidie: val("rwQ4") });
+    rwAdvies.className = "advies show";
+    rwAdvies.innerHTML = '<span class="route-badge ' + a.badge + '">ADVIES</span><h3>' + a.titel + "</h3><p>" + a.tekst + "</p>";
+  }
+  ["rwQ1", "rwQ2", "rwQ3", "rwQ4"].forEach(name =>
+    document.querySelectorAll('input[name="' + name + '"]').forEach(r => r.addEventListener("change", renderRoute)));
+
+  /* Normen-checker */
+  const normRows = $("normRows"), normWarning = $("normWarning"), normWarningText = $("normWarningText"), normNote = $("normNote");
+  function renderNormen() {
+    const cat = $("inCategorie").value;
+    const start = Number($("inStart").value) || 0;
+    const groei = Number($("inGroei").value) || 0;
+    const rows = normProjectie(cat, start, groei);
+    const schaal = Math.max(...rows.map(r => Math.max(r.norm, r.verwacht))) * 1.15;
+    normRows.innerHTML = rows.map(r => {
+      const barW = (r.verwacht / schaal * 100).toFixed(1);
+      const tickX = (r.norm / schaal * 100).toFixed(1);
+      const status = r.haalt
+        ? '<span class="normstatus ok">✓ gehaald (norm ' + r.norm + ")</span>"
+        : '<span class="normstatus nok">✗ ' + (r.norm - r.verwacht) + " te weinig (norm " + r.norm + ")</span>";
+      return '<div class="normrow"><span class="yr">Jaar ' + r.jaar + '</span>' +
+        '<div class="normtrack"><div class="normbar" style="width:' + barW + '%"></div>' +
+        '<div class="normtick" style="left:' + tickX + '%"></div>' +
+        '<span class="normval" style="left:' + barW + '%">' + r.verwacht + " lln</span></div>" +
+        status + "</div>";
+    }).join("");
+    const gemist = rows.filter(r => !r.haalt);
+    normWarning.style.display = gemist.length ? "block" : "none";
+    if (gemist.length) normWarningText.textContent = " In jaar " + gemist.map(r => r.jaar).join(", ") +
+      " blijf je onder de programmatienorm: dat schooljaar géén financiering of subsidiëring — zonder afwijking of genadejaar. Overweeg route A, een latere start met meer draagvlak, of een gemeente in een andere categorie.";
+    normNote.textContent = "Donkere streep = norm op de teldag (eerste schooldag van oktober); balk = jouw verwachting. Vanaf het zevende bestaansjaar gelden de mildere rationalisatienormen, mét maximaal twee genadejaren. Bron: omzendbrief BaO/97/10 (dubbel geverifieerd); regels in hervorming — check de actuele versie.";
+  }
+  ["inCategorie", "inStart", "inGroei"].forEach(id => $(id).addEventListener("input", renderNormen));
+
+  /* Patrimoniumtaks */
+  function renderTaks() {
+    const vermogen = Number($("inVermogen").value) || 0;
+    const gunst = $("inGunst").value === "ja";
+    const r = patrimoniumtaks(vermogen, gunst);
+    $("outTaks").textContent = eur2.format(r.taks);
+    $("outGrondslag").textContent = eur.format(r.grondslag);
+    $("outEffectief").textContent = vermogen > 0 ? (r.taks / vermogen * 100).toFixed(3).replace(".", ",") + " %" : "—";
+  }
+  ["inVermogen", "inGunst"].forEach(id => $(id).addEventListener("input", renderTaks));
+
+  /* Aansprakelijkheidsplafond */
+  function renderCap() {
+    const omzet = Number($("inOmzet").value) || 0;
+    const balans = Number($("inBalans").value) || 0;
+    const cap = wettelijkeCap(omzet, balans);
+    $("outCap").textContent = eur.format(cap);
+    $("outDeO").textContent = "≥ " + eur.format(Math.max(cap, 2500000));
+  }
+  ["inOmzet", "inBalans"].forEach(id => $(id).addEventListener("input", renderCap));
+
+  /* Bestuurdersschild */
+  const schildBoxes = Array.from(document.querySelectorAll("#schildChecks input"));
+  function renderSchild() {
+    const n = schildBoxes.filter(b => b.checked).length;
+    $("schildMeter").style.width = (n / schildBoxes.length * 100).toFixed(0) + "%";
+    $("schildLabel").textContent = n + " van " + schildBoxes.length + " afgedekt" +
+      (n === schildBoxes.length ? " — dit bestuur is beter georganiseerd dan de meeste." : "");
+  }
+  schildBoxes.forEach(b => b.addEventListener("change", renderSchild));
+
+  renderRoute(); renderNormen(); renderTaks(); renderCap(); renderSchild();
+}
+</script>
+</body>
+</html>

@@ -30,10 +30,11 @@ jobs:
 
       - name: Assemble site
         run: |
-          mkdir -p _site/vo2max _site/woningaankoop
+          mkdir -p _site/vo2max _site/woningaankoop _site/school-entiteit
           cp duikplanner/index.html _site/index.html
           cp vo2max/index.html _site/vo2max/index.html
           cp woningaankoop/index.html _site/woningaankoop/index.html
+          cp school-entiteit/index.html _site/school-entiteit/index.html
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
