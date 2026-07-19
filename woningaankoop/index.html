@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#221a3d">
+  <meta name="description" content="Interactieve gids voor de aankoop van een appartement in Brussel als Vlaming/Belg: stappenplan, kostencalculator, abattement en fiscale optimalisatie (2026).">
+  <title>Koop Slim in Brussel — Fiscale gids &amp; calculator voor je appartement</title>
+  <style>
+    :root{
+      --ink:#221a3d;--ink-2:#2d2452;--muted:#5d5878;--paper:#f5f3ec;--card:#fffdf7;
+      --gold:#f2b32c;--iris:#7a5fd0;--rose:#e2556a;--line:#ddd8cc;
+      --shadow:0 20px 60px rgba(34,26,61,.10);--radius:22px;
+      --sans:"Avenir Next","Segoe UI",Arial,sans-serif;
+      --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+      /* dataviz rollen — gevalideerd op --card */
+      --viz-1:#2a78d6;--viz-2:#1baf7a;--viz-3:#eda100;--viz-4:#4a3aa7;
+      --viz-grid:#e5e1d5;--viz-muted:#8a8698;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    a{color:inherit}
+    .wrap{width:min(1180px,calc(100% - 40px));margin:auto}
+    .mono,.eyebrow,.tag,button,label,input,select,.step-num,.bar-label{font-family:var(--mono)}
+    nav{position:sticky;top:0;z-index:20;background:rgba(245,243,236,.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(34,26,61,.1)}
+    nav .wrap{height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .logo{font-weight:800;font-size:19px;display:flex;gap:10px;align-items:center;text-decoration:none}
+    .logo-mark{width:33px;height:33px;border-radius:50%;background:var(--ink);display:grid;place-items:center;color:var(--gold);font-size:15px}
+    .navlinks{display:flex;gap:22px;font-size:13px;font-weight:700}
+    .navlinks a{text-decoration:none}.navlinks a:hover{color:var(--iris)}
+    .nav-cta,.btn{border:0;border-radius:100px;padding:12px 18px;background:var(--ink);color:white;font-weight:600;text-decoration:none;cursor:pointer;transition:.2s transform,.2s background;font-size:14px}
+    .btn:hover,.nav-cta:hover{transform:translateY(-2px);background:var(--iris)}
+    .btn.gold{background:var(--gold);color:var(--ink)}
+    .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+    header{background:var(--ink);color:white;position:relative;overflow:hidden;display:flex;align-items:center}
+    header::after{content:"";position:absolute;width:650px;height:650px;border:1px solid rgba(242,179,44,.2);border-radius:50%;right:-160px;top:40px;box-shadow:0 0 0 90px rgba(242,179,44,.035),0 0 0 180px rgba(242,179,44,.025)}
+    .hero{position:relative;z-index:2;padding:100px 0 90px;display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center}
+    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:var(--iris);font-weight:500}
+    .eyebrow.light{color:var(--gold)}
+    h1{font-size:clamp(48px,6.5vw,88px);line-height:.95;letter-spacing:-.05em;margin:24px 0 26px;max-width:720px}
+    h1 em{color:var(--gold);font-style:normal}
+    .lead{font-size:18px;color:#c2bdd6;max-width:580px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+    .hero .btn{padding:16px 22px}
+    .hero .btn.ghost{border-color:#524a76;color:white}
+    .hero-card{background:#2d2452;border:1px solid #453a72;border-radius:28px;padding:28px;box-shadow:0 35px 90px rgba(0,0,0,.3);transform:rotate(1.5deg)}
+    .hero-card h3{margin:0 0 4px;font-size:16px}
+    .hero-card .sub{font-size:12px;color:#9d95bd}
+    .hero-stat{margin:22px 0 6px}
+    .hero-stat strong{display:block;font-size:64px;line-height:1;letter-spacing:-.03em}
+    .hero-stat small{color:#9d95bd}
+    .hero-minis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+    .hero-mini{background:#221a3d;border-radius:14px;padding:14px}
+    .hero-mini b{display:block;font-size:17px}
+    .hero-mini span{font-size:10px;color:#8f87b0;text-transform:uppercase;letter-spacing:.05em}
+    section{padding:100px 0}
+    .section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:46px}
+    .section-head h2{font-size:clamp(36px,4.6vw,60px);line-height:1;letter-spacing:-.04em;margin:12px 0 0;max-width:760px}
+    .section-head p{max-width:400px;color:var(--muted);margin:0}
+    .principles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .principle{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;transition:.25s}
+    .principle:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+    .num{font-size:12px;color:var(--rose)}
+    .principle h3{font-size:19px;margin:16px 0 8px}
+    .principle p{font-size:14px;color:var(--muted);margin:0}
+    .dark{background:var(--ink);color:white}
+    .dark .section-head p{color:#aaa3c6}
+    .calculator{background:var(--card);border:1px solid var(--line);border-radius:30px;padding:34px;box-shadow:var(--shadow)}
+    .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .field label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;color:var(--muted)}
+    .field input,.field select{width:100%;border:1px solid var(--line);border-radius:12px;background:#faf8f1;padding:14px;color:var(--ink);font-size:14px}
+    .field input:focus,.field select:focus{outline:2px solid var(--gold);border-color:var(--ink)}
+    .field .hint{font-size:11px;color:var(--muted);margin-top:6px}
+    .checks{display:grid;gap:10px;margin-top:20px}
+    .check{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;background:#f0eee4;border-radius:12px;font-size:13.5px;cursor:pointer}
+    .check input{accent-color:var(--iris);margin-top:4px;flex:none}
+    .type-switch{display:flex;gap:10px;margin-bottom:24px}
+    .type-switch button{flex:1;padding:15px;border:1px solid var(--line);background:transparent;border-radius:14px;cursor:pointer;font-size:13px;color:var(--ink)}
+    .type-switch button.active{border-color:var(--ink);background:var(--ink);color:white}
+    .result-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:30px 0 8px}
+    .tile{background:#f0eee4;border-radius:16px;padding:18px}
+    .tile b{display:block;font-size:clamp(19px,2vw,26px);letter-spacing:-.02em}
+    .tile span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .tile.hero-tile{background:var(--ink);color:white}
+    .tile.hero-tile span{color:#a49dc4}
+    .tile.saving{background:#e8f5ec}
+    .tile.saving b{color:#0c6b32}
+    .viz-block{margin-top:26px}
+    .stacked{display:flex;height:34px;border-radius:8px;overflow:hidden;background:var(--viz-grid)}
+    .seg{height:100%;min-width:0;transition:width .3s;position:relative}
+    .seg+.seg{border-left:2px solid var(--card)}
+    .seg:hover{filter:brightness(1.12)}
+    .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;font-size:12.5px;color:var(--muted)}
+    .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+    .cost-table{width:100%;border-collapse:collapse;margin-top:22px;font-size:14px}
+    .cost-table th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:9px 8px;border-bottom:1px solid var(--line);font-weight:600}
+    .cost-table td{padding:10px 8px;border-bottom:1px solid #eceade}
+    .cost-table td:last-child,.cost-table th:last-child{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:13px}
+    .cost-table .total-row td{font-weight:700;border-top:2px solid var(--ink);border-bottom:0}
+    .cost-table .sub{color:var(--muted);font-size:12px}
+    .note{font-size:12.5px;color:var(--muted);padding:14px 18px;background:#f0eee4;border-radius:12px;margin-top:22px}
+    .warning{border-left:5px solid var(--rose);background:#fdeef0;padding:20px 22px;border-radius:0 14px 14px 0;margin-top:26px;font-size:14px}
+    .warning b{display:block;margin-bottom:4px}
+    .steps{display:grid;gap:12px;max-width:860px}
+    .step{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+    .step summary{display:grid;grid-template-columns:52px 1fr auto;gap:16px;align-items:center;padding:18px 22px;cursor:pointer;list-style:none}
+    .step summary::-webkit-details-marker{display:none}
+    .step-num{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--gold);display:grid;place-items:center;font-size:14px;font-weight:700}
+    .step summary strong{font-size:16.5px}
+    .step summary .when{font-size:11px;color:var(--muted);font-family:var(--mono);white-space:nowrap}
+    .step-body{padding:0 22px 22px 90px;font-size:14px;color:#443e60}
+    .step-body ul{margin:8px 0 0;padding-left:18px}
+    .step-body li{margin:5px 0}
+    .step[open]{border-color:var(--iris)}
+    .step-body .docs{margin-top:14px;padding:13px 16px;background:#f0eee4;border-radius:10px;font-size:13px}
+    .tips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .tip{background:#2d2452;border:1px solid #453a72;border-radius:var(--radius);padding:25px;position:relative;overflow:hidden}
+    .tip::before{content:"";position:absolute;left:0;top:0;width:100%;height:5px;background:var(--gold)}
+    .tip.risk::before{background:var(--rose)}
+    .tip h3{font-size:18px;margin:10px 0 8px}
+    .tip p{font-size:13.5px;color:#b6afd2;margin:0}
+    .tip .tag{display:inline-block;padding:4px 10px;border:1px solid #524a76;border-radius:100px;color:var(--gold);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+    .tip.risk .tag{color:var(--rose);border-color:#6b4058}
+    .regio-chart{display:grid;gap:14px;margin-top:8px}
+    .regio-row{display:grid;grid-template-columns:110px 1fr 110px;gap:14px;align-items:center;font-size:13.5px}
+    .regio-row .bar-track{height:26px;background:var(--viz-grid);border-radius:7px;overflow:hidden}
+    .regio-row .bar{height:100%;border-radius:7px 0 0 7px;background:#b9b3cc;transition:width .35s}
+    .regio-row.bxl .bar{background:var(--viz-1)}
+    .regio-row .bar-label{text-align:right;font-size:13px;font-variant-numeric:tabular-nums}
+    .regio-row .rname{font-weight:600}
+    .regio-row .rname small{display:block;font-weight:400;color:var(--muted);font-size:11px}
+    .compare-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:start}
+    .compare-grid .aside{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;font-size:14px}
+    .compare-grid .aside h3{margin:0 0 10px;font-size:18px}
+    .lening-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .lening-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+    .lening-card h3{font-size:18px;margin:0 0 8px}
+    .lening-card p,.lening-card li{font-size:14px;color:#443e60}
+    .lening-card ul{padding-left:18px;margin:8px 0 0}
+    .quiz{max-width:800px;margin:auto}
+    .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:34px}
+    .quiz-card h3{font-size:23px;margin-top:0}
+    .answers{display:grid;gap:10px}
+    .answer{border:1px solid var(--line);border-radius:12px;padding:15px 17px;background:transparent;text-align:left;cursor:pointer;color:var(--ink);font-size:14px}
+    .answer:hover{border-color:var(--iris)}
+    .answer.correct{background:#e2f3d8;border-color:#5c9b34}
+    .answer.wrong{background:#fbdfe3;border-color:var(--rose)}
+    .feedback{min-height:52px;font-size:13.5px;color:var(--muted);margin-top:15px}
+    .quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+    .quiz-progress{font-size:12px;color:var(--muted);font-family:var(--mono)}
+    footer{background:#171130;color:white;padding:70px 0 30px}
+    .footer-grid{display:grid;grid-template-columns:1.3fr .7fr .9fr;gap:50px}
+    .footer-grid p,.footer-grid a{color:#a49dc4;font-size:13px}
+    .footer-grid a{display:block;margin:8px 0}
+    .footer-grid h4{margin:0 0 12px;font-size:14px}
+    .footer-bottom{border-top:1px solid #352b5c;margin-top:50px;padding-top:25px;display:flex;justify-content:space-between;gap:20px;color:#7d75a0;font-size:11px;flex-wrap:wrap}
+    @media(max-width:900px){
+      .navlinks{display:none}
+      .hero{grid-template-columns:1fr;padding-top:70px;gap:40px}
+      .hero-card{max-width:480px}
+      .principles{grid-template-columns:repeat(2,1fr)}
+      .tips{grid-template-columns:repeat(2,1fr)}
+      .compare-grid{grid-template-columns:1fr}
+      .form-grid{grid-template-columns:1fr 1fr}
+      .result-tiles{grid-template-columns:repeat(2,1fr)}
+      .lening-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:600px){
+      .wrap{width:min(100% - 24px,1180px)}
+      nav .wrap{height:64px;gap:12px}
+      .logo{font-size:17px;gap:8px;white-space:nowrap}
+      .logo-mark{width:30px;height:30px}
+      .nav-cta{padding:10px 13px;font-size:11px}
+      section{padding:64px 0}
+      .hero{padding:60px 0 56px;gap:34px}
+      h1{font-size:clamp(40px,13vw,54px)}
+      .lead{font-size:16px}
+      .hero-actions{display:grid}
+      .hero .btn{text-align:center}
+      .hero-card{width:100%;padding:20px;transform:none}
+      .hero-stat strong{font-size:52px}
+      .hero-minis{gap:6px}
+      .hero-mini{padding:10px 8px}
+      .hero-mini b{font-size:13px}
+      .hero-mini span{font-size:8px}
+      .principles,.tips,.form-grid{grid-template-columns:1fr}
+      .calculator{padding:22px 18px}
+      .step summary{grid-template-columns:44px 1fr;padding:15px 16px}
+      .step summary .when{display:none}
+      .step-num{width:34px;height:34px;font-size:12px}
+      .step-body{padding:0 16px 18px 16px}
+      .regio-row{grid-template-columns:86px 1fr 84px;gap:9px;font-size:12px}
+      .regio-row .bar-label{font-size:11.5px}
+      .quiz-card{padding:24px 18px}
+      .footer-grid{grid-template-columns:1fr}
+      .type-switch{flex-direction:column}
+      .section-head{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:34px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="logo-mark">⚜</span> Koop Slim in Brussel</a>
+    <div class="navlinks">
+      <a href="#calculator">Calculator</a>
+      <a href="#stappen">Stappenplan</a>
+      <a href="#optimalisatie">Optimalisatie</a>
+      <a href="#gewesten">Gewesten</a>
+      <a href="#lening">Lening</a>
+      <a href="#quiz">Quiz</a>
+    </div>
+    <a class="nav-cta" href="#calculator">Bereken je kosten</a>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow light">Interactieve gids · Brussels Hoofdstedelijk Gewest · stand juli 2026</div>
+      <h1>Koop je appartement in Brussel <em>fiscaal slim</em>.</h1>
+      <p class="lead">Als Vlaming die in Brussel koopt, gelden de <strong>Brusselse</strong> regels — niet de Vlaamse. Deze gids legt uit hoe het aankoopproces werkt, wat het je echt kost, en hoe je met het abattement tot €25.000+ aan registratierechten bespaart.</p>
+      <div class="hero-actions">
+        <a class="btn gold" href="#calculator">Start de calculator</a>
+        <a class="btn ghost" href="#stappen">Bekijk het stappenplan</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Het abattement in één beeld</h3>
+      <div class="sub">Vrijstelling van registratierechten op de eerste schijf</div>
+      <div class="hero-stat"><strong>€ 25.000</strong><small>maximale besparing (12,5% × €200.000)</small></div>
+      <div class="hero-minis">
+        <div class="hero-mini"><b>12,5%</b><span>standaardtarief</span></div>
+        <div class="hero-mini"><b>€600k</b><span>prijsplafond</span></div>
+        <div class="hero-mini"><b>5 jaar</b><span>domicilie houden</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="principes">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Eerst dit</div>
+        <h2>Vier zaken die alles bepalen</h2>
+      </div>
+      <p>Wie deze vier principes begrijpt, vermijdt de duurste fouten. De rest van de gids bouwt hierop verder.</p>
+    </div>
+    <div class="principles">
+      <div class="principle">
+        <div class="num">01</div>
+        <h3>Ligging bepaalt het regime</h3>
+        <p>De registratierechten volgen het gewest waar het <em>pand</em> ligt, niet waar jij nu woont of gedomicilieerd bent. Een Vlaming die in Brussel koopt betaalt Brusselse rechten: 12,5% — niet de Vlaamse 2%.</p>
+      </div>
+      <div class="principle">
+        <div class="num">02</div>
+        <h3>Het abattement is dé hefboom</h3>
+        <p>Brussel kent geen verlaagd tarief, maar wel een vrijstelling op de eerste €200.000 als het je enige woning wordt en je er 5 jaar blijft wonen. Dat is tot €25.000 belastingvrij — mits je aan álle voorwaarden voldoet.</p>
+      </div>
+      <div class="principle">
+        <div class="num">03</div>
+        <h3>De lening levert niets fiscaal op</h3>
+        <p>De woonbonus is in Brussel afgeschaft sinds 2017, het federaal langetermijnsparen sinds 2024. Een hypotheeklening voor je eigen woning geeft géén belastingvermindering meer. Leen dus op financiële, niet op fiscale gronden.</p>
+      </div>
+      <div class="principle">
+        <div class="num">04</div>
+        <h3>Reken 9 à 16% bovenop de prijs</h3>
+        <p>Registratierechten, notarisereloon, aktekosten en de hypotheekakte komen bovenop de aankoopprijs — en de bank financiert die kosten zelden mee. Voor een appartement van €350.000 is dat ±€31.000 mét abattement, ±€56.000 zonder.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="calculator" class="dark">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow light">Interactief</div>
+        <h2>Wat kost jouw aankoop echt?</h2>
+      </div>
+      <p>Vul prijs en lening in, vink de abattement&shy;voorwaarden aan waar je aan voldoet, en zie meteen de volledige kostenstructuur.</p>
+    </div>
+    <div class="calculator" style="color:var(--ink)">
+      <div class="type-switch" role="tablist">
+        <button id="typeBestaand" class="active" type="button">Bestaande woning — registratierechten 12,5%</button>
+        <button id="typeNieuwbouw" type="button">Nieuwbouw — 21% BTW (grond 12,5%)</button>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label for="inPrijs">Aankoopprijs (€)</label>
+          <input id="inPrijs" type="number" min="50000" max="2000000" step="5000" value="350000" inputmode="numeric">
+          <div class="hint">Mediaanprijs appartement Brussel ligt rond €280.000–€330.000.</div>
+        </div>
+        <div class="field">
+          <label for="inLening">Hypotheeklening (€)</label>
+          <input id="inLening" type="number" min="0" max="2000000" step="5000" value="315000" inputmode="numeric">
+          <div class="hint">Banken financieren doorgaans max. 90% van de prijs (quotiteit).</div>
+        </div>
+        <div class="field" id="fieldEpb">
+          <label for="inEpb">Renovatie-abattement: EPB-klassesprongen</label>
+          <select id="inEpb">
+            <option value="0">Geen energierenovatie gepland</option>
+            <option value="2">2 klassen beter binnen 5 jaar (+ €50.000)</option>
+            <option value="3">3 klassen beter binnen 5 jaar (+ €75.000)</option>
+            <option value="4">4 klassen beter binnen 5 jaar (+ €100.000)</option>
+          </select>
+          <div class="hint">Bijkomend abattement van €25.000 per klassesprong, vanaf 2 sprongen.</div>
+        </div>
+        <div class="field" id="fieldGrond" style="display:none">
+          <label for="inGrond">Grondaandeel in de prijs (%)</label>
+          <input id="inGrond" type="number" min="0" max="60" step="5" value="20" inputmode="numeric">
+          <div class="hint">Grond valt onder registratierechten (12,5%), constructie onder 21% BTW.</div>
+        </div>
+      </div>
+      <div class="checks" id="abattementChecks">
+        <label class="check"><input id="chkEnige" type="checkbox" checked>
+          <span><strong>Dit wordt mijn enige woning.</strong> Ik bezit geen ander pand dat (deels) voor bewoning bestemd is — of ik verkoop het binnen 2 jaar na de akte (teruggave achteraf).</span></label>
+        <label class="check"><input id="chkDomicilie" type="checkbox" checked>
+          <span><strong>Ik vestig er mijn hoofdverblijfplaats</strong> binnen 3 jaar na registratie van de akte (5 jaar bij renovatie-abattement) en blijf er daarna 5 jaar ononderbroken gedomicilieerd.</span></label>
+      </div>
+      <div class="result-tiles">
+        <div class="tile hero-tile"><span>Totaal project</span><b id="outTotaal">—</b></div>
+        <div class="tile"><span id="outRechtenLabel">Registratierechten</span><b id="outRechten">—</b></div>
+        <div class="tile"><span>Notaris + aktekosten</span><b id="outNotaris">—</b></div>
+        <div class="tile saving"><span>Besparing abattement</span><b id="outBesparing">—</b></div>
+      </div>
+      <div class="viz-block" aria-hidden="false">
+        <div class="stacked" id="stackedBar" role="img" aria-label="Verdeling van de aankoopkosten"></div>
+        <div class="legend" id="stackedLegend"></div>
+      </div>
+      <table class="cost-table" id="costTable">
+        <thead><tr><th>Kostenpost</th><th>Bedrag</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="warning" id="cliffWarning" style="display:none">
+        <b>⚠︎ Klif-effect: je verliest het volledige abattement.</b>
+        <span id="cliffText"></span>
+      </div>
+      <div class="note" id="calcNote">
+        Raming op basis van de wettelijke barema's en gangbare forfaits (stand juli 2026): ereloon notaris volgens KB-schijven + 21% BTW, administratieve aktekosten ± €1.250, overschrijving en recht op geschriften ± €290, hypotheekakte = 1% registratierecht + 0,3% hypotheekrecht op het leenbedrag + 10% aanhorigheden, plus ereloon en vaste kosten. Voor een exacte berekening: gebruik de officiële rekenmodule op <a href="https://www.notaris.be/rekenmodules" target="_blank" rel="noopener">notaris.be</a>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stappen">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Het proces</div>
+        <h2>Van zoekopdracht tot sleutel: 8 stappen</h2>
+      </div>
+      <p>Klik elke stap open. De volgorde is bewust: wie stap 1 en 2 overslaat, onderhandelt zwak en tekent te snel.</p>
+    </div>
+    <div class="steps">
+      <details class="step" open>
+        <summary><span class="step-num">1</span><strong>Bepaal je budget — vóór je gaat kijken</strong><span class="when">week 0</span></summary>
+        <div class="step-body">
+          <p>Vertrek van drie getallen: je eigen middelen, je maximale maandlast (banken hanteren ± 1/3 van je netto-inkomen) en de aankoopkosten uit de calculator hierboven. Eigen inbreng dekt minstens de kosten (±13–16%) plus vaak 10% van de prijs.</p>
+          <ul>
+            <li>Vraag bij 2–3 banken een <strong>principieel akkoord</strong> (pre-approval). Gratis, vrijblijvend, en het maakt je bod geloofwaardig.</li>
+            <li>Vergelijk ook via een onafhankelijk kredietmakelaar — die legt banken tegen elkaar uit.</li>
+            <li>Als alleenstaande draag je de volledige last alleen: neem buffer voor onroerende voorheffing, syndicuskosten (€100–250/maand) en onderhoud.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">2</span><strong>Zoek gericht — en leer de Brusselse markt</strong><span class="when">week 0–12</span></summary>
+        <div class="step-body">
+          <p>Brussel is 19 gemeenten met sterk uiteenlopende prijzen, EPB-kwaliteit en gemeentelijke opcentiemen op de onroerende voorheffing. Bepaal eerst wijk, dan pand.</p>
+          <ul>
+            <li>Kanalen: Immoweb, Zimmo, <strong>Biddit.be</strong> (online notarisveilingen, soms scherpe prijzen) en nieuwsbrieven van notariskantoren.</li>
+            <li>Check per gemeente de opcentiemen: in 2026 verhoogden negen Brusselse gemeenten hun onroerende voorheffing.</li>
+            <li>Let op het <strong>EPB-certificaat</strong>: een slechte score (E–G) betekent renovatieplicht-risico én een kans op het renovatie-abattement (+€25.000 per klassesprong).</li>
+          </ul>
+        </div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">3</span><strong>Due diligence bij een appartement</strong><span class="when">per pand</span></summary>
+        <div class="step-body">
+          <p>Bij mede-eigendom koop je ook de gezondheid van het gebouw. Vraag deze documenten <em>vóór</em> je biedt — de verkoper/makelaar is wettelijk verplicht ze te bezorgen:</p>
+          <div class="docs"><strong>Documentenchecklist:</strong> basisakte &amp; reglement van mede-eigendom · notulen algemene vergaderingen (laatste 3 jaar) · afrekeningen syndicus &amp; werkkapitaal · <strong>reservefonds</strong> en geplande werken (gevel, dak, lift, stookketel!) · EPB-certificaat · bodemattest (Leefmilieu Brussel) · stedenbouwkundige inlichtingen · keuring elektriciteit · postinterventiedossier.</div>
+          <ul>
+            <li>Geplande grote werken zonder gespijsd reservefonds = verborgen meerprijs van soms tienduizenden euro's.</li>
+            <li>Vraag wie de achterstallige bijdragen draagt: afrekening gebeurt bij de akte, maar afspraken in het compromis primeren.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">4</span><strong>Bied schriftelijk — en besef: een bod bindt</strong><span class="when">dag 0</span></summary>
+        <div class="step-body">
+          <p>In België is een aanvaard schriftelijk bod op een bepaald goed voor een bepaalde prijs in principe <strong>bindend</strong>. Er is geen bedenktijd zoals in Nederland.</p>
+          <ul>
+            <li>Bied altijd <strong>onder opschortende voorwaarde van het verkrijgen van een financiering</strong> (vermeld bedrag, rentevoet-plafond en termijn, bv. 4–5 weken).</li>
+            <li>Zet een geldigheidsduur op je bod (bv. 5 dagen) zodat je niet eindeloos gebonden blijft.</li>
+            <li>Onderhandelen is normaal; 5–10% onder vraagprijs starten is in Brussel gangbaar, afhankelijk van hoe lang het pand te koop staat.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">5</span><strong>Compromis (onderhandse verkoopovereenkomst)</strong><span class="when">± week 1–3</span></summary>
+        <div class="step-body">
+          <p>Het compromis is <em>de</em> juridische kern van de aankoop — de notariële akte bevestigt later enkel wat hier staat. Laat het altijd nalezen door <strong>je eigen notaris</strong> (kost niets extra: het ereloon wordt gedeeld tussen notarissen, jij betaalt hetzelfde).</p>
+          <ul>
+            <li>Gebruikelijk voorschot: <strong>10%</strong>, op de derdenrekening van de notaris — nooit rechtstreeks aan de verkoper.</li>
+            <li>Opschortende voorwaarde financiering nogmaals expliciet opnemen.</li>
+            <li>Vraag hier al de toepassing van het <strong>abattement</strong> mee te nemen in de voorbereiding van de akte.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">6</span><strong>Financiering rond krijgen</strong><span class="when">week 2–8</span></summary>
+        <div class="step-body">
+          <p>Met getekend compromis onderhandel je finaal met de banken. Beslis over vast/variabel, looptijd, quotiteit en de waarborgvorm (zie sectie Lening).</p>
+          <ul>
+            <li>De bank vraagt een schatting van het pand; bij een lagere schatting dan de prijs zakt het leenbaar bedrag.</li>
+            <li>Schuldsaldoverzekering en brandverzekering zijn de klassieke koppelproducten — reken het pakket dóór, niet alleen de rentevoet.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">7</span><strong>De authentieke akte bij de notaris</strong><span class="when">≤ 4 maanden na compromis</span></summary>
+        <div class="step-body">
+          <p>De akte moet binnen <strong>4 maanden</strong> na het compromis verleden worden (registratietermijn). Dan betaal je saldo, registratierechten en notariskosten, en krijg je de sleutels.</p>
+          <ul>
+            <li>Het <strong>abattement wordt in de akte gevraagd</strong> — controleer dat de clausule erin staat vóór je tekent. Vergeten = voordeel kwijt.</li>
+            <li>Zelfde dag: hypotheekakte voor de lening.</li>
+            <li>Vanaf de akte betaal je onroerende voorheffing pro rata; de notaris verrekent met de verkoper.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="step">
+        <summary><span class="step-num">8</span><strong>Na de aankoop: verplichtingen nakomen</strong><span class="when">jaar 0–5</span></summary>
+        <div class="step-body">
+          <ul>
+            <li><strong>Domicilieer je binnen 3 jaar</strong> (5 jaar bij renovatie-abattement) en blijf 5 jaar ononderbroken — anders betaal je het abattement pro rata terug, plus mogelijk een boete.</li>
+            <li>Check je aanslagbiljet onroerende voorheffing: de <strong>BE HOME-premie</strong> (€164 in 2026, gepland €328 vanaf 2027) wordt automatisch verrekend voor eigenaar-bewoners; ontbreekt ze, vraag ze aan via MyTax binnen 193 dagen.</li>
+            <li>Renoveer je energetisch? Dien EPB-certificaten tijdig in voor het renovatie-abattement, en bekijk het <strong>ECORENO-krediet</strong> (2,5–3,5%) — de Renolution-premies zelf zijn sinds 2025 stopgezet.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="optimalisatie" class="dark">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow light">Fiscale optimalisatie</div>
+        <h2>Waar je échte euro's laat liggen</h2>
+      </div>
+      <p>Zes hefbomen en valkuilen, gerangschikt op impact. De meeste beslissingen moeten vallen vóór het compromis — daarna is het te laat.</p>
+    </div>
+    <div class="tips">
+      <div class="tip">
+        <span class="tag">Hefboom · tot €25.000</span>
+        <h3>Claim het abattement — in de akte</h3>
+        <p>Vrijstelling op de eerste €200.000: enige woning, prijs ≤ €600.000, domicilie binnen 3 jaar, 5 jaar blijven. Het wordt níét automatisch toegekend: het moet uitdrukkelijk in de aankoopakte gevraagd worden. Zeg het je notaris al bij het compromis.</p>
+      </div>
+      <div class="tip">
+        <span class="tag">Hefboom · €50.000+</span>
+        <h3>Renovatie-abattement bij slechte EPB</h3>
+        <p>Verbeter je de EPB-score met minstens 2 klassen binnen 5 jaar, dan komt er €25.000 abattement per klassesprong bovenop. Een energieverslindend appartement (F→C) levert zo €75.000 extra vrijstelling op — €9.375 minder belasting. Koop het probleem, incasseer de korting.</p>
+      </div>
+      <div class="tip risk">
+        <span class="tag">Valkuil · klif-effect</span>
+        <h3>€600.001 = alles kwijt</h3>
+        <p>Het plafond van €600.000 is geen aftopping maar een klif: één euro erboven en het volledige abattement vervalt — €25.000+ verschil. Tel ook lasten die de koper overneemt mee in die grens. Onderhandel desnoods de prijs of de verdeling roerend/onroerend (meubels apart, aan reële waarde) om eronder te blijven.</p>
+      </div>
+      <div class="tip risk">
+        <span class="tag">Valkuil · volgorde</span>
+        <h3>Bezit je al (een deel van) een pand?</h3>
+        <p>Wie al een woning (of een deel ervan, bv. uit een erfenis) in volle eigendom bezit, verliest het abattement. Uitweg: verkoop dat pand binnen 2 jaar na de nieuwe akte en vraag teruggave. Plan de volgorde van verkopen en kopen dus bewust.</p>
+      </div>
+      <div class="tip risk">
+        <span class="tag">Valkuil · nieuwbouw</span>
+        <h3>BTW-aankoop = geen abattement</h3>
+        <p>Nieuwbouw van een promotor koop je onder 21% BTW (grondaandeel onder registratierechten). Op het BTW-deel bestaat géén abattement. Uitzondering die loont: projecten onder het 6%-stelsel sloop-heropbouw (max. 175 m², enige eigen woning, 5 jaar domicilie) — vraag de promotor expliciet onder welk regime verkocht wordt.</p>
+      </div>
+      <div class="tip">
+        <span class="tag">Hefboom · structureel</span>
+        <h3>Geen aftrek meer → herbekijk je financiering</h3>
+        <p>Zonder woonbonus of langetermijnsparen is méér lenen fiscaal niet langer interessant. Optimaliseer puur financieel: eigen inbreng verlaagt de rentevoet (quotiteit ≤ 80–90%), en een gedeeltelijk hypothecair mandaat in plaats van volledige inschrijving scheelt duizenden euro's aktekosten — als je bank het aanvaardt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gewesten">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Context</div>
+        <h2>Brussel naast Vlaanderen en Wallonië</h2>
+      </div>
+      <p>Zelfde koper, zelfde prijs, drie gewesten. De grafiek rekent met de prijs uit de calculator en het scenario "enige eigen woning".</p>
+    </div>
+    <div class="compare-grid">
+      <div>
+        <div class="regio-chart" id="regioChart" role="img" aria-label="Registratiebelasting per gewest bij gelijke aankoopprijs">
+          <div class="regio-row bxl">
+            <div class="rname">Brussel<small>12,5% − abattement</small></div>
+            <div class="bar-track"><div class="bar" id="barBxl"></div></div>
+            <div class="bar-label" id="lblBxl">—</div>
+          </div>
+          <div class="regio-row">
+            <div class="rname">Wallonië<small>3% enige eigen woning</small></div>
+            <div class="bar-track"><div class="bar" id="barWal"></div></div>
+            <div class="bar-label" id="lblWal">—</div>
+          </div>
+          <div class="regio-row">
+            <div class="rname">Vlaanderen<small>2% enige eigen woning</small></div>
+            <div class="bar-track"><div class="bar" id="barVla"></div></div>
+            <div class="bar-label" id="lblVla">—</div>
+          </div>
+        </div>
+        <div class="note">Vlaanderen: 2% voor de enige eigen woning (1% bij ingrijpende energetische renovatie, 12% standaard; sinds 2026 domicilie binnen 3 jaar en minstens 1 jaar ononderbroken houden). Wallonië: 3% enige eigen woning sinds 2025 (12,5% standaard). Brussel: 12,5% met abattement, zoals hierboven berekend.</div>
+      </div>
+      <div class="aside">
+        <h3>Waarom dit verschil ertoe doet</h3>
+        <p>Brussel is nominaal het duurste gewest om te kopen, maar het abattement maakt het verschil kleiner dan het lijkt — zeker onder €400.000. Boven het plafond van €600.000 wordt Brussel plots véél duurder dan de buren.</p>
+        <p>Woon-werkoverwegingen: je betaalt personenbelasting in de gemeente waar je op 1 januari gedomicilieerd bent. Brusselse gemeenten heffen elk hun eigen opcentiemen — ook dat verschilt per gemeente en weegt structureel zwaarder dan een eenmalige aankoopbelasting.</p>
+        <p>En als je ooit doorverkoopt: meerwaarde op je eigen hoofdverblijfplaats is in België in principe <strong>belastingvrij</strong>. Voor een tweede verblijf of snelle wederverkoop (&lt; 5 jaar) geldt wél een meerwaardebelasting van 16,5%.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lening">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Financiering</div>
+        <h2>De lening: beslissingen die geld kosten of opleveren</h2>
+      </div>
+      <p>Nu de fiscus niet meer meebetaalt, is elke leningskeuze een zuiver financiële afweging.</p>
+    </div>
+    <div class="lening-grid">
+      <div class="lening-card">
+        <h3>Quotiteit &amp; eigen inbreng</h3>
+        <p>De quotiteit is het leenbedrag gedeeld door de waarde van het pand. Onder de 80% krijg je bij de meeste banken een merkbaar betere rentevoet; boven de 90% wordt het duur of onmogelijk.</p>
+        <ul>
+          <li>Aankoopkosten (±13–16%) financier je vrijwel altijd zelf.</li>
+          <li>Vuistregel eigen middelen: 10% van de prijs + alle kosten.</li>
+        </ul>
+      </div>
+      <div class="lening-card">
+        <h3>Vast vs. variabel</h3>
+        <p>Een vaste rentevoet koopt zekerheid voor 20–25 jaar. Variabele formules (bv. 10/5, jaarlijks herzienbaar) starten lager maar zijn wettelijk begrensd op maximaal een verdubbeling. Als alleenstaande zonder tweede inkomen om op terug te vallen, is de klassieke keuze: vast, tenzij het renteverschil groot is.</p>
+      </div>
+      <div class="lening-card">
+        <h3>Inschrijving vs. hypothecair mandaat</h3>
+        <p>Een volledige hypothecaire inschrijving kost ±1% registratierecht + 0,3% hypotheekrecht + ereloon op het leenbedrag. Bij een <strong>mandaat</strong> (volmacht) betaal je slechts ±€50 registratie en een fractie van het ereloon — maar de bank kan de hypotheek later alsnog vestigen. Veel banken aanvaarden een mix (bv. 60% inschrijving / 40% mandaat): vraag ernaar, het scheelt snel €1.500–3.000.</p>
+      </div>
+      <div class="lening-card">
+        <h3>Verzekeringen</h3>
+        <p>De schuldsaldoverzekering dekt de bank af als je overlijdt; sinds 2024 is de premie niet meer fiscaal aftrekbaar, dus vergelijk vrij buiten de bank (bankkorting op de rente afwegen tegen een goedkopere externe polis). Brandverzekering is contractueel verplicht vanaf het compromis of de akte — bij een appartement dekt de blokpolis van de mede-eigendom het gebouw; jij verzekert inhoud en aansprakelijkheid.</p>
+      </div>
+    </div>
+    <div class="warning">
+      <b>Onthoud: je betaalt de lening met netto-inkomen.</b>
+      Bij 12,5% registratierechten en 3–4% rente is elke €10.000 die je slim uitspaart op kosten of rentevoet meer waard dan welk (verdwenen) fiscaal voordeel ook. Onderhandel de rentevoet zoals je de aankoopprijs onderhandelt: met concurrerende offertes op tafel.
+    </div>
+  </div>
+</section>
+
+<section id="quiz" class="dark">
+  <div class="wrap quiz">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow light">Test jezelf</div>
+        <h2>Ben je klaar om te tekenen?</h2>
+      </div>
+    </div>
+    <div class="quiz-card" style="color:var(--ink)">
+      <h3 id="quizVraag">—</h3>
+      <div class="answers" id="quizAntwoorden"></div>
+      <div class="feedback" id="quizFeedback"></div>
+      <div class="quiz-nav">
+        <span class="quiz-progress" id="quizProgress"></span>
+        <button class="btn" id="quizVolgende" type="button" style="display:none">Volgende vraag</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>⚜ Koop Slim in Brussel</h4>
+        <p>Educatieve, interactieve gids voor de aankoop van een appartement in het Brussels Hoofdstedelijk Gewest, geschreven voor een Vlaamse/Belgische koper. Alle bedragen en regels weerspiegelen de stand van juli 2026 en kunnen wijzigen.</p>
+      </div>
+      <div>
+        <h4>Officiële bronnen</h4>
+        <a href="https://be.brussels/nl/belastingen-financien" target="_blank" rel="noopener">Brussel Fiscaliteit (abattement)</a>
+        <a href="https://www.notaris.be/rekenmodules" target="_blank" rel="noopener">Notaris.be rekenmodules</a>
+        <a href="https://fin.belgium.be" target="_blank" rel="noopener">FOD Financiën (BTW, registratie)</a>
+        <a href="https://www.woneninbrussel.be" target="_blank" rel="noopener">Wonen in Brussel</a>
+        <a href="https://www.wikifin.be" target="_blank" rel="noopener">Wikifin (FSMA)</a>
+      </div>
+      <div>
+        <h4>Belangrijk</h4>
+        <p>Dit is géén fiscaal, juridisch of financieel advies. Elke aankoop is anders: laat je situatie altijd doorrekenen door een notaris — het eerste advies is kosteloos. De calculator geeft ramingen, geen offertes.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Onder Druk — educatieve demo's · woningaankoop</span>
+      <span>Deze pagina is gegenereerd met AI (Claude). Controleer cijfers vóór je beslist.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ---------- zuivere rekenlogica (geen DOM) ---------- */
+
+const TARIEF_BXL = 0.125;
+const ABATTEMENT_BASIS = 200000;
+const ABATTEMENT_PLAFOND = 600000;
+const ABATTEMENT_PER_SPRONG = 25000;
+const BTW_NIEUWBOUW = 0.21;
+
+// Ereloon notaris, KB-schijven (degressief), excl. BTW
+const ERELOON_SCHIJVEN = [
+  [7500, 0.0456],
+  [17000, 0.0285],
+  [30000, 0.0228],
+  [45495, 0.0171],
+  [64095, 0.0114],
+  [Infinity, 0.0057],
+];
+
+function ereloon(bedrag) {
+  let vorig = 0, som = 0;
+  for (const [grens, pct] of ERELOON_SCHIJVEN) {
+    const schijf = Math.min(bedrag, grens) - vorig;
+    if (schijf <= 0) break;
+    som += schijf * pct;
+    vorig = grens;
+  }
+  return som;
+}
+
+function abattement({ prijs, enigeWoning, domicilie, epbSprongen }) {
+  if (!enigeWoning || !domicilie) return { bedrag: 0, reden: "voorwaarden" };
+  if (prijs > ABATTEMENT_PLAFOND) return { bedrag: 0, reden: "plafond" };
+  const bruto = ABATTEMENT_BASIS + epbSprongen * ABATTEMENT_PER_SPRONG;
+  return { bedrag: Math.min(bruto, prijs), reden: null };
+}
+
+function berekenAankoop({ prijs, lening, type, grondPct, enigeWoning, domicilie, epbSprongen }) {
+  let rechten, btw = 0, abat = { bedrag: 0, reden: null };
+  if (type === "nieuwbouw") {
+    const grond = prijs * grondPct;
+    rechten = grond * TARIEF_BXL; // geen abattement op BTW-aankoop
+    btw = (prijs - grond) * BTW_NIEUWBOUW;
+  } else {
+    abat = abattement({ prijs, enigeWoning, domicilie, epbSprongen });
+    rechten = Math.max(0, prijs - abat.bedrag) * TARIEF_BXL;
+  }
+
+  const ereloonAankoop = ereloon(prijs) * 1.21;
+  const aktekostenAankoop = 1250 + 290; // administratie + overschrijving/recht op geschriften
+
+  let hypotheek = 0;
+  if (lening > 0) {
+    const basis = lening * 1.10; // + aanhorigheden
+    const registratie1pct = basis * 0.01;
+    const hypotheekrecht = basis * 0.003;
+    const ereloonHypo = ereloon(lening) * 0.5 * 1.21;
+    hypotheek = registratie1pct + hypotheekrecht + ereloonHypo + 1150;
+  }
+
+  const kosten = rechten + btw + ereloonAankoop + aktekostenAankoop + hypotheek;
+  return {
+    rechten, btw,
+    notaris: ereloonAankoop + aktekostenAankoop,
+    hypotheek,
+    kosten,
+    totaal: prijs + kosten,
+    besparing: abat.bedrag * TARIEF_BXL,
+    abattement: abat,
+    eigenMiddelen: prijs + kosten - lening,
+  };
+}
+
+function registratieGewest(gewest, prijs) {
+  if (gewest === "vla") return prijs * 0.02;
+  if (gewest === "wal") return prijs * 0.03;
+  const abat = abattement({ prijs, enigeWoning: true, domicilie: true, epbSprongen: 0 });
+  return Math.max(0, prijs - abat.bedrag) * TARIEF_BXL;
+}
+
+const euro = (n) => "€ " + Math.round(n).toLocaleString("nl-BE");
+
+/* ---------- DOM ---------- */
+
+const $ = (id) => document.getElementById(id);
+
+const SEGMENTEN = [
+  { key: "rechten", label: "Registratierechten", css: "var(--viz-1)" },
+  { key: "btw", label: "BTW nieuwbouw", css: "var(--viz-3)" },
+  { key: "notaris", label: "Notaris + aktekosten", css: "var(--viz-2)" },
+  { key: "hypotheek", label: "Hypotheekakte", css: "var(--viz-4)" },
+];
+
+let type = "bestaand";
+
+function leesInputs() {
+  return {
+    prijs: Math.max(0, Number($("inPrijs").value) || 0),
+    lening: Math.max(0, Number($("inLening").value) || 0),
+    type,
+    grondPct: Math.min(0.6, Math.max(0, (Number($("inGrond").value) || 0) / 100)),
+    enigeWoning: $("chkEnige").checked,
+    domicilie: $("chkDomicilie").checked,
+    epbSprongen: Number($("inEpb").value) || 0,
+  };
+}
+
+function render() {
+  const inp = leesInputs();
+  const r = berekenAankoop(inp);
+
+  $("outTotaal").textContent = euro(r.totaal);
+  $("outRechten").textContent = euro(r.rechten + r.btw);
+  $("outRechtenLabel").textContent = inp.type === "nieuwbouw" ? "Rechten + BTW" : "Registratierechten";
+  $("outNotaris").textContent = euro(r.notaris + r.hypotheek);
+  $("outBesparing").textContent = euro(r.besparing);
+
+  // gestapelde kostenbalk
+  const bar = $("stackedBar");
+  const legend = $("stackedLegend");
+  bar.innerHTML = "";
+  legend.innerHTML = "";
+  for (const seg of SEGMENTEN) {
+    const val = r[seg.key];
+    if (val < 1) continue;
+    const div = document.createElement("div");
+    div.className = "seg";
+    div.style.width = (100 * val / r.kosten) + "%";
+    div.style.background = seg.css;
+    div.title = seg.label + ": " + euro(val);
+    bar.appendChild(div);
+    const li = document.createElement("span");
+    li.innerHTML = '<i style="background:' + seg.css + '"></i>' + seg.label + " · " + euro(val);
+    legend.appendChild(li);
+  }
+
+  // tabel
+  const rijen = [
+    ["Aankoopprijs", inp.prijs],
+    inp.type === "nieuwbouw"
+      ? ["Registratierechten grondaandeel (12,5%)", r.rechten]
+      : ["Registratierechten (12,5%" + (r.abattement.bedrag ? " na abattement " + euro(r.abattement.bedrag) : "") + ")", r.rechten],
+    ...(r.btw ? [["BTW op constructie (21%)", r.btw]] : []),
+    ["Notarisereloon + aktekosten aankoop", r.notaris],
+    ...(r.hypotheek ? [["Hypotheekakte (lening " + euro(inp.lening) + ")", r.hypotheek]] : []),
+  ];
+  const tbody = $("costTable").querySelector("tbody");
+  tbody.innerHTML = "";
+  for (const [label, val] of rijen) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<td>" + label + "</td><td>" + euro(val) + "</td>";
+    tbody.appendChild(tr);
+  }
+  const trKosten = document.createElement("tr");
+  trKosten.innerHTML = '<td class="sub">Totale kosten bovenop de prijs (' +
+    (100 * r.kosten / Math.max(1, inp.prijs)).toFixed(1) + '% van de prijs)</td><td>' + euro(r.kosten) + "</td>";
+  tbody.appendChild(trKosten);
+  const trTotaal = document.createElement("tr");
+  trTotaal.className = "total-row";
+  trTotaal.innerHTML = "<td>Totaal project · waarvan eigen middelen " + euro(r.eigenMiddelen) + "</td><td>" + euro(r.totaal) + "</td>";
+  tbody.appendChild(trTotaal);
+
+  // klif-waarschuwing
+  const warn = $("cliffWarning");
+  if (inp.type === "bestaand" && r.abattement.reden === "plafond") {
+    const netMetAbat = berekenAankoop({ ...inp, prijs: ABATTEMENT_PLAFOND });
+    warn.style.display = "block";
+    $("cliffText").textContent =
+      "Boven €600.000 vervalt het abattement volledig. Bij exact €600.000 zou je " +
+      euro(netMetAbat.besparing) + " besparen; nu betaal je het volle tarief op de hele prijs. " +
+      "Onderhandel de prijs (of de roerend/onroerend-verdeling) onder het plafond.";
+  } else if (inp.type === "bestaand" && r.abattement.reden === "voorwaarden") {
+    warn.style.display = "block";
+    $("cliffText").textContent =
+      "Zonder de aangevinkte voorwaarden (enige woning + domicilie-engagement) vervalt het abattement en betaal je 12,5% op de volledige prijs — " +
+      euro(inp.prijs * TARIEF_BXL) + ".";
+  } else if (inp.type === "nieuwbouw") {
+    warn.style.display = "block";
+    $("cliffText").textContent =
+      "Bij aankoop onder BTW bestaat geen abattement. Check of het project onder het 6%-stelsel sloop-heropbouw valt (max. 175 m², enige eigen woning, 5 jaar domicilie) — dat scheelt 15 procentpunt BTW op de constructie.";
+  } else {
+    warn.style.display = "none";
+  }
+
+  // gewestvergelijking op dezelfde prijs
+  const waarden = {
+    bxl: registratieGewest("bxl", inp.prijs),
+    wal: registratieGewest("wal", inp.prijs),
+    vla: registratieGewest("vla", inp.prijs),
+  };
+  const max = Math.max(waarden.bxl, waarden.wal, waarden.vla, 1);
+  $("barBxl").style.width = (100 * waarden.bxl / max) + "%";
+  $("barWal").style.width = (100 * waarden.wal / max) + "%";
+  $("barVla").style.width = (100 * waarden.vla / max) + "%";
+  $("lblBxl").textContent = euro(waarden.bxl);
+  $("lblWal").textContent = euro(waarden.wal);
+  $("lblVla").textContent = euro(waarden.vla);
+}
+
+$("typeBestaand").addEventListener("click", () => {
+  type = "bestaand";
+  $("typeBestaand").classList.add("active");
+  $("typeNieuwbouw").classList.remove("active");
+  $("fieldGrond").style.display = "none";
+  $("fieldEpb").style.display = "";
+  $("abattementChecks").style.display = "";
+  render();
+});
+$("typeNieuwbouw").addEventListener("click", () => {
+  type = "nieuwbouw";
+  $("typeNieuwbouw").classList.add("active");
+  $("typeBestaand").classList.remove("active");
+  $("fieldGrond").style.display = "";
+  $("fieldEpb").style.display = "none";
+  $("abattementChecks").style.display = "none";
+  render();
+});
+
+for (const id of ["inPrijs", "inLening", "inGrond", "inEpb", "chkEnige", "chkDomicilie"]) {
+  $(id).addEventListener("input", render);
+}
+
+/* ---------- quiz ---------- */
+
+const QUIZ = [
+  {
+    v: "Je woont in Gent en koopt een appartement in Elsene. Welke registratierechten gelden?",
+    a: [
+      "De Vlaamse 2%, want ik ben Vlaming",
+      "De Brusselse 12,5% (met mogelijk abattement)",
+      "Een mix van beide gewesten",
+    ],
+    juist: 1,
+    uitleg: "De ligging van het pand bepaalt het regime. Elsene ligt in het Brussels Gewest, dus 12,5% — met abattement als je aan de voorwaarden voldoet.",
+  },
+  {
+    v: "Het appartement kost €610.000. Wat gebeurt er met het abattement van €200.000?",
+    a: [
+      "Het geldt gewoon op de eerste €200.000",
+      "Het wordt pro rata verminderd",
+      "Het vervalt volledig — €25.000 voordeel weg",
+    ],
+    juist: 2,
+    uitleg: "Het plafond van €600.000 is een klif, geen aftopping. Eén euro erboven en je betaalt 12,5% op de volledige prijs.",
+  },
+  {
+    v: "Je stuurt de makelaar een mailtje: \"Ik bied €340.000.\" De verkoper aanvaardt. Kun je nog terug?",
+    a: [
+      "Ja, een bod is vrijblijvend tot het compromis",
+      "Nee, een aanvaard schriftelijk bod is in principe bindend",
+      "Ja, binnen een wettelijke bedenktijd van 7 dagen",
+    ],
+    juist: 1,
+    uitleg: "België kent geen bedenktijd. Bied daarom altijd schriftelijk mét opschortende voorwaarde van financiering en een geldigheidsduur.",
+  },
+  {
+    v: "Je koopt nieuwbouw van een promotor onder 21% BTW. Hoeveel abattement krijg je op het BTW-gedeelte?",
+    a: [
+      "€200.000, zoals altijd",
+      "€100.000 (de helft)",
+      "Niets — het abattement geldt enkel bij registratierechten",
+    ],
+    juist: 2,
+    uitleg: "Het abattement is een vrijstelling van registratierechten. Bij een BTW-aankoop bestaat het niet; enkel het grondaandeel onder registratierechten telt eventueel mee.",
+  },
+  {
+    v: "Hoe lang moet je in de woning gedomicilieerd blijven om het abattement definitief te verdienen?",
+    a: [
+      "3 jaar",
+      "5 jaar ononderbroken",
+      "Zolang de lening loopt",
+    ],
+    juist: 1,
+    uitleg: "Domicilie vestigen binnen 3 jaar (5 bij renovatie-abattement) en daarna 5 jaar ononderbroken behouden. Vroeger vertrekken = pro rata terugbetalen, mogelijk met boete.",
+  },
+];
+
+let quizIndex = 0, quizBeantwoord = false;
+
+function toonVraag() {
+  const q = QUIZ[quizIndex];
+  quizBeantwoord = false;
+  $("quizVraag").textContent = q.v;
+  $("quizFeedback").textContent = "";
+  $("quizVolgende").style.display = "none";
+  $("quizProgress").textContent = "Vraag " + (quizIndex + 1) + " / " + QUIZ.length;
+  const box = $("quizAntwoorden");
+  box.innerHTML = "";
+  q.a.forEach((tekst, i) => {
+    const btn = document.createElement("button");
+    btn.className = "answer";
+    btn.type = "button";
+    btn.textContent = tekst;
+    btn.addEventListener("click", () => {
+      if (quizBeantwoord) return;
+      quizBeantwoord = true;
+      btn.classList.add(i === q.juist ? "correct" : "wrong");
+      box.children[q.juist].classList.add("correct");
+      $("quizFeedback").textContent = (i === q.juist ? "Juist. " : "Niet juist. ") + q.uitleg;
+      $("quizVolgende").style.display = quizIndex < QUIZ.length - 1 ? "" : "none";
+      if (quizIndex === QUIZ.length - 1) {
+        $("quizProgress").textContent = "Klaar — je kent de basics. Volgende stap: een notaris.";
+      }
+    });
+    box.appendChild(btn);
+  });
+}
+
+$("quizVolgende").addEventListener("click", () => { quizIndex++; toonVraag(); });
+
+render();
+toonVraag();
+</script>
+</body>
+</html>
