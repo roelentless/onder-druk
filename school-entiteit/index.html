@@ -37,8 +37,10 @@
     header{background:var(--ink);color:white;position:relative;overflow:hidden;display:flex;align-items:center}
     header::after{content:"";position:absolute;width:650px;height:650px;border:1px solid rgba(233,161,59,.22);border-radius:50%;right:-160px;top:40px;box-shadow:0 0 0 90px rgba(233,161,59,.04),0 0 0 180px rgba(233,161,59,.025)}
     .hero{position:relative;z-index:2;padding:96px 0 88px;display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center}
+    .hero>*{min-width:0}
     .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:var(--leaf);font-weight:500}
     .eyebrow.light{color:var(--gold)}
+    h1,h2,h3,h4{hyphens:auto}
     h1{font-size:clamp(44px,6vw,80px);line-height:.98;letter-spacing:-.045em;margin:24px 0 26px;max-width:720px}
     h1 em{color:var(--gold);font-style:normal}
     .lead{font-size:18px;color:#bccfc8;max-width:580px}
@@ -51,10 +53,10 @@
     .hero-stat{margin:22px 0 6px}
     .hero-stat strong{display:block;font-size:60px;line-height:1;letter-spacing:-.03em}
     .hero-stat small{color:#8fa8a0}
-    .hero-minis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+    .hero-minis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:22px}
     .hero-mini{background:var(--ink);border-radius:14px;padding:14px}
     .hero-mini b{display:block;font-size:17px}
-    .hero-mini span{font-size:10px;color:#7e988f;text-transform:uppercase;letter-spacing:.05em}
+    .hero-mini span{font-size:10px;color:#7e988f;text-transform:uppercase;letter-spacing:.05em;hyphens:auto;overflow-wrap:anywhere}
     section{padding:96px 0}
     .section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:46px}
     .section-head h2{font-size:clamp(34px,4.4vw,56px);line-height:1;letter-spacing:-.04em;margin:12px 0 0;max-width:780px}
@@ -116,7 +118,7 @@
     .chip.no{background:#fbeef0;color:#a03048;border-color:#eccdd4}
     .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
     .cards2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-    .kaart{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+    .kaart{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;min-width:0}
     .kaart h3{margin:0 0 8px;font-size:18px}
     .kaart h4{margin:0 0 8px;font-size:16px}
     .kaart p,.kaart li{font-size:13.5px;color:var(--muted)}
@@ -184,6 +186,10 @@
       .normrow{grid-template-columns:50px 1fr;grid-template-rows:auto auto}
       .normrow .normstatus{grid-column:2}
       .normval{display:none}
+      .src{white-space:normal}
+      .hero-minis{grid-template-columns:1fr}
+      .hero-mini{display:flex;align-items:baseline;gap:12px}
+      .hero-mini b{flex:none;min-width:64px}
       table.data{display:block;overflow-x:auto}
       .step-body{padding-left:22px}
       .footer-grid{grid-template-columns:1fr}
