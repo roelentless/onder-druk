@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#faf6ee">
+<meta name="description" content="Aquarel Atelier — een complete beginnerscursus aquarel in vijf lessen: watercontrole, technieken, kleur, randen en een 28-dagenplan met voortgangstracker. Gebouwd op de methodes van Zbukvic, Blundell en co.">
+<title>Aquarel Atelier — leer aquarel schilderen in 28 dagen</title>
+<style>
+:root{
+  --papier:#faf6ee; --papier2:#f3ecdc; --wit:#fffdf7;
+  --inkt:#3a342b; --potlood:#877d6a; --lijn:#e6dcc8;
+  --ultra:#3e5fa8; --ultra-d:#2e4a8c; --karmijn:#b04465; --oker:#d99a2b; --groen:#5a7d52;
+  --schaduw:0 16px 44px rgba(58,52,43,.10);
+  --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  --sans:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--papier);color:var(--inkt);font-family:var(--serif);line-height:1.65;overflow-x:hidden}
+.wrap{width:min(980px,calc(100% - 36px));margin:auto}
+
+/* ---- nav ---- */
+nav{position:sticky;top:0;z-index:30;background:rgba(250,246,238,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--lijn)}
+.navrow{display:flex;align-items:center;gap:14px;height:56px}
+.merk{font-style:italic;font-weight:700;white-space:nowrap;font-size:17px}
+.merk .drop{color:var(--ultra)}
+.links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.links::-webkit-scrollbar{display:none}
+.links a{font-family:var(--sans);font-size:12.5px;color:var(--potlood);text-decoration:none;padding:7px 11px;border-radius:99px;white-space:nowrap}
+.links a:hover{background:var(--papier2);color:var(--inkt)}
+
+/* ---- hero ---- */
+header{position:relative;padding:64px 0 56px;overflow:hidden}
+.vlek{position:absolute;border-radius:58% 42% 55% 45%/48% 55% 45% 52%;filter:blur(2px);opacity:.16;pointer-events:none}
+.vlek.b{background:radial-gradient(circle at 35% 35%,var(--ultra),transparent 72%);width:420px;height:360px;top:-90px;right:-120px}
+.vlek.r{background:radial-gradient(circle at 60% 40%,var(--karmijn),transparent 70%);width:300px;height:260px;bottom:-70px;left:-100px}
+.vlek.g{background:radial-gradient(circle at 50% 50%,var(--oker),transparent 70%);width:220px;height:200px;top:40px;left:38%}
+.eti{font-family:var(--sans);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--karmijn)}
+h1{font-size:clamp(40px,8.5vw,76px);line-height:1.02;margin:14px 0 18px;font-weight:700;letter-spacing:-.02em}
+h1 em{font-style:italic;color:var(--ultra)}
+.lead{font-size:clamp(16px,2.6vw,19px);max-width:620px;color:#5c5343}
+.hero-acties{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.knop{font-family:var(--sans);font-size:14px;font-weight:600;text-decoration:none;padding:13px 20px;border-radius:99px;background:var(--inkt);color:var(--wit);border:0;cursor:pointer;transition:transform .15s}
+.knop:hover{transform:translateY(-2px)}
+.knop.licht{background:transparent;color:var(--inkt);border:1.5px solid var(--inkt)}
+.hero-feiten{display:flex;gap:26px;flex-wrap:wrap;margin-top:36px;font-family:var(--sans)}
+.hero-feiten b{display:block;font-size:26px;font-family:var(--serif)}
+.hero-feiten span{font-size:12px;color:var(--potlood)}
+
+/* ---- secties ---- */
+section{padding:64px 0}
+.lesnr{display:inline-grid;place-items:center;width:46px;height:46px;color:var(--wit);font-style:italic;font-size:20px;border-radius:58% 42% 55% 45%/48% 55% 45% 52%;margin-bottom:14px}
+h2{font-size:clamp(28px,5.5vw,44px);line-height:1.08;margin:0 0 10px;letter-spacing:-.015em}
+.sub{color:var(--potlood);max-width:640px;margin:0 0 34px;font-size:16px}
+.penseelstreep{height:5px;width:88px;border-radius:99px;opacity:.55;margin:18px 0 0}
+
+/* ---- gouden regels ---- */
+.regels{background:var(--inkt);color:var(--papier);padding:46px 0}
+.regels h3{font-style:italic;font-weight:400;font-size:20px;margin:0 0 22px;color:var(--oker)}
+.regelgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 26px;font-family:var(--sans);font-size:14px}
+.regelgrid div{display:flex;gap:10px;align-items:baseline}
+.regelgrid b{color:var(--oker);font-family:var(--serif);font-style:italic;flex:none}
+
+/* ---- kaarten ---- */
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.kaart{background:var(--wit);border:1px solid var(--lijn);border-radius:18px;padding:22px;box-shadow:var(--schaduw)}
+.kaart h3{margin:0 0 8px;font-size:18px}
+.kaart p{margin:0;font-size:14px;color:#5c5343}
+.chip{display:inline-block;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:99px;margin-bottom:10px}
+.chip.b{background:#e6ecf8;color:var(--ultra-d)}
+.chip.r{background:#f6e3e9;color:var(--karmijn)}
+.chip.o{background:#f8ecd4;color:#96660d}
+.chip.g{background:#e5ecdf;color:#3f5c39}
+
+/* ---- checklist materiaal ---- */
+.check{list-style:none;padding:0;margin:0;font-size:15px}
+.check li{padding:9px 0 9px 30px;position:relative;border-bottom:1px dashed var(--lijn)}
+.check li:last-child{border-bottom:0}
+.check li::before{content:"✓";position:absolute;left:2px;color:var(--groen);font-weight:700}
+.check li.optioneel::before{content:"○";color:var(--potlood)}
+.check small{color:var(--potlood);display:block;font-family:var(--sans);font-size:12.5px}
+
+/* ---- waterklok ---- */
+.klok-paneel{background:var(--wit);border:1px solid var(--lijn);border-radius:22px;padding:24px;box-shadow:var(--schaduw)}
+.klok-label{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--potlood);margin:0 0 8px}
+.klok-rij{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.klok-rij button{font-family:var(--sans);font-size:13px;font-weight:600;padding:9px 14px;border-radius:99px;border:1.5px solid var(--lijn);background:var(--papier);color:var(--inkt);cursor:pointer}
+.klok-rij button.actief{background:var(--inkt);color:var(--wit);border-color:var(--inkt)}
+.klok-uit{display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center;margin-top:6px;padding-top:20px;border-top:1px dashed var(--lijn)}
+.klok-visual{width:120px;height:120px;position:relative;background:var(--papier2);border-radius:14px;overflow:hidden}
+.klok-blob{position:absolute;inset:18px;border-radius:56% 44% 52% 48%/47% 53% 46% 54%;background:var(--ultra);transition:all .35s}
+.klok-status{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:99px;display:inline-block;margin-bottom:8px}
+.s-ideaal{background:#e5ecdf;color:#3f5c39}
+.s-kan{background:#f8ecd4;color:#96660d}
+.s-riskant{background:#f6e3e9;color:var(--karmijn)}
+.klok-tekst h4{margin:0 0 6px;font-size:17px}
+.klok-tekst p{margin:0;font-size:14px;color:#5c5343}
+.consgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:26px}
+.cons{background:var(--wit);border:1px solid var(--lijn);border-radius:14px;padding:14px;font-size:13px}
+.cons b{display:block;font-style:italic;font-size:16px;margin-bottom:2px}
+.cons .staal{height:10px;border-radius:99px;margin:8px 0}
+.cons small{color:var(--potlood)}
+
+/* ---- technieken ---- */
+details.tech{background:var(--wit);border:1px solid var(--lijn);border-radius:16px;margin-bottom:10px;box-shadow:var(--schaduw);overflow:hidden}
+details.tech summary{cursor:pointer;padding:17px 20px;font-size:16.5px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+details.tech summary::-webkit-details-marker{display:none}
+details.tech summary::after{content:"+";font-size:22px;color:var(--potlood);flex:none;transition:transform .2s}
+details.tech[open] summary::after{transform:rotate(45deg)}
+details.tech summary small{font-family:var(--sans);font-weight:400;color:var(--potlood);font-size:12px;margin-left:auto;text-align:right}
+.tech-body{padding:0 20px 20px;font-size:14.5px}
+.tech-body ol{margin:0;padding-left:20px}
+.tech-body li{margin-bottom:7px}
+.tech-body .tip{background:var(--papier2);border-radius:10px;padding:10px 14px;font-size:13.5px;margin-top:12px;font-style:italic}
+
+/* ---- kleurlab ---- */
+.lab{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.lab .kaart h3{font-size:17px}
+.groenknoppen{display:grid;gap:8px;margin:14px 0}
+.groenknoppen button{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-size:13px;text-align:left;padding:10px 12px;border-radius:12px;border:1.5px solid var(--lijn);background:var(--papier);cursor:pointer;color:var(--inkt)}
+.groenknoppen button.actief{border-color:var(--inkt);background:var(--wit)}
+.duo{display:flex;flex:none}
+.duo i{width:18px;height:18px;border-radius:50%;border:2px solid var(--wit)}
+.duo i:last-child{margin-left:-6px}
+.staal-groot{height:74px;border-radius:14px;transition:background .3s;border:1px solid var(--lijn)}
+.staal-uitleg{font-size:13.5px;color:#5c5343;margin:10px 0 0;min-height:40px}
+input[type=range]{width:100%;accent-color:var(--inkt);margin:12px 0 4px}
+.range-labels{display:flex;justify-content:space-between;font-family:var(--sans);font-size:11.5px;color:var(--potlood)}
+.droog-stalen{display:flex;gap:10px;margin:14px 0 6px}
+.droog-stalen>div{flex:1}
+.droog-stalen .staal-groot{height:62px}
+.droog-stalen small{font-family:var(--sans);font-size:11.5px;color:var(--potlood);display:block;text-align:center;margin-top:6px}
+
+/* ---- fouten ---- */
+.fouten{counter-reset:fout}
+.fout{background:var(--wit);border:1px solid var(--lijn);border-radius:14px;padding:16px 18px 16px 54px;margin-bottom:9px;position:relative;font-size:14.5px}
+.fout::before{counter-increment:fout;content:counter(fout);position:absolute;left:16px;top:15px;width:26px;height:26px;display:grid;place-items:center;background:var(--karmijn);color:var(--wit);border-radius:52% 48% 55% 45%/50% 55% 45% 50%;font-style:italic;font-size:14px}
+.fout b{display:block}
+.fout span{color:#5c5343}
+.fout .fix{color:var(--groen);font-weight:600}
+
+/* ---- quiz ---- */
+.quiz-q{background:var(--wit);border:1px solid var(--lijn);border-radius:16px;padding:20px;margin-bottom:12px;box-shadow:var(--schaduw)}
+.quiz-q h4{margin:0 0 12px;font-size:16px}
+.quiz-opts{display:grid;gap:8px}
+.quiz-opts button{font-family:var(--sans);font-size:13.5px;text-align:left;padding:11px 14px;border-radius:12px;border:1.5px solid var(--lijn);background:var(--papier);cursor:pointer;color:var(--inkt)}
+.quiz-opts button:disabled{cursor:default;opacity:.55}
+.quiz-opts button.goed{background:#e5ecdf;border-color:var(--groen);color:#2e4629;opacity:1}
+.quiz-opts button.fout-a{background:#f6e3e9;border-color:var(--karmijn);color:#7c2b45;opacity:1}
+.quiz-uitleg{display:none;font-size:13.5px;font-style:italic;color:#5c5343;margin:12px 0 0;padding-top:12px;border-top:1px dashed var(--lijn)}
+.quiz-q.klaar .quiz-uitleg{display:block}
+#quizscore{font-style:italic;color:var(--potlood);margin-top:6px}
+
+/* ---- 28 dagen ---- */
+.voortgang{background:var(--wit);border:1px solid var(--lijn);border-radius:16px;padding:18px 20px;margin-bottom:26px;box-shadow:var(--schaduw)}
+.vbalk{height:12px;background:var(--papier2);border-radius:99px;overflow:hidden;margin:10px 0 8px}
+.vbalk i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ultra),var(--karmijn),var(--oker));border-radius:99px;transition:width .4s}
+.voortgang .vtekst{font-family:var(--sans);font-size:13px;color:var(--potlood)}
+.week-kop{display:flex;align-items:baseline;gap:12px;margin:30px 0 12px}
+.week-kop h3{margin:0;font-size:20px;font-style:italic}
+.week-kop span{font-family:var(--sans);font-size:12px;color:var(--potlood)}
+.dagen{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:9px}
+.dag{background:var(--wit);border:1.5px solid var(--lijn);border-radius:14px;padding:13px 14px;cursor:pointer;display:flex;gap:11px;align-items:flex-start;transition:border-color .15s;-webkit-tap-highlight-color:transparent}
+.dag:hover{border-color:var(--potlood)}
+.dag .vink{flex:none;width:22px;height:22px;border:2px solid var(--lijn);border-radius:50%;display:grid;place-items:center;font-size:13px;color:transparent;margin-top:2px}
+.dag b{font-size:14px;display:block;line-height:1.3}
+.dag small{font-family:var(--sans);font-size:12px;color:var(--potlood);display:block;margin-top:3px}
+.dag .dnr{font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--potlood);text-transform:uppercase}
+.dag.af{border-color:var(--groen);background:#fbfdf9}
+.dag.af .vink{background:var(--groen);border-color:var(--groen);color:var(--wit)}
+.dag.af b{text-decoration:line-through;text-decoration-thickness:1px;color:var(--potlood)}
+.reset{font-family:var(--sans);font-size:12px;color:var(--potlood);background:none;border:0;cursor:pointer;text-decoration:underline;padding:0;margin-top:14px}
+
+/* ---- footer ---- */
+footer{background:var(--inkt);color:#b5ac9b;padding:44px 0;font-family:var(--sans);font-size:13px;margin-top:30px}
+footer h4{color:var(--papier);font-family:var(--serif);font-style:italic;font-weight:400;font-size:17px;margin:0 0 10px}
+footer a{color:#d8cfbc}
+footer .bronnen{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:4px 24px;margin:0;padding-left:18px}
+footer .bronnen li{margin-bottom:4px}
+.footer-noot{border-top:1px solid #55503f;margin-top:26px;padding-top:18px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12px}
+
+@media (max-width:640px){
+  section{padding:48px 0}
+  .klok-uit{grid-template-columns:1fr}
+  .klok-visual{width:100%;height:90px}
+  .klok-blob{inset:14px 30%}
+  .hero-feiten{gap:18px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap navrow">
+    <span class="merk">Aquarel <span class="drop">Atelier</span></span>
+    <div class="links">
+      <a href="#materiaal">Materiaal</a>
+      <a href="#water">Water</a>
+      <a href="#technieken">Technieken</a>
+      <a href="#kleur">Kleur</a>
+      <a href="#randen">Randen</a>
+      <a href="#fouten">Fouten</a>
+      <a href="#quiz">Zelftest</a>
+      <a href="#plan">28 dagen</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="vlek b"></div><div class="vlek r"></div><div class="vlek g"></div>
+  <div class="wrap">
+    <div class="eti">Een complete beginnerscursus</div>
+    <h1>Leer <em>aquarel</em>,<br>één plas water per keer.</h1>
+    <p class="lead">Je hebt een setje gekocht — dit is de rest. Vijf lessen en een 28-dagenplan, gebouwd op de methodes van docenten als Joseph Zbukvic, Jane Blundell en Louise De Masi. Geen talent vereist, wel 15 minuten per dag.</p>
+    <div class="hero-acties">
+      <a class="knop" href="#plan">Start het 28-dagenplan</a>
+      <a class="knop licht" href="#water">Begin bij les 1</a>
+    </div>
+    <div class="hero-feiten">
+      <div><b>5</b><span>lessen</span></div>
+      <div><b>28</b><span>dagen, ±15 min/dag</span></div>
+      <div><b>1</b><span>geheim: water, niet verf</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="regels">
+  <div class="wrap">
+    <h3>De zes gouden regels — elke goede docent herhaalt ze</h3>
+    <div class="regelgrid">
+      <div><b>1.</b><span>Schilder van licht naar donker. Donker krijg je er nooit meer af.</span></div>
+      <div><b>2.</b><span>Wit is het papier. Er is geen witte verf — spaar je lichtpunten uit.</span></div>
+      <div><b>3.</b><span>Nat vloeit naar droog. De nattere kant wint altijd.</span></div>
+      <div><b>4.</b><span>Droog is droog. Nooit terugwerken in een halfdroge laag.</span></div>
+      <div><b>5.</b><span>Verf droogt ±30% lichter op. Meng donkerder dan je denkt.</span></div>
+      <div><b>6.</b><span>Maximaal 2–3 pigmenten per menging, anders wordt het modder.</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="materiaal">
+  <div class="wrap">
+    <span class="lesnr" style="background:var(--oker)">0</span>
+    <h2>Het atelier op je keukentafel</h2>
+    <p class="sub">Goed nieuws: je setje volstaat. Studentenverf zoals Van Gogh of Cotman gebruikt vaak dezelfde pigmenten als de dure lijnen — prima om mee te leren. Er is maar één ding waar je níet op mag besparen.</p>
+    <div class="kgrid">
+      <div class="kaart">
+        <span class="chip o">Belangrijkste aankoop</span>
+        <h3>Papier — belangrijker dan verf</h3>
+        <p>Goedkoop printpapier-achtig papier bobbelt, zuigt vlekkerig en maakt elke techniek onmogelijk — je denkt dat jíj het niet kan, maar het is het papier. Koop <b>300&nbsp;g/m², cold pressed (grain fin)</b>. Cellulose is prima voor dagelijkse oefening; een blok 100% katoen (bv. Arches) bewaar je voor werk dat af moet zijn. Plak het vast met tape op een plankje of snijplank.</p>
+      </div>
+      <div class="kaart">
+        <span class="chip b">Eén is genoeg</span>
+        <h3>Penseel: rond, maat 8, synthetisch</h3>
+        <p>Eén ronde synthetische kwast maat&nbsp;8 met een goede punt is je werkpaard: de buik houdt water voor vlakken, de punt tekent lijnen. Moderne synthetics doen nauwelijks onder voor sabelhaar, voor een fractie van de prijs. Later eventueel: een 12 voor grote vlakken, een 4 voor detail.</p>
+      </div>
+      <div class="kaart">
+        <span class="chip g">Uit de keukenkast</span>
+        <h3>De rest heb je al</h3>
+        <ul class="check">
+          <li>Twee potten water <small>één om te spoelen, één schoon om te mengen</small></li>
+          <li>Keukenrol <small>je belangrijkste gereedschap na de kwast: vocht doseren, wolken liften</small></li>
+          <li>HB-potlood + kneedgum <small>lichte schets, sporen wegdrukken zonder het papier te schaden</small></li>
+          <li>Wit bord of deksel als mengpalet</li>
+          <li class="optioneel">Föhn <small>om lagen sneller te drogen</small></li>
+        </ul>
+      </div>
+      <div class="kaart">
+        <span class="chip r">Leer je napjes lezen</span>
+        <h3>De code op de verf</h3>
+        <p>Kleurnamen zijn marketing; de <b>pigmentcode</b> is de waarheid. PB29 = ultramarijnblauw, PB15 = phtaloblauw, PV19 = quinacridone-roze — bij elk merk hetzelfde. Handig om te weten: <b>staining</b> pigmenten (phtalo's) trekken in het papier en zijn niet meer weg te halen; <b>granulerende</b> (ultramarijn, aardkleuren) geven een korrelige textuur — geen fout maar een effect.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="water" style="background:var(--papier2)">
+  <div class="wrap">
+    <span class="lesnr" style="background:var(--ultra)">1</span>
+    <h2>Les 1 — Water is de baas</h2>
+    <p class="sub">Bijna alle beginnersfrustratie is watercontrole. Meester-aquarellist Joseph Zbukvic vat het samen in zijn <i>watercolour clock</i>: het resultaat wordt bepaald door twee dingen — hoe dik je verf is, en hoe nat je papier is. Speel ermee:</p>
+
+    <div class="klok-paneel">
+      <p class="klok-label">Verfconsistentie (op je palet)</p>
+      <div class="klok-rij" id="rij-verf">
+        <button data-v="thee" class="actief">Thee</button>
+        <button data-v="koffie">Koffie</button>
+        <button data-v="melk">Melk</button>
+        <button data-v="room">Room</button>
+        <button data-v="boter">Boter</button>
+      </div>
+      <p class="klok-label">Toestand van het papier</p>
+      <div class="klok-rij" id="rij-papier">
+        <button data-p="nat" class="actief">Kletsnat (glanst)</button>
+        <button data-p="vochtig">Vochtig (satijn)</button>
+        <button data-p="klam">Klam (mat)</button>
+        <button data-p="droog">Droog</button>
+      </div>
+      <div class="klok-uit">
+        <div class="klok-visual"><div class="klok-blob" id="klok-blob"></div></div>
+        <div class="klok-tekst">
+          <span class="klok-status s-ideaal" id="klok-status">Ideaal</span>
+          <h4 id="klok-titel">Zachte luchten en mist</h4>
+          <p id="klok-uitleg"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="consgrid">
+      <div class="cons"><b>Thee</b><div class="staal" style="background:rgba(62,95,168,.22)"></div>Bijna alleen water, een zweem kleur.<br><small>Luchten, mist, eerste lichte lagen</small></div>
+      <div class="cons"><b>Koffie</b><div class="staal" style="background:rgba(62,95,168,.42)"></div>Vloeibaar en doorschijnend.<br><small>Verre bergen, zachte schaduwen</small></div>
+      <div class="cons"><b>Melk</b><div class="staal" style="background:rgba(62,95,168,.62)"></div>Dé standaardwash, halftonen.<br><small>Midden- en voorgrond</small></div>
+      <div class="cons"><b>Room</b><div class="staal" style="background:rgba(62,95,168,.84)"></div>Dik, bijna gouache-achtig.<br><small>Donkere vormen, rotsen, bomen</small></div>
+      <div class="cons"><b>Boter</b><div class="staal" style="background:rgba(46,74,140,1)"></div>Puur uit het napje, beweegt niet.<br><small>Spaarzaam: finale donkere accenten</small></div>
+    </div>
+    <p class="sub" style="margin-top:26px;margin-bottom:0">Herken de vier papierstadia met strijklicht: <b>kletsnat</b> spiegelt, <b>vochtig</b> glanst satijnig (dé zone voor zacht werk), <b>klam</b> is mat maar koel — <i>blijf eraf</i>, dit is bloemkool-territorium — en <b>droog</b> voelt kamerwarm: veilig voor een nieuwe laag.</p>
+  </div>
+</section>
+
+<section id="technieken">
+  <div class="wrap">
+    <span class="lesnr" style="background:var(--karmijn)">2</span>
+    <h2>Les 2 — De zeven technieken</h2>
+    <p class="sub">Meer heb je er niet nodig. Oefen ze los van elkaar op oefenpapier — elk vakje van 8×8&nbsp;cm is genoeg. Klik open voor de stappen.</p>
+
+    <details class="tech" open>
+      <summary>Vlakke wash <small>de basis van alles</small></summary>
+      <div class="tech-body">
+        <ol>
+          <li>Meng vooraf een <b>ruime plas</b> verf — halverwege bijmengen verpest de egaliteit.</li>
+          <li>Kantel je plankje ±15–30°.</li>
+          <li>Trek een volle horizontale streek bovenaan. Onderaan de streek vormt zich een <b>druppelrand</b> (de "bead") — dat is de bedoeling.</li>
+          <li>Elke volgende streek pikt die druppelrand op. Werk vlot door, herlaad je kwast in de plas.</li>
+          <li>Onderaan: kwast uitknijpen en de laatste druppelrand ermee opzuigen, anders bloeit hij terug.</li>
+        </ol>
+        <div class="tip">De druppelrand is je vriend: zolang die glimt en meeloopt, wordt de wash egaal.</div>
+      </div>
+    </details>
+    <details class="tech">
+      <summary>Verlopende wash <small>van donker naar licht</small></summary>
+      <div class="tech-body">
+        <ol>
+          <li>Start bovenaan met een verzadigde mix, zoals bij de vlakke wash.</li>
+          <li>Dip na elke streek je kwast even in schoon water — de mix verdunt vanzelf.</li>
+          <li>Eindig met bijna puur water. Druppelrand opzuigen, laten drogen.</li>
+        </ol>
+        <div class="tip">Met washes kan je maar één kant op: vooruit. Nooit terug naar boven om "bij te werken".</div>
+      </div>
+    </details>
+    <details class="tech">
+      <summary>Nat-op-nat <small>zachte randen, sfeer</small></summary>
+      <div class="tech-body">
+        <ol>
+          <li>Maak het papier nat met schoon water tot het overal gelijkmatig glanst.</li>
+          <li>Wacht tot de glans satijnig wordt, en zet dan verf in: de kleur bloeit zacht uit.</li>
+          <li>Gouden regel: de kwast moet <b>minder nat zijn dan het papier</b> — dus dikkere verf (melk/room) op nat papier.</li>
+          <li>Niet naroeren. Zet de kleur neer en laat het water het werk doen.</li>
+        </ol>
+        <div class="tip">Voor luchten, mist, achtergronden, en kleuren die in elkaar overvloeien ("charging").</div>
+      </div>
+    </details>
+    <details class="tech">
+      <summary>Nat-op-droog <small>harde randen, vorm</small></summary>
+      <div class="tech-body">
+        <ol>
+          <li>Natte verf op droog papier geeft een scherpe, gecontroleerde rand.</li>
+          <li>Werk een vlak in één beweging af — een rand die halverwege opdroogt, wordt een streep.</li>
+        </ol>
+        <div class="tip">Dit is je gereedschap voor alles wat een duidelijke vorm heeft: daken, stammen, silhouetten.</div>
+      </div>
+    </details>
+    <details class="tech">
+      <summary>Glaceren <small>lagen stapelen</small></summary>
+      <div class="tech-body">
+        <ol>
+          <li>Wacht tot de onderlaag <b>volledig</b> droog is — geen glans, voelt niet koel. Föhn mag.</li>
+          <li>Leg er een dunne transparante laag (thee/koffie) overheen, in één besliste streek.</li>
+          <li>Niet wrijven: de onderlaag lost anders weer op en je krijgt modder.</li>
+        </ol>
+        <div class="tip">Zo bouw je diepte: drie dunne lagen gloeien, één dikke laag is dof.</div>
+      </div>
+    </details>
+    <details class="tech">
+      <summary>Liften <small>licht terughalen</small></summary>
+      <div class="tech-body">
+        <ol>
+          <li><b>Nat liften:</b> dep in de natte verf met keukenrol (wolken!) of een uitgeknepen kwast voor precieze vormen.</li>
+          <li><b>Droog liften:</b> plek opnieuw bevochtigen, zacht wrijven met een vochtige kwast, deppen met keukenrol.</li>
+          <li>Let op: staining pigmenten (phtalo's) laten zich amper liften.</li>
+        </ol>
+        <div class="tip">Liften is je gum — maar plan je witten liever vooraf (gouden regel 2).</div>
+      </div>
+    </details>
+    <details class="tech">
+      <summary>Droge kwast &amp; texturen <small>gras, schors, fonkeling</small></summary>
+      <div class="tech-body">
+        <ol>
+          <li><b>Droge kwast:</b> weinig verf, weinig water, kwast afstrijken op keukenrol; scheer licht en snel over de papierkorrel → gebroken textuur.</li>
+          <li><b>Zout:</b> enkele korrels op een vochtig-glanzende (niet natte) wash → sterretjes. Droog laten worden, afborstelen.</li>
+          <li><b>Spatten:</b> geladen kwast aftikken boven het papier. Dek schone zones af.</li>
+        </ol>
+        <div class="tip">Texturen zijn dessert, geen hoofdgerecht — één per schilderij is meestal genoeg.</div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="kleur" style="background:var(--papier2)">
+  <div class="wrap">
+    <span class="lesnr" style="background:var(--groen)">3</span>
+    <h2>Les 3 — Kleur zonder modder</h2>
+    <p class="sub">Je hebt geen 24 kleuren nodig — je hebt zes kleuren en verstand van mengen nodig: een warme en koele versie van elk primair. Die zitten (ongeveer) in elk starterssetje. En het mooiste groen en grijs meng je zelf.</p>
+
+    <div class="lab">
+      <div class="kaart">
+        <span class="chip g">Menglab</span>
+        <h3>Groen meng je zelf</h3>
+        <p>Tube-groen oogt onnatuurlijk in landschappen. Kies een recept:</p>
+        <div class="groenknoppen" id="groenknoppen">
+          <button data-g="0" class="actief"><span class="duo"><i style="background:#e8d44d"></i><i style="background:#1b6a8f"></i></span>citroengeel + phtaloblauw</button>
+          <button data-g="1"><span class="duo"><i style="background:#efb306"></i><i style="background:#3e5fa8"></i></span>warm geel + ultramarijn</button>
+          <button data-g="2"><span class="duo"><i style="background:#c98f2e"></i><i style="background:#3e5fa8"></i></span>gele oker + ultramarijn</button>
+          <button data-g="3"><span class="duo"><i style="background:#8f4a2e"></i><i style="background:#1b6a8f"></i></span>gebrande sienna + phtaloblauw</button>
+        </div>
+        <div class="staal-groot" id="groenstaal"></div>
+        <p class="staal-uitleg" id="groenuitleg"></p>
+      </div>
+
+      <div class="kaart">
+        <span class="chip b">Menglab</span>
+        <h3>Het beroemdste grijs</h3>
+        <p>Ultramarijn + gebrande sienna: hét klassieke duo. Van luchtgrijs tot diep bruinzwart — levendiger dan elk tube-grijs, omdat het meebeweegt met je schilderij. Schuif met de verhouding:</p>
+        <input type="range" id="grijsslider" min="0" max="100" value="50" aria-label="Mengverhouding ultramarijn en gebrande sienna">
+        <div class="range-labels"><span>meer ultramarijn</span><span>meer sienna</span></div>
+        <div class="staal-groot" id="grijsstaal" style="margin-top:12px"></div>
+        <p class="staal-uitleg" id="grijsuitleg"></p>
+      </div>
+
+      <div class="kaart">
+        <span class="chip r">Belangrijk om te voelen</span>
+        <h3>Verf droogt lichter op</h3>
+        <p>Wat er nat perfect uitziet, droogt zo'n 30% lichter en fletser op — bij sommige pigmenten zelfs meer. Vergelijk:</p>
+        <div class="droog-stalen">
+          <div><div class="staal-groot" id="natstaal"></div><small>nat op het papier</small></div>
+          <div><div class="staal-groot" id="droogstaal"></div><small>opgedroogd</small></div>
+        </div>
+        <input type="range" id="pigmentslider" min="0" max="100" value="60" aria-label="Hoeveelheid pigment in de menging">
+        <div class="range-labels"><span>weinig pigment</span><span>veel pigment</span></div>
+        <p class="staal-uitleg">De remedie: meng donkerder dan je denkt, en test op een kladstrookje. "Ziet het er nat precies goed uit, dan is het fout."</p>
+      </div>
+
+      <div class="kaart">
+        <span class="chip o">Anti-modder</span>
+        <h3>Waarom kleuren vuil worden</h3>
+        <p>Modder = alle drie de primairen in één mix. Dat gebeurt sneller dan je denkt: sapgroen bevat al twee pigmenten, dus sapgroen + twee kleuren = vijf pigmenten. De regels: <b>maximaal 2–3 pigmenten per menging</b>, complementen mengen op het <i>palet</i> (niet nat over elkaar op papier), schoon mengwater, en niet roeren of "poetsen" op het papier — kleur neerzetten en loslaten.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="randen">
+  <div class="wrap">
+    <span class="lesnr" style="background:var(--ultra-d)">4</span>
+    <h2>Les 4 — Randen en waarden</h2>
+    <p class="sub">Dit is wat een schilderij van een kleurplaat onderscheidt. Niet de kleuren — de <i>randen</i> (waar kijkt het oog naartoe?) en de <i>waarden</i> (klopt het licht?).</p>
+    <div class="kgrid">
+      <div class="kaart">
+        <span class="chip b">Randen</span>
+        <h3>Hard trekt aandacht, zacht wijkt terug</h3>
+        <p>Harde randen (nat-op-droog) zeggen "kijk hier"; zachte randen (nat-op-nat) zeggen "achtergrond". Een goed schilderij mixt beide — vuistregel: rond de helft van elk, en zachter naarmate je verder van het focuspunt komt.</p>
+      </div>
+      <div class="kaart">
+        <span class="chip b">Dé handbeweging</span>
+        <h3>Een rand verzachten</h3>
+        <p>Zet een vorm neer, spoel en <b>knijp je kwast bijna droog</b>, en strijk hem meteen langs één kant van de natte rand: de verf vloeit zelf het vochtige pad in. Te natte kwast? Dan maak je een nieuwe harde rand verderop. Te droge kwast? Dan lift je de verf weer op. Dit is oefening&nbsp;15 van het plan — tien keer na elkaar.</p>
+      </div>
+      <div class="kaart">
+        <span class="chip o">Waarden</span>
+        <h3>Denk in drie waarden</h3>
+        <p>Knijp je ogen dicht en zie je motief in drie groepen: licht (= papier of thee), midden (koffie/melk), donker (room/boter). Maak vóór elk "echt" schilderij een postzegel-schetsje in die drie waarden — twee minuten die het verschil maken tussen plat en diep.</p>
+      </div>
+      <div class="kaart">
+        <span class="chip g">Volgorde</span>
+        <h3>Zo bouw je een schilderij op</h3>
+        <p>Groot naar klein, licht naar donker, achter naar voor: eerst de lucht en grote lichte vlakken (natte, zachte technieken), dan de middentonen, en pas op het einde — op droog papier — de donkerste accenten en details. Details eerst is de klassieke valkuil.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fouten" style="background:var(--papier2)">
+  <div class="wrap">
+    <span class="lesnr" style="background:var(--karmijn)">!</span>
+    <h2>De tien klassieke beginnersfouten</h2>
+    <p class="sub">Je gaat ze allemaal maken — dat hoort erbij. Maar herken ze snel:</p>
+    <div class="fouten">
+      <div class="fout"><b>Prutsen en overwerken</b><span>Blijven wrijven maakt kleuren krijtig en vuil. </span><span class="fix">Zet neer, laat los, stop eerder dan je denkt.</span></div>
+      <div class="fout"><b>Terugwerken in een halfdroge laag</b><span>Dé bron van bloemkolen (blooms). </span><span class="fix">Mat maar koel papier = handen thuis tot het écht droog is.</span></div>
+      <div class="fout"><b>Slecht papier</b><span>Bobbelt, zuigt vlekkerig, en jij denkt dat het aan jou ligt. </span><span class="fix">300 g/m² cold pressed, minimum.</span></div>
+      <div class="fout"><b>Te bang voor pigment</b><span>Alles droogt flets en bleek op. </span><span class="fix">Meng een waarde donkerder dan nat "juist" oogt.</span></div>
+      <div class="fout"><b>Wit niet gepland</b><span>Eén streek over je lichtpunt en het is weg. </span><span class="fix">Markeer je witten vooraf met potlood en schilder eromheen.</span></div>
+      <div class="fout"><b>Te veel water op de kwast</b><span>Plassen, blooms, controleverlies. </span><span class="fix">Dep de kwast even op keukenrol; kwast natter dan papier = probleem.</span></div>
+      <div class="fout"><b>Te kleine kwast</b><span>Voelt veilig, maar dwingt tot friemelen. </span><span class="fix">Grotere kwast = lossere, mooiere streken.</span></div>
+      <div class="fout"><b>Te veel kleuren in één mix</b><span>Drie primairen samen = grijsbruine soep. </span><span class="fix">Maximaal 2–3 pigmenten, denk aan verborgen mengkleuren.</span></div>
+      <div class="fout"><b>Overal even harde randen</b><span>Het werk oogt als een kleurplaat. </span><span class="fix">Verzacht bewust randen weg van het focuspunt.</span></div>
+      <div class="fout"><b>Geen geduld tussen lagen</b><span>Nieuwe laag op vochtig = modder en blooms. </span><span class="fix">Volledig droog (of föhn), dán pas verder.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <span class="lesnr" style="background:var(--oker)">?</span>
+    <h2>Zelftest — denk je als een aquarellist?</h2>
+    <p class="sub">Zes situaties van aan de schildertafel. Kies je antwoord:</p>
+    <div id="quizhouder"></div>
+    <p id="quizscore"></p>
+  </div>
+</section>
+
+<section id="plan" style="background:var(--papier2)">
+  <div class="wrap">
+    <span class="lesnr" style="background:var(--groen)">5</span>
+    <h2>Het 28-dagenplan</h2>
+    <p class="sub">Eén kleine opdracht per dag, ±15–20 minuten, klein formaat (een vakje van ±8×10&nbsp;cm volstaat). Tien minuten per dag verslaat drie uur op zondag. Vink af wat je deed — je voortgang wordt op dit toestel bewaard.</p>
+    <div class="voortgang">
+      <b id="vkop" style="font-style:italic">Nog niet begonnen</b>
+      <div class="vbalk"><i id="vbalkvul"></i></div>
+      <span class="vtekst" id="vtekst">0 van 28 dagen voltooid</span>
+    </div>
+    <div id="planhouder"></div>
+    <button class="reset" id="planreset">Voortgang wissen en opnieuw beginnen</button>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>Waar deze cursus op steunt</h4>
+    <ul class="bronnen">
+      <li>Joseph Zbukvic — <i>Mastering Atmosphere &amp; Mood in Watercolor</i> (de waterklok)</li>
+      <li><a href="https://www.janeblundellart.com" rel="noopener">Jane Blundell</a> — beperkt palet &amp; mengkleuren</li>
+      <li><a href="https://www.louisedemasi.com/tips" rel="noopener">Louise De Masi</a> — technieken &amp; beginnersfouten</li>
+      <li><a href="https://www.handprint.com/HP/WCL/water.html" rel="noopener">Handprint (Bruce MacEvoy)</a> — pigmenten &amp; papier</li>
+      <li><a href="https://www.watercoloraffair.com" rel="noopener">Watercolor Affair</a> — washes &amp; timing</li>
+      <li><a href="https://www.artsydee.com/30-day-mini-watercolor-sketchbook-challenge/" rel="noopener">Artsydee</a> — opzet 30-dagenchallenge</li>
+    </ul>
+    <div class="footer-noot">
+      <span>Aquarel Atelier · gemaakt voor iemand met een gloednieuw verfsetje</span>
+      <span>Deze pagina is gegenereerd met AI research. Schildertechniek leer je met je handen — dit is de kaart, niet de reis.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Les 1: waterklok ---------- */
+var KLOK = {
+  "thee-nat":    ["ideaal","Zachte luchten en mist","Dun pigment op spiegelnat papier vloeit ver uit: perfecte wolkenluchten, mist en atmosfeer. Kleuren blijven licht en luchtig."],
+  "thee-vochtig":["ideaal","Zachte vormen die blijven staan","Op satijnvochtig papier bloeit thee-verf zachtjes uit maar blijft ongeveer waar je ze zet. Ideaal voor verre heuvels en zachte schaduwen."],
+  "thee-klam":   ["riskant","Bloemkool-alarm","Dun, waterig spul op bijna-droog papier duwt het zettende pigment weg: gegarandeerd blooms. Wachten tot het papier droog is."],
+  "thee-droog":  ["ideaal","De glaceerlaag","Een transparante sluier over een droge onderlaag: zo stapel je kleuren die blijven gloeien. Eén besliste streek, niet wrijven."],
+  "koffie-nat":  ["kan","Zachte kleurpartijen","Iets meer body dan thee: kleuren mengen op het papier maar bewaren wat karakter. Mooi voor avondluchten met meerdere kleuren."],
+  "koffie-vochtig":["ideaal","Wolkenschaduw en verte","Dé combinatie voor gecontroleerd zacht werk: verre bergen, wolkschaduwen, achtergrondgroen. Blijft licht genoeg om over te werken."],
+  "koffie-klam": ["riskant","Nog steeds bloomgevaar","Ook koffie-consistentie bevat te veel water voor klam papier. De wash is bijna gezet — laat ze met rust."],
+  "koffie-droog":["ideaal","De standaardwash","Vloeiende, transparante vlakken met heldere randen: kwarttonen, eerste lagen van een landschap, egale luchten."],
+  "melk-nat":    ["kan","Vormen die uitzachten","Dikkere verf verspreidt minder ver: je vorm blijft herkenbaar maar krijgt dromerige randen. Denk aan natte bomen in de mist."],
+  "melk-vochtig":["ideaal","De alla-prima-zone","Zbukvic' favoriete moment: duidelijke vormen met fluweelzachte randen, in één keer gezet. Hier gebeurt de magie."],
+  "melk-klam":   ["kan","Kan — met dikke verf en lef","Dikker pigment bevat weinig water en vloeit amper terug. Gecontroleerde zachte randjes kunnen hier, maar de marge is klein."],
+  "melk-droog":  ["ideaal","Halftonen met harde rand","Het werkpaard voor midden- en voorgrond: stevige kleur, scherpe randen, volledige controle."],
+  "room-nat":    ["kan","Brede zachte vlekken","Roomdikke verf blijft bijna staan op nat papier: brede, donkere zachte vormen. Krachtig, maar snel te veel van het goede."],
+  "room-vochtig":["ideaal","Donker met fluwelen rand","Donkere boom in een mistig veld: dikke verf op vochtig papier geeft rijke vormen die nét uitzachten."],
+  "room-klam":   ["kan","De veiligste route in een drogende was","Wil je toch in een bijna-droge laag werken, dan alleen zó: veel pigment, bijna geen water. Dan is er niets dat kan terugvloeien."],
+  "room-droog":  ["ideaal","Donkere elementen","Rotsen, stammen, schaduwpartijen: dekkend donker met gebroken, karaktervolle randen op de papierkorrel."],
+  "boter-nat":   ["riskant","Verspilde moeite","Pure verf op kletsnat papier verliest zijn kracht en wordt weggeduwd door het water. Vrijwel nooit wat je wil."],
+  "boter-vochtig":["kan","Rijke accenten die net uitzachten","Donkerste donkers met een heel licht zweem-randje. Spaarzaam gebruiken."],
+  "boter-klam":  ["kan","Donker accent zonder risico","Pure verf bevat geen water om blooms te maken. Eén van de weinige veilige zetten op klam papier."],
+  "boter-droog": ["ideaal","Het slotakkoord","De diepste donkers en finale accenten: een raam, een vogel, een schaduwstreep. Dit zet je als allerlaatste."]
+};
+var BLUR = {nat:14, vochtig:8, klam:4, droog:0};
+var SPREID = {nat:1.28, vochtig:1.14, klam:1.05, droog:1};
+var ALPHA = {thee:.24, koffie:.44, melk:.64, room:.85, boter:1};
+var STATUSTEKST = {ideaal:"Ideaal", kan:"Kan — met beleid", riskant:"Riskant"};
+var verfKeus = "thee", papierKeus = "nat";
+
+function klokUpdate(){
+  var d = KLOK[verfKeus + "-" + papierKeus];
+  var st = document.getElementById("klok-status");
+  st.textContent = STATUSTEKST[d[0]];
+  st.className = "klok-status s-" + d[0];
+  document.getElementById("klok-titel").textContent = d[1];
+  document.getElementById("klok-uitleg").textContent = d[2];
+  var blob = document.getElementById("klok-blob");
+  blob.style.filter = "blur(" + BLUR[papierKeus] + "px)";
+  blob.style.transform = "scale(" + SPREID[papierKeus] + ")";
+  blob.style.opacity = ALPHA[verfKeus];
+}
+function koppelRij(rijId, attr, cb){
+  var rij = document.getElementById(rijId);
+  rij.addEventListener("click", function(e){
+    var b = e.target.closest("button");
+    if(!b) return;
+    rij.querySelectorAll("button").forEach(function(x){ x.classList.remove("actief"); });
+    b.classList.add("actief");
+    cb(b.getAttribute(attr));
+  });
+}
+koppelRij("rij-verf","data-v",function(v){ verfKeus = v; klokUpdate(); });
+koppelRij("rij-papier","data-p",function(p){ papierKeus = p; klokUpdate(); });
+klokUpdate();
+
+/* ---------- Les 3: menglab ---------- */
+var GROENEN = [
+  ["#5aa845","Fris, helder lentegroen — beide kleuren neigen al naar groen, dus niets dooft elkaar. Voor jong blad en zonnig gras."],
+  ["#7c8f4a","Gedempt, natuurlijk landschapsgroen — het rood in ultramarijn tempert het geel. Dit is het groen dat je buiten écht ziet."],
+  ["#7d7749","Olijf- en grijsgroen — stoffig en rustig. Voor zomerloof op afstand en droge velden."],
+  ["#3e5348","Diep dennengroen, bijna zwartgroen — voor schaduwpartijen in bos en donkere naaldbomen."]
+];
+var groenKnoppen = document.getElementById("groenknoppen");
+function toonGroen(i){
+  document.getElementById("groenstaal").style.background = GROENEN[i][0];
+  document.getElementById("groenuitleg").textContent = GROENEN[i][1];
+}
+groenKnoppen.addEventListener("click", function(e){
+  var b = e.target.closest("button");
+  if(!b) return;
+  groenKnoppen.querySelectorAll("button").forEach(function(x){ x.classList.remove("actief"); });
+  b.classList.add("actief");
+  toonGroen(parseInt(b.getAttribute("data-g"),10));
+});
+toonGroen(0);
+
+function hexNaarRgb(h){
+  return [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+}
+function meng(a,b,t){
+  var A = hexNaarRgb(a), B = hexNaarRgb(b);
+  return "rgb(" + Math.round(A[0]+(B[0]-A[0])*t) + "," + Math.round(A[1]+(B[1]-A[1])*t) + "," + Math.round(A[2]+(B[2]-A[2])*t) + ")";
+}
+var grijsSlider = document.getElementById("grijsslider");
+function grijsUpdate(){
+  var t = grijsSlider.value/100;
+  var kleur = t < .5 ? meng("#46609c","#6b655c", t*2) : meng("#6b655c","#8a5636",(t-.5)*2);
+  document.getElementById("grijsstaal").style.background = kleur;
+  var tekst = t < .35 ? "Koel blauwgrijs — winterluchten, verre schaduwen."
+            : t > .65 ? "Warm bruingrijs — aarde, boomstammen, oude muren."
+            : "Vrijwel neutraal grijs — dit punt vinden is de oefening.";
+  document.getElementById("grijsuitleg").textContent = tekst;
+}
+grijsSlider.addEventListener("input", grijsUpdate);
+grijsUpdate();
+
+var pigmentSlider = document.getElementById("pigmentslider");
+function droogUpdate(){
+  var t = pigmentSlider.value/100;
+  var nat = meng("#dfe6f4","#20376e", t);
+  var droog = meng(meng("#dfe6f4","#20376e", t), "#faf6ee", .34);
+  document.getElementById("natstaal").style.background = nat;
+  document.getElementById("droogstaal").style.background = droog;
+}
+pigmentSlider.addEventListener("input", droogUpdate);
+droogUpdate();
+
+/* ---------- Zelftest ---------- */
+var QUIZ = [
+  ["Je wash is mat geworden maar voelt nog koel. Je ziet een plekje dat donkerder moet.",
+   ["Nu snel bijwerken, straks is het te laat","Wachten tot alles volledig droog is en dan glaceren","Met schoon water verzachten"], 1,
+   "Klam papier is de gevarenzone: elke natte streek geeft een bloemkool. Volledig laten drogen en dan een dun laagje eroverheen."],
+  ["Je wil glinstering op water en een wit hoogtepunt op een appel. Witte verf zit niet in je set. Wat nu?",
+   ["Wit kopen, dat mist in de set","Het papier uitsparen: eromheen schilderen","Achteraf met dekkende gouache"], 1,
+   "In aquarel ís het papier je wit. Uitgespaard wit gloeit; opgeschilderd wit oogt dof. Plan je witten vóór je begint."],
+  ["Je mengt een kleur en hij ziet er op het natte papier precies goed uit.",
+   ["Perfect, zo laten","Te donker — snel verdunnen","Te licht — hij droogt zo'n 30% lichter op"], 2,
+   "Aquarel droogt flink lichter en fletser op. Nat 'precies goed' betekent droog te bleek. Meng een waarde donkerder."],
+  ["Je groen wordt een vieze bruingrijze soep. Wat is de meest waarschijnlijke oorzaak?",
+   ["Te weinig water gebruikt","Alle drie de primairen zitten in de mix","Verkeerd merk verf"], 1,
+   "Modder = drie primairen samen. Let op verborgen pigmenten: veel tube-kleuren zijn zelf al mengsels van twee of drie."],
+  ["Je schildert een boomkruin tegen de lucht en wil dat één kant zacht overloopt.",
+   ["Meteen langs die kant strijken met een bijna droge, schone kwast","Extra water op de rand gieten","Wachten tot droog en de rand wegschuren"], 0,
+   "Verzachten doe je onmiddellijk, met een schone kwast die vochtig maar uitgeknepen is. Te nat = nieuwe rand, te droog = je lift de verf."],
+  ["Je hebt €25 te besteden om beter te worden. Waaraan?",
+   ["Meer kleuren verf","Een duurdere kwast","Goed papier van 300 g/m²"], 2,
+   "Papier is de investering met het grootste effect: op slecht papier mislukt elke techniek, hoe goed je verf ook is."]
+];
+var quizHouder = document.getElementById("quizhouder");
+var quizGoed = 0, quizGedaan = 0;
+QUIZ.forEach(function(q, qi){
+  var kaart = document.createElement("div");
+  kaart.className = "quiz-q";
+  var kop = document.createElement("h4");
+  kop.textContent = (qi+1) + ". " + q[0];
+  kaart.appendChild(kop);
+  var opts = document.createElement("div");
+  opts.className = "quiz-opts";
+  q[1].forEach(function(optTekst, oi){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = optTekst;
+    b.addEventListener("click", function(){
+      if(kaart.classList.contains("klaar")) return;
+      kaart.classList.add("klaar");
+      quizGedaan++;
+      if(oi === q[2]){ quizGoed++; b.classList.add("goed"); }
+      else { b.classList.add("fout-a"); }
+      opts.querySelectorAll("button").forEach(function(x, xi){
+        x.disabled = true;
+        if(xi === q[2]) x.classList.add("goed");
+      });
+      var score = document.getElementById("quizscore");
+      score.textContent = quizGedaan < QUIZ.length
+        ? "Score tot nu toe: " + quizGoed + " van " + quizGedaan
+        : (quizGoed === 6 ? "6 op 6 — je denkt al als een aquarellist. Naar het plan!"
+          : "Eindscore: " + quizGoed + " op 6. Herlees de gouden regels en probeer het morgen opnieuw.");
+    });
+    opts.appendChild(b);
+  });
+  kaart.appendChild(opts);
+  var uitleg = document.createElement("p");
+  uitleg.className = "quiz-uitleg";
+  uitleg.textContent = q[3];
+  kaart.appendChild(uitleg);
+  quizHouder.appendChild(kaart);
+});
+
+/* ---------- 28-dagenplan ---------- */
+var WEKEN = [
+  ["Week 1 — Watercontrole", "de kwast en het water leren kennen", [
+    ["Swatch-kaart","Schilder elk napje van je set uit en schrijf de naam erbij. Dit kaartje wordt je spiekbrief.","materiaal"],
+    ["Cirkels en lijnen","Rijen cirkels; dikke lijnen met de buik, haardunne met de punt. Losse pols.","kwastcontrole"],
+    ["Waardenschaal","Eén kleur, vijf vakjes van licht (thee) naar donker (room). Gelijke stappen.","waarde"],
+    ["Vlakke wash","Rechthoek van ±8×10 cm, plankje gekanteld, druppelrand meenemen. Twee keer.","wash"],
+    ["Verlopende wash","Van donker bovenaan naar bijna wit onderaan. Alleen vooruit werken!","wash"],
+    ["Nat-op-nat vakjes","Vier natte vierkantjes; laat er telkens een andere kleur in vallen. Niet naroeren.","water"],
+    ["Harde vs zachte rand","Zelfde vorm twee keer: één op droog, één op vochtig papier. Vergelijk de randen.","randen"]
+  ]],
+  ["Week 2 — Kleur", "mengen tot het vanzelf gaat", [
+    ["Zes groenen","Raster: je blauwen × je gelen. Schrijf de recepten erbij.","mengen"],
+    ["Het beroemde grijs","Ultramarijn + gebrande sienna in drie verhoudingen: blauwgrijs, neutraal, warmbruin.","mengen"],
+    ["Verloop-lucht","Zonsondergang: geel → oranje → roze, nat-op-nat in elkaar laten vloeien.","charging"],
+    ["Eén kleur, drie sterktes","Zelfde kleur als thee, koffie en melk naast elkaar. Voel het verschil op de kwast.","consistentie"],
+    ["Complementen","Rood naast groen, blauw naast oranje — en meng ze dan: zie je neutralen ontstaan.","kleurenleer"],
+    ["Monochrome bol","Eén kleur, drie waarden: een bol met schaduwkant en slagschaduw. Highlight uitsparen!","waarde"],
+    ["Vrije mengdag","Speel: warm tegen koel, laat kleuren op het papier mengen. Geen doel, wel plezier.","spelen"]
+  ]],
+  ["Week 3 — Vorm en rand", "van oefening naar motief", [
+    ["Randen verzachten","Vorm neerzetten, kwast uitknijpen, één kant zacht strijken. Tien keer na elkaar.","randen"],
+    ["Wolkenlucht","Natte blauwe wash; wolken liften met een prop keukenrol. Timing is alles.","liften"],
+    ["Citroen of appel","Ronde vorm, kleurverloop, wit highlight uitgespaard. Max drie lagen.","vorm"],
+    ["Eén blad","Twee groenen in één natte bladvorm laten lopen (charging). Nerf uitsparen of liften.","charging"],
+    ["Losse bloem","Vijf lussen vanuit de pols, hart donker. Losheid > gelijkenis.","kwastcontrole"],
+    ["Berglagen","Drie bergsilhouetten achter elkaar: licht achteraan, donker vooraan. Elke laag eerst droog!","glaceren"],
+    ["Textuurdag","Droge kwast voor gras en schors; zoutkorrels op een vochtige wash. Experiment.","textuur"]
+  ]],
+  ["Week 4 — Echte schilderijtjes", "alles komt samen", [
+    ["Silhouet bij avond","Verloop-lucht, laten drogen, dan een zwart silhouet erop: vogels op een draad, een boom.","compositie"],
+    ["Mini-landschap","Drie plans: lucht (nat), heuvels (melk), voorgrond met droge-kwast-gras. Licht → donker.","alles"],
+    ["Nachthemel","Diep blauw nat-op-nat, sterren spatten met verdund wit of uitsparen. Laat het vloeien.","water"],
+    ["Iets van je tafel","Koffiekop, peer, plantje. Drie waarden, één zachte rand, één harde.","observatie"],
+    ["Bloemtak","Takje met knoppen en bladeren: charging, uitgespaarde lichtjes, donker accent als slot.","alles"],
+    ["Herneem je favoriet","Kies je beste oefening van de maand en maak ze opnieuw, groter en brutaler.","vertrouwen"],
+    ["Meesterproef","Landschap met lucht, middenplan en voorgronddetail. Waardenschetsje eerst. Signeer het.","alles"]
+  ]]
+];
+var SLEUTEL = "aquarel-atelier-plan";
+var klaarSet;
+try { klaarSet = new Set(JSON.parse(localStorage.getItem(SLEUTEL) || "[]")); }
+catch(e){ klaarSet = new Set(); }
+
+function bewaar(){
+  try { localStorage.setItem(SLEUTEL, JSON.stringify(Array.from(klaarSet))); } catch(e){}
+}
+function voortgangUpdate(){
+  var n = klaarSet.size;
+  document.getElementById("vbalkvul").style.width = (n/28*100) + "%";
+  document.getElementById("vtekst").textContent = n + " van 28 dagen voltooid";
+  var kop = document.getElementById("vkop");
+  kop.textContent = n === 0 ? "Nog niet begonnen — dag 1 duurt een kwartier"
+    : n < 7  ? "Week 1: je leert het water kennen"
+    : n < 14 ? "Week 2: kleur begint te luisteren"
+    : n < 21 ? "Week 3: dit begint ergens op te lijken"
+    : n < 28 ? "Week 4: bijna aan je meesterproef"
+    : "28 op 28 — je schildert. Nu: blijven schilderen.";
+}
+var planHouder = document.getElementById("planhouder");
+var dagNr = 0;
+WEKEN.forEach(function(week){
+  var kop = document.createElement("div");
+  kop.className = "week-kop";
+  var h = document.createElement("h3"); h.textContent = week[0];
+  var s = document.createElement("span"); s.textContent = week[1];
+  kop.appendChild(h); kop.appendChild(s);
+  planHouder.appendChild(kop);
+  var raster = document.createElement("div");
+  raster.className = "dagen";
+  week[2].forEach(function(dag){
+    dagNr++;
+    var id = dagNr;
+    var el = document.createElement("div");
+    el.className = "dag" + (klaarSet.has(id) ? " af" : "");
+    el.setAttribute("role","button");
+    el.setAttribute("tabindex","0");
+    el.innerHTML = '<span class="vink">✓</span><span><span class="dnr">Dag ' + id + ' · ' + dag[2] + '</span><b>' + dag[0] + '</b><small>' + dag[1] + '</small></span>';
+    function wissel(){
+      if(klaarSet.has(id)) klaarSet.delete(id); else klaarSet.add(id);
+      el.classList.toggle("af", klaarSet.has(id));
+      bewaar(); voortgangUpdate();
+    }
+    el.addEventListener("click", wissel);
+    el.addEventListener("keydown", function(e){
+      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); wissel(); }
+    });
+    raster.appendChild(el);
+  });
+  planHouder.appendChild(raster);
+});
+voortgangUpdate();
+document.getElementById("planreset").addEventListener("click", function(){
+  if(!confirm("Alle afgevinkte dagen wissen?")) return;
+  klaarSet.clear(); bewaar(); voortgangUpdate();
+  document.querySelectorAll(".dag").forEach(function(d){ d.classList.remove("af"); });
+});
+
+})();
+</script>
+</body>
+</html>
