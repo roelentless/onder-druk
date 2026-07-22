@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Trail Schotland · Plan je langeafstandspad</title>
+<meta name="description" content="Interactieve planner voor langeafstandswandelingen in Schotland: alle 31 Great Trails plus de Cape Wrath Trail en Skye Trail, met dagplanning op Naismith-basis, daglicht, weer, midges, budget en wildkampeerregels.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,550;0,9..144,700;0,9..144,900;1,9..144,550;1,9..144,700&family=Karla:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --veen:#131008;         /* pagina */
+  --veen-2:#1a1610;
+  --paneel:#1f1a11;
+  --kaartvlak:#1a170f;    /* chart-surface — vizpalet hierop gevalideerd */
+  --bot:#ede5d2;
+  --gedempt:#b5aa8d;
+  --vaag:#8a7f66;
+  --lijn:rgba(222,209,178,.13);
+  --lijn2:rgba(222,209,178,.30);
+  --heide:#b493e6;        /* interactie-accent */
+  --heide-fel:#cbb2f0;
+  --heide-diep:#8f68c9;
+  --gorse:#e8bc4a;        /* kickers, kleine accenten */
+  /* dataviz-rollen — gevalideerd op --kaartvlak (validate_palette.js: alle checks PASS) */
+  --viz-1:#b8891d;--viz-2:#8f68c9;--viz-3:#5f8f34;--viz-4:#2e79c9;--viz-5:#c05a24;
+  --viz-grid:#2b261a;--viz-as:#403927;
+  --goed:#5ca85c;--let-op:#e0a63a;--ernst:#d64545;
+  --maxw:1200px;--r:18px;
+  --schaduw:0 22px 60px -24px rgba(0,0,0,.8);
+  --sans:"Karla",ui-sans-serif,system-ui,sans-serif;
+  --serif:"Fraunces",Georgia,serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:var(--sans);color:var(--bot);background:var(--veen);
+  line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+/* veenmoor-gradient + hoogtelijnen */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-3;
+  background:
+    radial-gradient(90% 55% at 78% -8%, rgba(180,147,230,.13), transparent 60%),
+    radial-gradient(70% 45% at 8% 12%, rgba(232,188,74,.06), transparent 55%),
+    linear-gradient(180deg,#1c1710 0%, #16120a 40%, #100d07 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.55;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520' viewBox='0 0 520 520'%3E%3Cg fill='none' stroke='%23d6c9a8' stroke-opacity='.05'%3E%3Cpath d='M132 96c58-26 138-18 172 22s6 96-38 118-124 26-160-10-32-104 26-130z'/%3E%3Cpath d='M148 118c46-20 108-14 136 18s6 74-30 92-98 20-126-8-26-82 20-102z'/%3E%3Cpath d='M166 142c34-15 78-10 99 13s4 54-22 67-72 15-92-6-19-59 15-74z'/%3E%3Cpath d='M186 166c20-9 46-6 58 8s2 32-13 40-42 9-54-4-11-35 9-44z'/%3E%3Cpath d='M368 340c44-18 104-10 128 22s2 72-34 88-96 16-122-12-16-80 28-98z'/%3E%3Cpath d='M382 362c32-13 76-8 94 16s1 52-25 64-70 12-89-9-12-58 20-71z'/%3E%3Cpath d='M398 386c20-8 46-5 57 10s0 32-16 39-43 7-55-6-7-35 14-43z'/%3E%3Cpath d='M60 400c26-11 62-7 76 13s0 44-21 53-57 10-73-8-10-47 18-58z'/%3E%3Cpath d='M74 420c16-7 38-4 47 8s0 27-13 33-35 6-45-5-6-29 11-36z'/%3E%3C/g%3E%3C/svg%3E");
+}
+a{color:var(--heide);text-decoration:none}
+a:hover{color:var(--heide-fel)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--serif);font-weight:700;letter-spacing:-.015em;line-height:1.06}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button{font-family:var(--sans)}
+
+/* ---------- nav ---------- */
+nav.top{
+  position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);
+  background:linear-gradient(180deg,rgba(19,16,8,.94),rgba(19,16,8,.6));
+  border-bottom:1px solid var(--lijn);
+}
+nav.top .wrap{display:flex;align-items:center;gap:16px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:900;font-size:1.05rem;color:var(--bot)}
+.brand svg{display:block}
+nav.top .links{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+nav.top .links a{
+  color:var(--gedempt);font-size:.84rem;font-weight:500;padding:7px 12px;border-radius:999px;
+  transition:.18s;white-space:nowrap;
+}
+nav.top .links a:hover{color:var(--bot);background:rgba(237,229,210,.05)}
+nav.top .links a.actief{color:#191307;background:var(--heide);font-weight:700}
+@media(max-width:860px){nav.top .links{display:none}}
+
+/* ---------- hero ---------- */
+header.hero{position:relative;padding:84px 0 56px}
+.kicker{font-family:var(--mono);font-size:.76rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gorse);margin-bottom:20px}
+header.hero h1{font-size:clamp(2.7rem,7vw,5.4rem);margin:0 0 20px;font-weight:900}
+header.hero h1 .em{color:var(--heide);font-style:italic;font-weight:700}
+header.hero .lede{font-size:clamp(1.02rem,2vw,1.3rem);max-width:64ch;color:#d9d0ba}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;
+  font-weight:700;font-size:.95rem;padding:13px 22px;border-radius:999px;transition:.18s;
+}
+.btn-primair{background:var(--heide);color:#191307;box-shadow:0 12px 34px -12px var(--heide)}
+.btn-primair:hover{transform:translateY(-2px);box-shadow:0 16px 40px -12px var(--heide)}
+.btn-stil{background:rgba(237,229,210,.06);color:var(--bot);border:1px solid var(--lijn2)}
+.btn-stil:hover{background:rgba(237,229,210,.11)}
+.statstrip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:50px;
+  border:1px solid var(--lijn);border-radius:var(--r);overflow:hidden;background:var(--lijn);
+}
+.statstrip div{background:var(--paneel);padding:18px 20px}
+.statstrip .v{font-weight:700;font-size:1.45rem;color:var(--gorse);letter-spacing:-.01em}
+.statstrip .l{font-size:.78rem;color:var(--gedempt);margin-top:2px;line-height:1.35}
+@media(max-width:680px){.statstrip{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- secties ---------- */
+section{padding:64px 0;border-top:1px solid var(--lijn)}
+.sectiekop{margin-bottom:28px}
+.sectiekop .kicker{margin-bottom:10px}
+.sectiekop h2{font-size:clamp(1.8rem,4vw,2.7rem);margin:0 0 10px}
+.sectiekop p{color:var(--gedempt);max-width:70ch;margin:0}
+.paneel{background:var(--paneel);border:1px solid var(--lijn);border-radius:var(--r);padding:22px;box-shadow:var(--schaduw)}
+.kaartvlak{background:var(--kaartvlak)}
+
+/* chips & badges */
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;padding:3px 10px;border-radius:999px;border:1px solid var(--lijn2);color:var(--gedempt);white-space:nowrap}
+.chip.n1{color:#9fc47f;border-color:rgba(159,196,127,.4)}
+.chip.n2{color:var(--gorse);border-color:rgba(232,188,74,.4)}
+.chip.n3{color:#e88b6a;border-color:rgba(232,139,106,.45)}
+.chip.uniek{color:var(--heide);border-color:rgba(180,147,230,.45)}
+.melding{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border-radius:12px;font-size:.88rem;line-height:1.45;border:1px solid}
+.melding.waarschuw{background:rgba(224,166,58,.08);border-color:rgba(224,166,58,.35);color:#ecd39a}
+.melding.kritiek{background:rgba(214,69,69,.09);border-color:rgba(214,69,69,.4);color:#efb0b0}
+.melding.info{background:rgba(180,147,230,.07);border-color:rgba(180,147,230,.3);color:#d4c3ef}
+.melding .ic{flex:0 0 auto;font-size:1rem;line-height:1.4}
+
+/* ---------- trailkiezer ---------- */
+.filterrij{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+.filterrij label{font-size:.8rem;color:var(--gedempt);display:flex;align-items:center;gap:8px}
+.filterrij select,.filterrij input[type=range]{accent-color:var(--heide)}
+select{
+  background:var(--paneel);color:var(--bot);border:1px solid var(--lijn2);border-radius:10px;
+  padding:8px 12px;font-size:.88rem;font-family:var(--sans);
+}
+.schakelgroep{display:inline-flex;border:1px solid var(--lijn2);border-radius:999px;overflow:hidden}
+.schakelgroep button{
+  background:transparent;border:none;color:var(--gedempt);font-size:.8rem;font-weight:700;
+  padding:8px 14px;cursor:pointer;transition:.15s;
+}
+.schakelgroep button.aan{background:var(--heide);color:#191307}
+.trailindeling{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:22px;align-items:start}
+@media(max-width:980px){.trailindeling{grid-template-columns:1fr}}
+.schotkaart{position:sticky;top:76px}
+.schotkaart svg{width:100%;height:auto;display:block}
+.schotkaart .kust{fill:#2d2617;stroke:#6b5f3c;stroke-width:1.2}
+.schotkaart .marker{fill:#cfc3a0;stroke:var(--kaartvlak);stroke-width:2;cursor:pointer;transition:.15s}
+.schotkaart .marker:hover{fill:var(--heide-fel)}
+.schotkaart .marker.actief{fill:var(--heide);r:7}
+.schotkaart .eind{fill:var(--gorse)}
+.schotkaart .kaartnoot{font-size:.72rem;color:var(--vaag);margin-top:8px}
+.trailgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:14px}
+.trailkaart{
+  background:var(--paneel);border:1px solid var(--lijn);border-radius:14px;padding:16px;
+  cursor:pointer;transition:.18s;display:flex;flex-direction:column;gap:8px;
+}
+.trailkaart:hover{border-color:var(--lijn2);transform:translateY(-2px)}
+.trailkaart.actief{border-color:var(--heide);box-shadow:0 0 0 1px var(--heide), 0 14px 40px -18px rgba(180,147,230,.5)}
+.trailkaart h3{margin:0;font-size:1.06rem;font-weight:700}
+.trailkaart .route{font-size:.8rem;color:var(--gedempt)}
+.trailkaart .cijfers{display:flex;gap:12px;font-family:var(--mono);font-size:.8rem;color:var(--bot)}
+.trailkaart .cijfers span b{color:var(--gorse);font-weight:500}
+.trailkaart .chips{display:flex;gap:6px;flex-wrap:wrap}
+.trailkaart .terrein{font-size:.79rem;color:var(--vaag);line-height:1.4}
+.leegmelding{color:var(--vaag);font-size:.9rem;padding:20px}
+
+/* ---------- planner ---------- */
+.plannerkop{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.plannerkop h3{font-size:clamp(1.3rem,3vw,1.9rem);margin:0}
+.plannerkop .route{color:var(--gedempt);font-size:.9rem}
+.regelaars{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:20px 0}
+.regelaar{background:var(--paneel);border:1px solid var(--lijn);border-radius:14px;padding:14px 16px}
+.regelaar .rl{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--vaag);font-weight:700;margin-bottom:8px}
+.regelaar .rw{font-family:var(--mono);color:var(--gorse);font-size:.86rem;margin-top:6px;min-height:1.2em}
+.regelaar input[type=range]{width:100%;accent-color:var(--heide)}
+.regelaar select{width:100%}
+.tegels{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
+@media(max-width:760px){.tegels{grid-template-columns:repeat(2,1fr)}}
+.tegel{background:var(--kaartvlak);border:1px solid var(--lijn);border-radius:14px;padding:14px 16px}
+.tegel .tl{font-size:.78rem;color:var(--gedempt)}
+.tegel .tv{font-weight:700;font-size:1.55rem;letter-spacing:-.01em;margin-top:2px}
+.tegel .ts{font-size:.75rem;color:var(--vaag);margin-top:2px}
+.meldingen{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.grafiekkaart{background:var(--kaartvlak);border:1px solid var(--lijn);border-radius:14px;padding:16px;margin:16px 0}
+.grafiekkaart h4{margin:0 0 4px;font-family:var(--sans);font-weight:700;font-size:.95rem}
+.grafiekkaart .sub{font-size:.78rem;color:var(--gedempt);margin-bottom:10px}
+.grafiekkaart svg{width:100%;height:auto;display:block}
+.legenda{display:flex;gap:16px;flex-wrap:wrap;font-size:.78rem;color:var(--gedempt);margin-top:8px}
+.legenda span{display:inline-flex;align-items:center;gap:6px}
+.legenda i{width:14px;height:3px;border-radius:2px;display:inline-block}
+.legenda i.blok{width:11px;height:11px;border-radius:3px}
+.tabel-twin{margin-top:10px}
+.tabel-twin summary{font-size:.78rem;color:var(--heide);cursor:pointer}
+.scroll-x{overflow-x:auto}
+table.data{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:8px}
+table.data th{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--vaag);text-align:left;font-weight:700;padding:7px 10px;border-bottom:1px solid var(--lijn2)}
+table.data td{padding:8px 10px;border-bottom:1px solid var(--lijn);vertical-align:top}
+table.data td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.data tr:last-child td{border-bottom:none}
+.daglichtbalkje{height:6px;border-radius:3px;background:#2b261a;min-width:70px;position:relative;overflow:hidden}
+.daglichtbalkje i{position:absolute;inset:0;right:auto;border-radius:3px;background:var(--viz-1)}
+.daglichtbalkje.vol i{background:var(--ernst)}
+
+/* ---------- reisplan ---------- */
+.reisindeling{display:grid;grid-template-columns:340px 1fr;gap:22px;align-items:start}
+@media(max-width:980px){.reisindeling{grid-template-columns:1fr}}
+.keuzeblok{display:flex;flex-direction:column;gap:14px}
+.keuze{background:var(--paneel);border:1px solid var(--lijn);border-radius:14px;padding:14px 16px}
+.keuze .rl{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--vaag);font-weight:700;margin-bottom:10px}
+.radio-lijst{display:flex;flex-direction:column;gap:6px}
+.radio-lijst label{
+  display:flex;justify-content:space-between;gap:4px 10px;align-items:baseline;flex-wrap:wrap;
+  padding:8px 12px;border-radius:10px;border:1px solid transparent;cursor:pointer;font-size:.88rem;
+}
+.radio-lijst label:hover{background:rgba(237,229,210,.04)}
+.radio-lijst input{display:none}
+.radio-lijst label.aan{border-color:var(--heide);background:rgba(180,147,230,.08)}
+.radio-lijst .prijs{font-family:var(--mono);font-size:.78rem;color:var(--gedempt);white-space:nowrap}
+.aanuit{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.88rem;padding:4px 0}
+.aanuit .sub{display:block;font-size:.75rem;color:var(--vaag)}
+.wip{position:relative;width:40px;height:22px;border-radius:999px;background:#3a3424;border:none;cursor:pointer;transition:.18s;flex:0 0 auto}
+.wip::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--gedempt);transition:.18s}
+.wip.aan{background:var(--heide)}
+.wip.aan::after{left:21px;background:#191307}
+.heldcijfer{font-weight:700;font-size:clamp(2.4rem,5vw,3.4rem);letter-spacing:-.02em;line-height:1}
+.heldcijfer small{font-size:.45em;color:var(--gedempt);font-weight:500}
+.budgetbalk{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:16px 0 6px;background:var(--veen-2)}
+.budgetbalk i{display:block;height:100%;border-right:2px solid var(--kaartvlak)}
+.budgetbalk i:last-child{border-right:none}
+.postlijst{display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:.88rem}
+.postlijst .post{display:flex;align-items:baseline;gap:10px}
+.postlijst .post i{width:11px;height:11px;border-radius:3px;flex:0 0 auto;align-self:center}
+.postlijst .post .pl{color:var(--gedempt)}
+.postlijst .post .stippel{flex:1;border-bottom:1px dotted var(--lijn2);transform:translateY(-3px)}
+.postlijst .post .pv{font-family:var(--mono);font-size:.82rem}
+.reisinfo{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.reisinfo h4{margin:12px 0 2px;font-size:.95rem}
+.reisinfo p{margin:0;font-size:.86rem;color:var(--gedempt)}
+
+/* ---------- seizoen ---------- */
+.maandkiezer{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.maandkiezer button{
+  background:var(--paneel);border:1px solid var(--lijn2);color:var(--gedempt);
+  font-weight:700;font-size:.8rem;padding:8px 13px;border-radius:999px;cursor:pointer;transition:.15s;
+}
+.maandkiezer button:hover{color:var(--bot)}
+.maandkiezer button.aan{background:var(--gorse);border-color:var(--gorse);color:#191307}
+.seizoensgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.seizoensgrid{grid-template-columns:1fr}}
+.oordeel{border-left:3px solid var(--gorse);padding:10px 16px;background:rgba(232,188,74,.06);border-radius:0 12px 12px 0;margin-bottom:18px}
+.oordeel b{color:var(--gorse)}
+.midgestrip{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;margin-top:8px}
+.midgestrip .cel{border-radius:6px;padding:10px 0 8px;text-align:center;cursor:default}
+.midgestrip .cel .m{font-size:.68rem;font-weight:700;color:var(--gedempt);display:block}
+.midgestrip .cel.fel .m,.midgestrip .cel.fel .w{color:#191307}
+.midgestrip .cel .w{font-family:var(--mono);font-size:.78rem;display:block;margin-top:3px}
+.midgestrip .cel.aan{outline:2px solid var(--gorse);outline-offset:1px}
+
+/* ---------- veilig ---------- */
+.veilgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.veilgrid{grid-template-columns:1fr}}
+.veilgrid .paneel h3{margin:0 0 10px;font-size:1.15rem}
+ul.strak{margin:0;padding-left:18px;font-size:.88rem;color:var(--gedempt);display:flex;flex-direction:column;gap:6px}
+ul.strak li b{color:var(--bot);font-weight:700}
+.checklijst{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;margin-top:6px}
+@media(max-width:600px){.checklijst{grid-template-columns:1fr}}
+.checklijst label{display:flex;gap:9px;align-items:flex-start;font-size:.85rem;color:var(--gedempt);padding:5px 0;cursor:pointer}
+.checklijst input{accent-color:var(--heide);margin-top:3px}
+.checklijst label.af{color:var(--vaag);text-decoration:line-through}
+.checkteller{font-family:var(--mono);font-size:.8rem;color:var(--gorse);margin-top:10px}
+.noodblok{display:flex;gap:14px;align-items:center;background:rgba(214,69,69,.09);border:1px solid rgba(214,69,69,.4);border-radius:14px;padding:14px 18px;margin-top:14px}
+.noodblok .nr{font-family:var(--mono);font-weight:700;font-size:1.6rem;color:#efb0b0}
+.noodblok p{margin:0;font-size:.85rem;color:var(--gedempt)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--lijn);padding:48px 0 36px;margin-top:40px}
+.bronkolommen{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin-bottom:28px}
+.bronkolommen h4{margin:0 0 8px;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--vaag)}
+.bronkolommen ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+.bronkolommen a{font-size:.82rem}
+.footer-onder{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--vaag);border-top:1px solid var(--lijn);padding-top:18px}
+
+svg text.as{font-family:var(--mono);font-size:10.5px;fill:#8a7f66}
+
+/* tooltip */
+#tip{
+  position:fixed;z-index:99;pointer-events:none;display:none;
+  background:#26200f;border:1px solid var(--lijn2);border-radius:10px;padding:9px 12px;
+  font-size:.8rem;box-shadow:0 12px 30px -8px rgba(0,0,0,.7);max-width:260px;
+}
+#tip .tt{font-weight:700;color:var(--gedempt);font-size:.72rem;margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase}
+#tip .rij{display:flex;align-items:center;gap:8px;margin-top:2px}
+#tip .rij i{width:12px;height:3px;border-radius:2px;flex:0 0 auto}
+#tip .rij .w{font-family:var(--mono);font-weight:700;color:var(--bot)}
+#tip .rij .n{color:var(--gedempt)}
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="Hoofdnavigatie">
+  <div class="wrap">
+    <span class="brand">
+      <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true"><path d="M1 15 7 3l4 7 2-3 5 8z" fill="none" stroke="#b493e6" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      Trail&thinsp;·&thinsp;Schotland
+    </span>
+    <div class="links">
+      <a href="#trails">Trails</a>
+      <a href="#dagplanner">Dagplanner</a>
+      <a href="#reisplan">Reisplan</a>
+      <a href="#seizoen">Seizoen</a>
+      <a href="#veilig">Veilig op pad</a>
+      <a href="#bronnen">Bronnen</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Schotland · Langeafstandspaden · Plantool</div>
+    <h1>Van veen tot top:<br>plan je <span class="em">Schotse trail</span></h1>
+    <p class="lede">Alle 31 officiële Scotland's Great Trails plus de Cape Wrath Trail en de Skye Trail, in één interactieve planner. Kies een route, verdeel de etappes over je dagen, toets ze aan daglicht en seizoen, en reken je budget door — op basis van gedocumenteerde cijfers, met bronnen onderaan.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primair" data-ga="#trails">Kies een trail</button>
+      <button class="btn btn-stil" data-ga="#dagplanner">Direct naar de dagplanner</button>
+    </div>
+    <div class="statstrip">
+      <div><div class="v">31</div><div class="l">officiële Great Trails, van 38 tot 338 km</div></div>
+      <div><div class="v">3.475&nbsp;km</div><div class="l">totaal bewegwijzerd netwerk</div></div>
+      <div><div class="v">17u53</div><div class="l">daglicht in Fort William, half juni</div></div>
+      <div><div class="v">±36.000</div><div class="l">wandelaars voltooien jaarlijks de West Highland Way</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="trails">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Stap 1 · Kies je route</div>
+      <h2>Drieëndertig trails, één kaart</h2>
+      <p>De 31 officiële Scotland's Great Trails, aangevuld met twee iconische niet-bewegwijzerde routes (Cape Wrath Trail en Skye Trail). Filter op regio, zwaarte en duur; klik een kaartstip of een trailkaart om ermee te plannen. Afstanden volgen de officiële of meest geciteerde cijfers — waar bronnen uiteenlopen staat dat bij de trail vermeld.</p>
+    </div>
+    <div class="filterrij">
+      <label>Regio
+        <select id="f-regio"><option value="alle">Alle regio's</option></select>
+      </label>
+      <label>Zwaarte
+        <span class="schakelgroep" id="f-niveau">
+          <button data-n="0" class="aan">Alles</button><button data-n="1">Rustig</button><button data-n="2">Gemiddeld</button><button data-n="3">Zwaar</button>
+        </span>
+      </label>
+      <label>Max. dagen
+        <input type="range" id="f-dagen" min="2" max="21" value="21" step="1">
+        <span class="mono" id="f-dagen-w" style="color:var(--gorse);min-width:4.5ch">alle</span>
+      </label>
+      <span class="chip" id="f-teller"></span>
+    </div>
+    <div class="trailindeling">
+      <div class="schotkaart paneel kaartvlak">
+        <svg id="kaart" viewBox="-8 -12 496 632" role="img" aria-label="Schematische kaart van Schotland met startpunten van de trails"></svg>
+        <p class="kaartnoot">Schematische kaart — stip = startpunt, gouden stip = eindpunt van de geselecteerde trail. Kustlijn vereenvoudigd (ONS/OS-geometrie); Orkney &amp; Shetland buiten beeld.</p>
+      </div>
+      <div>
+        <div class="trailgrid" id="trailgrid"></div>
+        <p class="leegmelding" id="trailleeg" hidden>Geen trails binnen deze filters — verruim de zwaarte of het aantal dagen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="dagplanner">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Stap 2 · Verdeel je dagen</div>
+      <h2>Dagplanner</h2>
+      <p>De planner verdeelt de route over je wandeldagen langs plekken waar je realistisch kunt overnachten (de gangbare etappepunten), en kiest de verdeling die je zwaarste dag zo licht mogelijk houdt. Looptijden volgen de regel van Naismith met een tempoprofiel en pauzemarge — praktijkconsensus, geen exacte wetenschap: reken ruim.</p>
+    </div>
+    <div class="paneel">
+      <div class="plannerkop">
+        <h3 id="pl-naam">—</h3>
+        <span class="route" id="pl-route">—</span>
+        <span id="pl-chips"></span>
+      </div>
+      <div class="regelaars">
+        <div class="regelaar">
+          <div class="rl">Wandeldagen</div>
+          <input type="range" id="r-dagen" min="1" max="10" value="7" step="1">
+          <div class="rw" id="r-dagen-w">7 dagen</div>
+        </div>
+        <div class="regelaar">
+          <div class="rl">Tempoprofiel</div>
+          <select id="r-profiel">
+            <option value="rustig">Rustig — beginnend of zwaar bepakt</option>
+            <option value="gemiddeld" selected>Gemiddeld — geoefende wandelaar</option>
+            <option value="stevig">Stevig — fit en gehard</option>
+          </select>
+          <div class="rw" id="r-profiel-w"></div>
+        </div>
+        <div class="regelaar">
+          <div class="rl">Bepakking</div>
+          <select id="r-bepakking">
+            <option value="licht">Licht — daypack / bagagetransport</option>
+            <option value="vol" selected>Vol — kampeeruitrusting mee</option>
+          </select>
+          <div class="rw" id="r-bepakking-w"></div>
+        </div>
+        <div class="regelaar">
+          <div class="rl">Maand van vertrek</div>
+          <select id="r-maand"></select>
+          <div class="rw" id="r-maand-w"></div>
+        </div>
+      </div>
+      <div class="tegels" id="pl-tegels"></div>
+      <div class="meldingen" id="pl-meldingen"></div>
+      <div class="grafiekkaart">
+        <h4>Looptijd per dag</h4>
+        <div class="sub" id="gr-dagen-sub"></div>
+        <svg id="gr-dagen" viewBox="0 0 720 300" role="img" aria-label="Staafdiagram: geschatte looptijd per wandeldag"></svg>
+        <div class="legenda" id="gr-dagen-leg"></div>
+        <details class="tabel-twin"><summary>Bekijk als tabel</summary>
+          <div class="scroll-x"><table class="data" id="pl-tabel"></table></div>
+        </details>
+      </div>
+      <div class="scroll-x"><table class="data" id="pl-dagtabel"></table></div>
+      <p class="kaartnoot" id="pl-voetnoot"></p>
+    </div>
+  </div>
+</section>
+
+<section id="reisplan">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Stap 3 · Reken je reis door</div>
+      <h2>Reisplan &amp; budget</h2>
+      <p>Prijzen in Britse pond, prijspeil 2025/2026, per persoon. De schuifjes hieronder rekenen met middenwaarden van gedocumenteerde prijsranges — de ranges staan erbij. Vervoer, verblijf en bagagetransport verschillen per trail; boekingsdruk-info verschijnt waar die geldt.</p>
+    </div>
+    <div class="reisindeling">
+      <div class="keuzeblok">
+        <div class="keuze">
+          <div class="rl">Verblijfsstijl <span style="text-transform:none">(£/nacht p.p.)</span></div>
+          <div class="radio-lijst" id="k-verblijf"></div>
+        </div>
+        <div class="keuze">
+          <div class="rl">Eten (£/dag)</div>
+          <div class="radio-lijst" id="k-maaltijd"></div>
+        </div>
+        <div class="keuze">
+          <div class="rl">Extra's</div>
+          <div class="aanuit"><span>Bagagetransport<span class="sub" id="k-bagage-sub">±£9 per etappe per tas (range £6–12)</span></span><button class="wip" id="k-bagage" role="switch" aria-checked="false" aria-label="Bagagetransport"></button></div>
+          <div class="aanuit"><span>UK ETA (verplicht voor EU-reizigers)<span class="sub">£20 p.p., 2 jaar geldig — regel ≥3 werkdagen vooraf</span></span><button class="wip aan" id="k-eta" role="switch" aria-checked="true" aria-label="UK ETA meerekenen"></button></div>
+          <div class="aanuit"><span>Trein/bus in Schotland<span class="sub" id="k-vervoer-sub">schatting heen + terug naar trailkop</span></span><button class="wip aan" id="k-vervoer" role="switch" aria-checked="true" aria-label="Vervoer in Schotland meerekenen"></button></div>
+        </div>
+      </div>
+      <div class="paneel kaartvlak">
+        <div class="tl" style="font-size:.8rem;color:var(--gedempt)">Geschat totaal, <span id="b-kader">—</span></div>
+        <div class="heldcijfer" id="b-totaal">—</div>
+        <div class="budgetbalk" id="b-balk" aria-hidden="true"></div>
+        <div class="postlijst" id="b-posten"></div>
+        <details class="tabel-twin"><summary>Bekijk als tabel</summary>
+          <div class="scroll-x"><table class="data" id="b-tabel"></table></div>
+        </details>
+        <div class="meldingen" id="b-meldingen"></div>
+        <div class="reisinfo" id="b-reisinfo"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="seizoen">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Stap 4 · Kies je moment</div>
+      <h2>Seizoen, daglicht &amp; midges</h2>
+      <p>Daglicht op de 15e van de maand in Fort William (57°N). Klimaat: Met Office-stationsgemiddelden 1991–2020 — Tulloch Bridge voor de westelijke Highlands, Dyce (Aberdeen) voor het oosten. De westkust zelf is nog natter (±2.000 mm/jaar). Je maandkeuze stuurt ook de dagplanner en de budgetmeldingen.</p>
+    </div>
+    <div class="maandkiezer" id="maandkiezer"></div>
+    <div class="oordeel" id="s-oordeel"></div>
+    <div class="seizoensgrid">
+      <div class="grafiekkaart">
+        <h4>Daglicht door het jaar</h4>
+        <div class="sub">Uren tussen zonsopkomst en -ondergang, Fort William, 15e van de maand (2026)</div>
+        <svg id="gr-daglicht" viewBox="0 0 560 260"></svg>
+        <details class="tabel-twin"><summary>Bekijk als tabel</summary>
+          <div class="scroll-x"><table class="data" id="s-tabel-daglicht"></table></div>
+        </details>
+      </div>
+      <div class="grafiekkaart">
+        <h4>Maximumtemperatuur, west vs. oost</h4>
+        <div class="sub">Gemiddelde dagmaxima in °C — hover voor minima (Met Office 1991–2020)</div>
+        <svg id="gr-temp" viewBox="0 0 560 260"></svg>
+        <div class="legenda" id="gr-temp-leg"></div>
+        <details class="tabel-twin"><summary>Bekijk als tabel</summary>
+          <div class="scroll-x"><table class="data" id="s-tabel-temp"></table></div>
+        </details>
+      </div>
+      <div class="grafiekkaart">
+        <h4>Neerslag per maand</h4>
+        <div class="sub">Millimeter per maand — het oosten is grofweg half zo nat als de westelijke Highlands</div>
+        <svg id="gr-regen" viewBox="0 0 560 260"></svg>
+        <div class="legenda" id="gr-regen-leg"></div>
+        <details class="tabel-twin"><summary>Bekijk als tabel</summary>
+          <div class="scroll-x"><table class="data" id="s-tabel-regen"></table></div>
+        </details>
+      </div>
+      <div class="grafiekkaart">
+        <h4>Midge-kalender</h4>
+        <div class="sub">Hoogland-midge (<i>Culicoides impunctatus</i>): seizoen eind mei – half september, piek juli–augustus, westkust het zwaarst. 0 = geen, 3 = piek.</div>
+        <div class="midgestrip" id="midgestrip"></div>
+        <ul class="strak" style="margin-top:14px">
+          <li>Midges vliegen niet boven ±10 km/u wind en zijn inactief onder ±10 °C — kies open, winderige kampeerplekken.</li>
+          <li>Actief rond dauw en schemer (±05–09 u en 18–21 u); fel middaglicht is rustig.</li>
+          <li>Neem een fijnmazig hoofdnet en Smidge (picaridine) of DEET mee in juni–september, zeker in het westen.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="veilig">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Stap 5 · Wees voorbereid</div>
+      <h2>Wildkamperen, uitrusting &amp; veiligheid</h2>
+      <p>Schotland heeft het meest gastvrije kampeerrecht van Europa, met één belangrijke uitzondering rond Loch Lomond. Bergweer is er grillig: sneeuw kan er boven de toppen in elke maand vallen.</p>
+    </div>
+    <div class="veilgrid">
+      <div class="paneel">
+        <h3>Wildkamperen: mag, mits</h3>
+        <ul class="strak">
+          <li><b>Standaard toegestaan</b> op vrijwel alle niet-omheinde grond (Land Reform Act 2003 + Scottish Outdoor Access Code): kleine tent, kleine groep, maximaal 2–3 nachten per plek.</li>
+          <li><b>Afstand houden</b> van huizen, wegen en omheinde velden; alles meenemen wat je meebracht (Leave No Trace).</li>
+          <li><b>Geen open vuur</b> bij droogte of nabij veen, bos en gebouwen — kook op een brander.</li>
+          <li><b>Loch Lomond &amp; the Trossachs:</b> van 1 maart t/m 30 september gelden in vier Camping Management Zones (o.a. de oostoever van Loch Lomond, op de West Highland Way) bijzondere regels: alleen kamperen op een camping of met een vergunning van £4,30 per tent per nacht, tot 4 weken vooraf te boeken, max. 3 nachten. Boete tot £500.</li>
+          <li>Buiten het seizoen (okt–feb) geldt ook daar gewoon de toegangscode.</li>
+        </ul>
+        <h3 style="margin-top:22px">Noodgevallen</h3>
+        <div class="noodblok">
+          <span class="nr">999<span style="color:var(--vaag);font-size:.9rem"> / 112</span></span>
+          <p>Vraag naar <b>Police → Mountain Rescue</b>. Registreer vooraf je nummer voor 999-per-sms (sms komt door waar bellen faalt). Bereik in de glens is gebrekkig: offline kaarten, powerbank, en op solo- of afgelegen routes een PLB of satellietmessenger.</p>
+        </div>
+      </div>
+      <div class="paneel">
+        <h3>Paklijst-essentials</h3>
+        <p style="margin:0 0 6px;font-size:.86rem;color:var(--gedempt)">Gebaseerd op de adviezen van Mountaineering Scotland en Scottish Mountain Rescue. Vink af wat je hebt.</p>
+        <div class="checklijst" id="paklijst"></div>
+        <div class="checkteller" id="pakteller"></div>
+        <h3 style="margin-top:22px">Gewicht</h3>
+        <ul class="strak">
+          <li>Basisgewicht (uitrusting zonder eten/water/brandstof): <b>ultralicht &lt; 4,5 kg</b>, licht 4,5–9 kg, traditioneel 7–14 kg. Realistisch beginnersdoel: 7–9 kg.</li>
+          <li>Totale rugzak <b>maximaal ±20% van je lichaamsgewicht</b>, liever 15% (REI-richtlijn; vuistregel, geen wet).</li>
+          <li>Bergweer verandert snel en is boven altijd ruiger dan bij de weg — plan omkeerpunten en laat een routekaartje achter bij iemand thuis. Raadpleeg MWIS of het Met Office-bergweerbericht.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="bronnen">
+  <div class="wrap">
+    <div class="sectiekop" style="margin-bottom:22px">
+      <div class="kicker">Verantwoording</div>
+      <h2 style="font-size:1.6rem">Bronnen</h2>
+      <p>Alle cijfers op deze pagina komen uit onderstaande bronnen (geraadpleegd juli 2026). Waar bronnen elkaar tegenspreken is de range vermeld; tempoprofielen zijn praktijkconsensus en als schatting gemarkeerd.</p>
+    </div>
+    <div class="bronkolommen">
+      <div>
+        <h4>Trails &amp; etappes</h4>
+        <ul>
+          <li><a href="https://www.scotlandsgreattrails.com/" rel="noopener">Scotland's Great Trails (officieel)</a></li>
+          <li><a href="https://www.nature.scot/enjoying-outdoors/routes-explore/scotlands-great-trails" rel="noopener">NatureScot</a></li>
+          <li><a href="https://www.walkhighlands.co.uk/" rel="noopener">Walkhighlands — routegidsen</a></li>
+          <li><a href="https://www.westhighlandway.org/" rel="noopener">West Highland Way (officieel)</a></li>
+          <li><a href="https://www.cicerone.co.uk/west-highland-way-complete-planning-guide" rel="noopener">Cicerone-gidsen (WHW, CWT, Skye, Hebriden)</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Scotland%27s_Great_Trails" rel="noopener">Wikipedia: Scotland's Great Trails</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Klimaat &amp; daglicht</h4>
+        <ul>
+          <li><a href="https://www.metoffice.gov.uk/research/climate/maps-and-data/location-specific-long-term-averages/gfhesb7dr" rel="noopener">Met Office — Tulloch Bridge 1991–2020</a></li>
+          <li><a href="https://www.metoffice.gov.uk/research/climate/maps-and-data/location-specific-long-term-averages/gfnmmyh91" rel="noopener">Met Office — Dyce 1991–2020</a></li>
+          <li><a href="https://sunrise-sunset.org/" rel="noopener">sunrise-sunset.org (daglicht 2026)</a></li>
+          <li><a href="https://www.smidgeup.com/" rel="noopener">Smidge — midge-verwachting</a></li>
+          <li><a href="https://www.mwis.org.uk/" rel="noopener">MWIS bergweer</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Regels &amp; veiligheid</h4>
+        <ul>
+          <li><a href="https://www.outdooraccess-scotland.scot/practical-guide-all/camping" rel="noopener">Scottish Outdoor Access Code</a></li>
+          <li><a href="https://www.lochlomond-trossachs.org/things-to-do/camping/campingbyelaws/" rel="noopener">Loch Lomond &amp; Trossachs — camping byelaws</a></li>
+          <li><a href="https://www.scottishmountainrescue.org/mountain-safety-advice/" rel="noopener">Scottish Mountain Rescue</a></li>
+          <li><a href="https://www.mountaineering.scot/activities/hillwalking/getting-started/essential-kit" rel="noopener">Mountaineering Scotland — essentiële kit</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Naismith%27s_rule" rel="noopener">Regel van Naismith (+ Tranter/Langmuir)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Budget &amp; vervoer</h4>
+        <ul>
+          <li><a href="https://www.scotrail.co.uk/" rel="noopener">ScotRail (West Highland Line)</a></li>
+          <li><a href="https://www.citylink.co.uk/" rel="noopener">Citylink</a></li>
+          <li><a href="https://travel-lite-uk.com/" rel="noopener">Travel-Lite — bagagetransport WHW</a></li>
+          <li><a href="https://baggagefreedom.com/" rel="noopener">Baggage Freedom</a></li>
+          <li><a href="https://www.gov.uk/guidance/apply-for-an-electronic-travel-authorisation-eta" rel="noopener">UK ETA (gov.uk)</a></li>
+          <li><a href="https://www.rei.com/learn/expert-advice/backpacking-weight.html" rel="noopener">REI — rugzakgewicht</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-onder">
+      <span>Onder Druk — educatieve demo's · trail-schotland</span>
+      <span>Deze pagina is gegenereerd met AI research (juli 2026). Controleer cijfers en boek via officiële bronnen vóór je vertrekt.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ================= DATA =================
+   Bronnen: zie footer. Afstanden = officiële of meest geciteerde cijfers;
+   stijging = null waar geen betrouwbare bron gevonden werd (nooit verzonnen). */
+
+const MAANDEN = ["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"];
+const MAAND_KORT = ["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
+
+// Fort William, 15e van de maand, 2026 (sunrise-sunset.org)
+const DAGLICHT = [7.53, 9.62, 11.85, 14.33, 16.55, 17.88, 17.28, 15.27, 12.85, 10.48, 8.20, 6.90];
+const ZON = [["08:44","16:16"],["07:46","17:23"],["06:34","18:25"],["06:10","20:31"],["05:00","21:33"],["04:24","22:18"],["04:48","22:05"],["05:47","21:03"],["06:50","19:41"],["07:52","18:21"],["07:59","16:11"],["08:49","15:42"]];
+
+// Met Office stationsgemiddelden 1991–2020
+const KLIMAAT = {
+  west: { station: "Tulloch Bridge (bij Fort William)",
+    tmax: [5.7,6.0,7.6,10.6,14.0,16.0,17.5,17.0,14.9,11.2,8.0,5.9],
+    tmin: [-0.1,-0.2,0.9,2.4,4.6,7.7,9.5,9.3,7.5,4.8,2.2,-0.5],
+    regendagen: [19.6,17.7,18.0,15.2,14.5,14.6,16.0,16.4,16.4,19.5,19.7,19.1],
+    mm: [250,187,154,103,95,88,94,108,130,191,203,223] },
+  oost: { station: "Dyce (Aberdeen)",
+    tmax: [6.8,7.3,9.1,11.2,13.9,16.3,18.5,18.3,16.1,12.6,9.2,6.9],
+    tmin: [1.0,1.1,2.1,3.9,6.0,9.0,11.0,10.8,9.1,6.3,3.1,0.9],
+    regendagen: [12.5,11.1,11.0,11.2,10.3,11.6,12.2,10.8,10.4,14.5,14.5,12.8],
+    mm: [68,59,54,58,54,69,71,68,61,100,93,78] },
+};
+
+const MIDGE = [0,0,0,0,1,2,3,3,1,0,0,0];
+const MIDGE_LABEL = ["geen","licht","stevig","piek"];
+
+const OORDEEL = [
+  "<b>Winters.</b> ±7,5 u daglicht, nat en koud; hoger terrein vraagt winterervaring. Alleen korte routes voor doorgewinterde wandelaars.",
+  "<b>Nog winter.</b> Iets meer licht (±9,5 u), maar sneeuw en ijs zijn boven waarschijnlijk.",
+  "<b>Randgeval.</b> Dagen lengen (±12 u), geen midges, maar nat en winters op de toppen. Kampeerbyelaws Loch Lomond starten 1 maart.",
+  "<b>Goed voorseizoen.</b> ±14 u licht, het droogste deel van het jaar begint, nauwelijks midges; koud, sneeuwresten hoog.",
+  "<b>De beste maand.</b> Langste droge periode, ±16,5 u licht, midges komen amper op gang, paden droog. Dé langeafstandsmaand.",
+  "<b>Zeer goed.</b> Maximaal daglicht (±18 u) en aangenaam; eind juni beginnen de midges, vooral in het westen.",
+  "<b>Gemengd.</b> Lange dagen, maar de zwaarste midgemaand en natter in het westen. Kies oost of hoog en winderig.",
+  "<b>Gemengd.</b> Midges op hun piek (zakt eind augustus), warm, vochtig en druk. De oostkust is de betere keuze.",
+  "<b>Goed naseizoen.</b> Midges nemen af, herfstkleuren, ±13 u licht; regen neemt toe. Laatste byelaw-maand.",
+  "<b>Randgeval.</b> Begin oktober kan prima zijn, maar ±10,5 u licht en nat. Byelaws voorbij, stilte op de paden.",
+  "<b>Winters.</b> ±8 u licht, nat en koud; eerste echte wintercondities.",
+  "<b>Winters.</b> ±7 u licht, volle winter. Alleen voor ervaren wandelaars op korte routes.",
+];
+
+// Tempoprofielen: praktijkconsensus (gemarkeerd als schatting), Naismith-vorm
+const PROFIELEN = {
+  rustig:    { snelheidKmh: 3.5, klimMPerUur: 350, pauzeFactor: 1.25, w: "3,5 km/u · 350 m/u klim · pauzes ×1,25" },
+  gemiddeld: { snelheidKmh: 4.0, klimMPerUur: 450, pauzeFactor: 1.20, w: "4,0 km/u · 450 m/u klim · pauzes ×1,20" },
+  stevig:    { snelheidKmh: 5.0, klimMPerUur: 550, pauzeFactor: 1.15, w: "5,0 km/u · 550 m/u klim · pauzes ×1,15" },
+};
+const BEPAKKING = {
+  licht: { factor: 1.00, w: "geen toeslag" },
+  vol:   { factor: 1.15, w: "looptijd ×1,15" },
+};
+
+// niveau: 1 rustig · 2 gemiddeld · 3 zwaar — co: [[lat,lon] start, [lat,lon] einde]
+const TRAILS = [
+  { id:"whw", naam:"West Highland Way", start:"Milngavie", einde:"Fort William", km:154, dagen:[5,8], stijging:4020, stijgingNoot:"bronnen: 4.020–4.800 m; hier gerekend met de laagste", niveau:2, west:true, terrein:"Bewegwijzerde drove- en militaire wegen; het ruige oeverpad langs Loch Lomond is de crux", regio:"Highlands", populair:true, officieel:true, noot:"Schotlands populairste trail (±36.000 voltooiingen/jaar; sommige bronnen 40–45.000). Loop zuid → noord.", co:[[55.941,-4.317],[56.819,-5.105]] },
+  { id:"ggw", naam:"Great Glen Way", start:"Fort William", einde:"Inverness", km:125, dagen:[4,7], stijging:1230, stijgingNoot:"laagteroute ±1.230 m; hoogteroute ±1.835 m", niveau:1, west:true, terrein:"Jaagpad langs het Caledonisch Kanaal, bospistes, oude militaire weg; optionele hoge route boven Loch Ness", regio:"Highlands", populair:true, officieel:true, noot:"Zuidwest → noordoost met de wind mee. Afstand 117–127 km naargelang bron en routekeuze.", co:[[56.819,-5.105],[57.477,-4.224]] },
+  { id:"speyside", naam:"Speyside Way", start:"Buckie", einde:"Newtonmore", km:137, dagen:[6,9], stijging:1245, niveau:1, west:false, terrein:"Rivierpad, oude spoorlijn, bos en hei; heuvelachtigst tussen Ballindalloch en Grantown", regio:"Noordoost-Schotland", populair:true, officieel:true, noot:"Whiskyland; in 2019 verlengd tot Newtonmore. Optionele Tomintoul-aftakking en Dufftown-lus.", co:[[57.676,-2.962],[57.066,-4.120]] },
+  { id:"robroy", naam:"Rob Roy Way", start:"Drymen", einde:"Pitlochry", km:127, dagen:[5,9], stijging:2325, niveau:2, west:true, terrein:"Bospistes, fietspaden, oude spoorbeddingen, hei; over het geheel vriendelijk", regio:"Trossachs & Perthshire", populair:true, officieel:true, noot:"Variant via Amulree maakt er 154 km van.", co:[[56.068,-4.451],[56.703,-3.733]] },
+  { id:"fife", naam:"Fife Coastal Path", start:"Kincardine", einde:"Newburgh", km:187, dagen:[8,10], stijging:null, niveau:1, west:false, terrein:"Kustpad en strand met enkele ruwe stukken; afgelegen tussen Crail–St Andrews en Balmerino–Newburgh", regio:"Centrale Gordel & Fife", populair:true, officieel:true, noot:"Loop tegen de klok in (Kincardine → Newburgh). Bron-afstanden 184–188 km; hier en daar kusterosie-omleidingen.", co:[[56.066,-3.720],[56.350,-3.235]] },
+  { id:"jmw", naam:"John Muir Way", start:"Helensburgh", einde:"Dunbar", km:215, dagen:[7,10], stijging:2015, niveau:1, west:false, terrein:"Kust, jaagpad, bos, boerenland en stad — kust-tot-kust door de Centrale Gordel", regio:"Centrale Gordel & Fife", populair:true, officieel:true, noot:"Eindigt bij John Muirs geboortehuis. Gangbare etappe-indeling telt ±194 km; officieel 215 km incl. varianten.", co:[[56.004,-4.734],[56.003,-2.516]] },
+  { id:"suw", naam:"Southern Upland Way", start:"Portpatrick", einde:"Cockburnspath", km:338, dagen:[12,16], stijging:null, niveau:3, west:true, terrein:"Afgelegen hei, bos en heuvels — Schotlands langste en zwaarste officiële kust-tot-kust", regio:"Zuid-Schotland", populair:false, officieel:true, noot:"Lange verlaten trajecten, schaarse bevoorrading.", co:[[54.842,-5.117],[55.933,-2.351]] },
+  { id:"kintyre", naam:"Kintyre Way", start:"Tarbert", einde:"Machrihanish", km:161, dagen:[5,8], stijging:null, niveau:2, west:true, terrein:"Bospistes, heuvels en kust op het schiereiland Kintyre", regio:"Argyll & Clyde-eilanden", populair:false, officieel:true, noot:"Sommige bronnen noemen Southend als eindpunt.", co:[[55.866,-5.412],[55.454,-5.712]] },
+  { id:"arran", naam:"Arran Coastal Way", start:"Brodick", einde:"Brodick (rondje)", km:107, dagen:[5,7], stijging:null, niveau:2, west:true, terrein:"Rond het eiland: kustpad, ruwe keienstranden, optioneel Goatfell", regio:"Argyll & Clyde-eilanden", populair:false, officieel:true, noot:"Circulaire route rond Arran.", co:[[55.576,-5.139],[55.576,-5.139]] },
+  { id:"ayrshire", naam:"Ayrshire Coastal Path", start:"Glenapp", einde:"Skelmorlie", km:161, dagen:[6,9], stijging:null, niveau:2, west:true, terrein:"Kustpad, strand en lage kliffen langs de Firth of Clyde", regio:"Zuid-Schotland", populair:false, officieel:true, noot:"", co:[[55.088,-4.958],[55.863,-4.888]] },
+  { id:"annandale", naam:"Annandale Way", start:"Moffat", einde:"Annan", km:90, dagen:[4,5], stijging:null, niveau:2, west:false, terrein:"Rivierdal, bos en heuvel — de Annan van bron tot zee", regio:"Zuid-Schotland", populair:false, officieel:true, noot:"", co:[[55.333,-3.442],[54.983,-3.266]] },
+  { id:"berwickshire", naam:"Berwickshire Coastal Path", start:"Cockburnspath", einde:"Berwick-upon-Tweed", km:48, dagen:[2,3], stijging:null, niveau:2, west:false, terrein:"Klifkustpad", regio:"Zuid-Schotland", populair:false, officieel:true, noot:"Eindigt net over de grens in Engeland.", co:[[55.933,-2.351],[55.771,-2.007]] },
+  { id:"abbeys", naam:"Borders Abbeys Way", start:"Kelso", einde:"Kelso (rondje)", km:109, dagen:[4,6], stijging:null, niveau:1, west:false, terrein:"Boerenland, rivieroevers en landweggetjes langs de vier Border-abdijen", regio:"Zuid-Schotland", populair:false, officieel:true, noot:"Circulaire erfgoedroute.", co:[[55.598,-2.434],[55.598,-2.434]] },
+  { id:"cateran", naam:"Cateran Trail", start:"Blairgowrie", einde:"Blairgowrie (rondje)", km:103, dagen:[4,5], stijging:null, niveau:2, west:false, terrein:"Glens, hei en oude veedrijverswegen", regio:"Trossachs & Perthshire", populair:false, officieel:true, noot:"Circulair.", co:[[56.591,-3.340],[56.591,-3.340]] },
+  { id:"clyde", naam:"Clyde Walkway", start:"Glasgow", einde:"New Lanark", km:65, dagen:[3,4], stijging:null, niveau:1, west:true, terrein:"Stedelijk rivierpad, daarna kloof en bos tot de Falls of Clyde", regio:"Centrale Gordel & Fife", populair:false, officieel:true, noot:"", co:[[55.858,-4.245],[55.663,-3.785]] },
+  { id:"drove", naam:"Cross Borders Drove Road", start:"Little Vantage", einde:"Hawick", km:82, dagen:[4,5], stijging:null, niveau:2, west:false, terrein:"Historische veedrijversroute over heuvels en hei", regio:"Zuid-Schotland", populair:false, officieel:true, noot:"", co:[[55.855,-3.418],[55.422,-2.786]] },
+  { id:"dava", naam:"Dava Way", start:"Grantown-on-Spey", einde:"Forres", km:38, dagen:[1,2], stijging:null, niveau:1, west:false, terrein:"Oude spoorlijn over Dava Moor", regio:"Noordoost-Schotland", populair:false, officieel:true, noot:"Sluit aan op Speyside Way en Moray Coast Trail.", co:[[57.330,-3.607],[57.610,-3.620]] },
+  { id:"formartine", naam:"Formartine & Buchan Way", start:"Dyce (Aberdeen)", einde:"Fraserburgh / Peterhead", km:87, dagen:[3,4], stijging:null, niveau:1, west:false, terrein:"Oude spoorlijn; splitst naar twee noordoostelijke eindpunten", regio:"Noordoost-Schotland", populair:false, officieel:true, noot:"±66 km tot één eindpunt; ±87 km beide takken samen.", co:[[57.205,-2.191],[57.693,-2.005]] },
+  { id:"canals", naam:"Forth & Clyde / Union Canal", start:"Bowling", einde:"Edinburgh", km:106, dagen:[4,5], stijging:null, niveau:1, west:false, terrein:"Vlak jaagpad, kust-tot-kust via het Falkirk Wheel", regio:"Centrale Gordel & Fife", populair:false, officieel:true, noot:"", co:[[55.931,-4.492],[55.940,-3.213]] },
+  { id:"canoe", naam:"Great Glen Canoe Trail", start:"Banavie (Fort William)", einde:"Inverness", km:96, dagen:[3,5], stijging:null, niveau:2, west:true, kano:true, terrein:"Kano/kajakroute: Caledonisch Kanaal plus de lochs Lochy, Oich en Ness", regio:"Highlands", populair:false, officieel:true, noot:"De enige peddel-Great Trail — valt buiten de wandelplanner.", co:[[56.845,-5.093],[57.477,-4.224]] },
+  { id:"trossachs", naam:"Great Trossachs Path", start:"Callander", einde:"Inversnaid", km:45, dagen:[2,3], stijging:null, niveau:1, west:true, terrein:"Bos- en oeverpaden door de Trossachs", regio:"Trossachs & Perthshire", populair:false, officieel:true, noot:"Sluit bij Inversnaid aan op de West Highland Way.", co:[[56.244,-4.213],[56.247,-4.685]] },
+  { id:"cowal", naam:"Loch Lomond & Cowal Way", start:"Portavadie", einde:"Inveruglas", km:92, dagen:[4,6], stijging:null, niveau:2, west:true, terrein:"Heuvel, bos en oevers dwars over het Cowal-schiereiland", regio:"Argyll & Clyde-eilanden", populair:false, officieel:true, noot:"", co:[[55.876,-5.316],[56.253,-4.729]] },
+  { id:"moray", naam:"Moray Coast Trail", start:"Forres", einde:"Cullen", km:72, dagen:[3,4], stijging:null, niveau:1, west:false, terrein:"Kustpad, stranden en vissersdorpen", regio:"Noordoost-Schotland", populair:false, officieel:true, noot:"", co:[[57.610,-3.620],[57.691,-2.821]] },
+  { id:"galloway", naam:"Mull of Galloway Trail", start:"Mull of Galloway", einde:"Glenapp", km:59, dagen:[2,3], stijging:null, niveau:2, west:true, terrein:"Kustpad vanaf Schotlands zuidelijkste punt", regio:"Zuid-Schotland", populair:false, officieel:true, noot:"Sluit aan op het Ayrshire Coastal Path.", co:[[54.634,-4.855],[55.088,-4.958]] },
+  { id:"riverayr", naam:"River Ayr Way", start:"Glenbuck", einde:"Ayr", km:66, dagen:[2,4], stijging:null, niveau:1, west:true, terrein:"De Ayr van bron tot zee", regio:"Zuid-Schotland", populair:false, officieel:true, noot:"Eerste bron-tot-zee-pad van Schotland.", co:[[55.532,-4.078],[55.458,-4.629]] },
+  { id:"reivers", naam:"Romans & Reivers Route", start:"Ae", einde:"Hawick", km:84, dagen:[3,5], stijging:null, niveau:2, west:false, terrein:"Bos, heuvels en stille wegen op historische tracés", regio:"Zuid-Schotland", populair:false, officieel:true, noot:"", co:[[55.146,-3.632],[55.422,-2.786]] },
+  { id:"cuthbert", naam:"St Cuthbert's Way", start:"Melrose", einde:"Lindisfarne", km:100, dagen:[4,6], stijging:null, niveau:2, west:false, terrein:"Heuvels, boerenland en kust; getijdenoversteek naar Holy Island", regio:"Zuid-Schotland", populair:true, officieel:true, noot:"Grensoverschrijdend naar Engeland — plan de getijden voor de oversteek.", co:[[55.598,-2.720],[55.681,-1.801]] },
+  { id:"drielochs", naam:"Three Lochs Way", start:"Balloch", einde:"Inveruglas", km:55, dagen:[2,3], stijging:null, niveau:2, west:true, terrein:"Langs Loch Lomond, Loch Long en de Gare Loch", regio:"Trossachs & Perthshire", populair:false, officieel:true, noot:"", co:[[56.002,-4.583],[56.253,-4.729]] },
+  { id:"bute", naam:"West Island Way", start:"Kilchattan Bay", einde:"Port Bannatyne", km:48, dagen:[2,3], stijging:null, niveau:1, west:true, terrein:"Kust, hei en boerenland op het eiland Bute", regio:"Argyll & Clyde-eilanden", populair:false, officieel:true, noot:"Eerste bewegwijzerde eilandtrail van Schotland.", co:[[55.755,-5.026],[55.855,-5.068]] },
+  { id:"affric", naam:"Affric Kintail Way", start:"Drumnadrochit", einde:"Morvich (Kintail)", km:71, dagen:[3,4], stijging:null, niveau:2, west:true, terrein:"Bospistes, stalkerspaden, oevers en een bergpas door Glen Affric", regio:"Highlands", populair:false, officieel:true, noot:"Officieel sinds 2015; verbindt de Great Glen Way met de Cape Wrath Trail.", co:[[57.336,-4.478],[57.235,-5.375]] },
+  { id:"hebrides", naam:"Hebridean Way", start:"Vatersay", einde:"Stornoway", km:247, dagen:[8,14], stijging:null, niveau:2, west:true, terrein:"Machair, strand, hei en heuvels over 10 eilanden — 6 dammen en 2 veerponten", regio:"Skye & Buiten-Hebriden", populair:false, officieel:true, noot:"Officieel sinds 2017. Wandelroute 247 km; de fietsvariant (NCN780) is een andere route.", co:[[56.926,-7.539],[58.209,-6.387]] },
+  { id:"cwt", naam:"Cape Wrath Trail", start:"Fort William", einde:"Cape Wrath", km:370, dagen:[14,20], stijging:null, niveau:3, west:true, terrein:"Onbewegwijzerd, deels padloos: veen, rivieroversteken, ruige glens — de zwaarste trektocht van Groot-Brittannië", regio:"Highlands", populair:true, officieel:false, noot:"Geen officiële lijn: 320–400 km naargelang je varianten. Tent-/bothy-zelfvoorziening; bevoorrading is de crux (Ullapool, Kinlochbervie).", co:[[56.819,-5.105],[58.626,-4.999]] },
+  { id:"skye", naam:"Skye Trail", start:"Rubha Hunish", einde:"Broadford", km:128, dagen:[7,8], stijging:null, niveau:3, west:true, terrein:"Onbewegwijzerd: de Trotternish-graat, Glen Sligachan en de voet van de Cuillin — ruw, geëxponeerd, afgelegen", regio:"Skye & Buiten-Hebriden", populair:true, officieel:false, noot:"Alleen voor ervaren trekkers; Portree is de enige echte bevoorrading. Geen water boven op de graat.", co:[[57.697,-6.345],[57.243,-5.906]] },
+];
+
+// Gangbare etappepunten (Walkhighlands-indeling, gekruist met touroperators).
+// km = cumulatief; stijging per segment waar een bron die geeft, anders null
+// (nulls worden bij het rekenen ≈-verdeeld uit het routetotaal, zie voetnoot).
+const ETAPPES = {
+  whw: [ ["Milngavie",0,null],["Drymen",19,null],["Balmaha",30,null],["Rowardennan",43,null],["Inversnaid",55,null],["Inverarnan",65,null],["Tyndrum",85,520],["Bridge of Orchy",96,null],["Inveroran",100,null],["Kingshouse",115,null],["Kinlochleven",129,null],["Fort William",153,null] ],
+  ggw: [ ["Fort William",0,null],["Gairlochy",18,null],["Laggan",37,null],["Fort Augustus",53,null],["Invermoriston",66,null],["Drumnadrochit",90,null],["Inverness",120,null] ],
+  speyside: [ ["Buckie",0,null],["Fochabers",16,null],["Craigellachie",36.5,null],["Ballindalloch",55.8,null],["Grantown-on-Spey",79.5,null],["Boat of Garten",97.2,null],["Aviemore",106.9,null],["Kincraig",117.4,null],["Newtonmore",138.3,null] ],
+  robroy: [ ["Drymen",0,null],["Aberfoyle",16,null],["Callander",33,null],["Strathyre",51,null],["Killin",73,null],["Ardtalnaig",92,null],["Aberfeldy",111,null],["Pitlochry",127,null] ],
+  fife: [ ["Kincardine",0,null],["North Queensferry",27,null],["Burntisland",49,null],["Leven",74,null],["Elie",92,null],["Crail",115,null],["St Andrews",136,null],["Newport-on-Tay",159,null],["Newburgh",188.5,null] ],
+  jmw: [ ["Helensburgh",0,null],["Balloch",18,null],["Strathblane",39,null],["Kilsyth",58,null],["Falkirk",76,null],["Linlithgow",95,null],["South Queensferry",114,null],["Edinburgh",133,null],["Prestonpans",151,null],["North Berwick",172,null],["Dunbar",194,null] ],
+  cwt: [ ["Fort William",0,null],["Glenfinnan",30,null],["Glen Dessarry",55,null],["Barrisdale",80,null],["Shiel Bridge",110,null],["Bendronaig",140,null],["Achnashellach",162,null],["Kinlochewe",182,null],["Dundonnell",212,null],["Inverlael",237,null],["Oykel Bridge",267,null],["Inchnadamph",292,null],["Kylesku",317,null],["Kinlochbervie",347,null],["Cape Wrath",377,null] ],
+  skye: [ ["Rubha Hunish",0,null],["Flodigarry",11.5,null],["The Storr",40,null],["Portree",58,null],["Sligachan",78,null],["Elgol",100,null],["Torrin",118,null],["Broadford",129.5,null] ],
+};
+const ETAPPE_NOOT = {
+  whw: "Zwaarste stuk: het oeverpad Rowardennan–Inverarnan. Kinlochleven–Fort William heeft onderweg geen voorzieningen.",
+  ggw: "De hoge route (Fort Augustus–Drumnadrochit) piekt op 422 m met de beste Loch Ness-zichten.",
+  cwt: "Ankerpunten zijn bothies en glens, geen dorpen: tussen Kinlochewe en Kinlochbervie is er amper bevoorrading.",
+  skye: "Op de Trotternish-graat (Flodigarry–The Storr) is geen water; Portree is de enige bevoorradingsplaats.",
+  jmw: "Gangbare etappe-indeling (±194 km); het officiële totaal van 215 km telt varianten mee.",
+};
+
+// Budget (prijspeil 2025/2026, GBP p.p.) — middenwaarden van gedocumenteerde ranges
+const VERBLIJF = [
+  { id:"wild",    label:"Wildkamperen",        prijs:0,  range:"gratis (SOAC)" },
+  { id:"camping", label:"Campings",            prijs:12, range:"£10–15" },
+  { id:"hostel",  label:"Hostel / bunkhouse",  prijs:35, range:"£25–45" },
+  { id:"bnb",     label:"B&B (p.p. in duo)",   prijs:62, range:"£50–75" },
+];
+const MAALTIJD = [
+  { id:"zelf", label:"Zelf koken / winkel", prijs:15, range:"£10–20" },
+  { id:"mix",  label:"Winkel + af en toe pub", prijs:25, range:"£20–30" },
+  { id:"pub",  label:"Elke avond pub",     prijs:35, range:"£30–40" },
+];
+const BAGAGE_PER_ETAPPE = 9;   // £6–12 per tas per etappe (Travel-Lite, Baggage Freedom e.a.)
+const ETA_PRIJS = 20;          // UK ETA sinds 8 apr 2026
+const VERVOER = {
+  whw:  { kosten:40, info:"Heen: trein Glasgow Queen St → Milngavie (±28 min, vanaf £2,50–5, zeer frequent). Terug: ScotRail of Citylink Fort William → Glasgow (±3u45, vanaf ±£20–33)." },
+  ggw:  { kosten:45, info:"Heen: West Highland Line naar Fort William (±3u45 vanaf Glasgow, vanaf ±£19,40). Terug: trein of bus vanuit Inverness (±3u20–3u40, vanaf ±£22)." },
+  skye: { kosten:80, info:"Citylink vanuit Glasgow of Inverness naar Portree (±3–7 u, tot 3×/dag); Broadford ligt aan dezelfde lijn. Start Rubha Hunish: lokale bus richting Duntulm." },
+  cwt:  { kosten:70, info:"Heen: trein naar Fort William. Terug vanaf Cape Wrath: seizoensveerpont + minibus naar Durness, dan bus naar Inverness — check de vaartijden én de schietoefeningen op het MoD-terrein." },
+  hebrides: { kosten:90, info:"Ferry's van CalMac (Oban → Castlebay; Stornoway → Ullapool terug) plus bus/trein-aansluitingen. De Highland Rover-pas (£99, 4 reisdagen) kan lonen." },
+};
+const VERVOER_STD = { kosten:40, info:"Reken op ScotRail en Citylink via travelinescotland.com; de meeste trailkoppen zijn per trein of streekbus bereikbaar." };
+
+// Paklijst (Mountaineering Scotland / Scottish Mountain Rescue)
+const PAKLIJST = [
+  "Ingelopen bergschoenen (+ gamaschen tegen veen en teken)",
+  "Wollen of synthetische baselayer (geen katoen)",
+  "Isolerende midlayer + reserve warme laag",
+  "Waterdichte ademende jas mét capuchon",
+  "Waterdichte overbroek",
+  "Muts en handschoenen — ook in de zomer",
+  "Kaart + kompas (let op magneetsluitingen) en offline kaarten",
+  "Hoofdlamp + reservebatterijen",
+  "Fluitje",
+  "Survivalzak of groepsshelter",
+  "EHBO-set (incl. tekenpincet)",
+  "Noodrantsoen + waterfles of -filter",
+  "Zonnebrand, zonnehoed en zonnebril",
+  "Hoofdnet + Smidge of DEET (jun–sep)",
+  "Powerbank 10–20k mAh, telefoon in vliegtuigstand",
+  "Wandelstokken (rivieroversteken, veen)",
+];
+
+/* ================= ENGINE =================
+   Gespiegeld in engine.test.mjs — wijzig ze samen. */
+
+function wandeltijdUren({ km, stijgingM, snelheidKmh, klimMPerUur, pauzeFactor }) {
+  if (!(km >= 0) || !(stijgingM >= 0)) throw new Error(`ongeldige afstand/stijging: ${km}/${stijgingM}`);
+  if (!(snelheidKmh > 0) || !(klimMPerUur > 0) || !(pauzeFactor >= 1)) {
+    throw new Error(`ongeldig tempo-profiel: ${snelheidKmh}/${klimMPerUur}/${pauzeFactor}`);
+  }
+  return (km / snelheidKmh + stijgingM / klimMPerUur) * pauzeFactor;
+}
+
+function verdeelEtappes(waypoints, dagen, tempo) {
+  const n = waypoints.length - 1;
+  if (n < 1) throw new Error("minstens twee waypoints nodig");
+  if (dagen < 1 || dagen > n) throw new Error(`dagen ${dagen} buiten bereik 1..${n}`);
+  const kost = (i, j) => wandeltijdUren({
+    km: waypoints[j].km - waypoints[i].km,
+    stijgingM: waypoints[j].stijgingM - waypoints[i].stijgingM,
+    ...tempo,
+  });
+  const f = Array.from({ length: dagen + 1 }, () => new Array(n + 1).fill(Infinity));
+  const keuze = Array.from({ length: dagen + 1 }, () => new Array(n + 1).fill(-1));
+  f[0][0] = 0;
+  for (let d = 1; d <= dagen; d++) {
+    for (let j = d; j <= n; j++) {
+      for (let i = d - 1; i < j; i++) {
+        const v = Math.max(f[d - 1][i], kost(i, j));
+        if (v < f[d][j] - 1e-12) { f[d][j] = v; keuze[d][j] = i; }
+      }
+    }
+  }
+  const grens = [n];
+  for (let d = dagen, j = n; d >= 1; d--) { j = keuze[d][j]; grens.unshift(j); }
+  return grens.slice(0, -1).map((i, d) => {
+    const j = grens[d + 1];
+    return {
+      van: waypoints[i].naam,
+      naar: waypoints[j].naam,
+      km: waypoints[j].km - waypoints[i].km,
+      stijgingM: waypoints[j].stijgingM - waypoints[i].stijgingM,
+      uren: kost(i, j),
+    };
+  });
+}
+
+function reisbudget({ dagen, nachten, tarieven, verblijf, maaltijd, bagagetransport, eenmalig }) {
+  if (!(dagen >= 1) || !(nachten >= 0)) throw new Error(`ongeldige dagen/nachten: ${dagen}/${nachten}`);
+  const posten = [
+    { label: "Verblijf", totaal: tarieven.verblijf[verblijf] * nachten },
+    { label: "Eten & drinken", totaal: tarieven.maaltijd[maaltijd] * dagen },
+    ...(bagagetransport ? [{ label: "Bagagetransport", totaal: tarieven.bagagePerEtappe * (dagen - 1) }] : []),
+    ...eenmalig.map(p => ({ label: p.label, totaal: p.bedrag })),
+  ];
+  return { posten, totaal: posten.reduce((s, p) => s + p.totaal, 0) };
+}
+
+// Waypoints voor een trail: gangbare etappepunten, of een gelijkmatig raster
+// als er geen etappedata is. Ontbrekende segmentstijging wordt ≈-verdeeld
+// uit het routetotaal (indien bekend) — anders 0 en gemarkeerd als ondergrens.
+function waypointsVoor(trail) {
+  const et = ETAPPES[trail.id];
+  if (et) {
+    const bekend = et.reduce((s, w) => s + (w[2] ?? 0), 0);
+    const totaal = trail.stijging;
+    const rest = totaal != null ? Math.max(0, totaal - bekend) : null;
+    const restKm = et.reduce((s, w, i) => i > 0 && w[2] == null ? s + (w[1] - et[i - 1][1]) : s, 0);
+    let cum = 0;
+    const wps = et.map((w, i) => {
+      if (i > 0) {
+        const segKm = w[1] - et[i - 1][1];
+        cum += w[2] ?? (rest != null && restKm > 0 ? rest * segKm / restKm : 0);
+      }
+      return { naam: w[0], km: w[1], stijgingM: cum };
+    });
+    return { wps, geschat: rest != null && restKm > 0, zonderStijging: totaal == null && bekend === 0 };
+  }
+  const segmenten = Math.min(16, Math.max(trail.dagen[1] + 2, 6));
+  const wps = Array.from({ length: segmenten + 1 }, (_, i) => ({
+    naam: i === 0 ? trail.start : i === segmenten ? trail.einde : `km ${Math.round(trail.km * i / segmenten)}`,
+    km: trail.km * i / segmenten,
+    stijgingM: (trail.stijging ?? 0) * i / segmenten,
+  }));
+  return { wps, geschat: trail.stijging != null, zonderStijging: trail.stijging == null, raster: true };
+}
+
+/* ================= HULPJES ================= */
+
+const NS = "http://www.w3.org/2000/svg";
+const $ = id => document.getElementById(id);
+function sv(tag, at, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in at) e.setAttribute(k, at[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+const VIZ = { goud:"#b8891d", heide:"#8f68c9", mos:"#5f8f34", loch:"#2e79c9", varen:"#c05a24" };
+const fmtKm = v => (Math.round(v * 10) / 10).toLocaleString("nl-BE");
+const fmtU = u => { const h = Math.floor(u); const m = Math.round((u - h) * 60); return m === 60 ? `${h + 1}u00` : `${h}u${String(m).padStart(2, "0")}`; };
+const fmtGBP = v => "£" + Math.round(v).toLocaleString("nl-BE");
+
+const tip = $("tip");
+function tipToon(x, y, titel, rijen) {
+  tip.textContent = "";
+  const t = document.createElement("div"); t.className = "tt"; t.textContent = titel; tip.appendChild(t);
+  for (const r of rijen) {
+    const d = document.createElement("div"); d.className = "rij";
+    if (r.kleur) { const i = document.createElement("i"); i.style.background = r.kleur; d.appendChild(i); }
+    const w = document.createElement("span"); w.className = "w"; w.textContent = r.waarde; d.appendChild(w);
+    const n = document.createElement("span"); n.className = "n"; n.textContent = r.naam; d.appendChild(n);
+    tip.appendChild(d);
+  }
+  tip.style.display = "block";
+  const b = tip.getBoundingClientRect();
+  tip.style.left = Math.min(x + 14, innerWidth - b.width - 10) + "px";
+  tip.style.top = Math.max(8, y - b.height - 12) + "px";
+}
+function tipWeg() { tip.style.display = "none"; }
+
+function mooieStap(bereik) {
+  const ruw = bereik / 4, mag = Math.pow(10, Math.floor(Math.log10(ruw)));
+  for (const m of [1, 2, 5, 10]) if (ruw <= m * mag) return m * mag;
+  return 10 * mag;
+}
+function vulTabel(tabel, koppen, rijen) {
+  tabel.textContent = "";
+  const tr = tabel.insertRow();
+  for (const k of koppen) { const th = document.createElement("th"); th.textContent = k; tr.appendChild(th); }
+  for (const rij of rijen) {
+    const r = tabel.insertRow();
+    rij.forEach((c, i) => { const td = r.insertCell(); td.textContent = c; if (i > 0) td.className = "num"; });
+  }
+}
+
+/* ================= GRAFIEKEN ================= */
+
+function lijnGrafiek(svg, { labels, series, fmt, markX = null, eindLabel = true }) {
+  svg.textContent = "";
+  const W = 560, H = 260, m = { l: 42, r: 56, t: 16, b: 26 };
+  const pw = W - m.l - m.r, ph = H - m.t - m.b;
+  const alle = series.flatMap(s => s.vals);
+  const stap = mooieStap(Math.max(...alle) - Math.min(0, Math.min(...alle)));
+  const yMin = Math.floor(Math.min(0, Math.min(...alle)) / stap) * stap;
+  const yMax = Math.ceil(Math.max(...alle) / stap) * stap;
+  const X = i => m.l + pw * i / (labels.length - 1);
+  const Y = v => m.t + ph * (1 - (v - yMin) / (yMax - yMin));
+  for (let v = yMin; v <= yMax + 1e-9; v += stap) {
+    sv("line", { x1: m.l, y1: Y(v), x2: W - m.r, y2: Y(v), stroke: v === yMin ? "#403927" : "#2b261a", "stroke-width": 1 }, svg);
+    sv("text", { x: m.l - 8, y: Y(v) + 3.5, "text-anchor": "end", class: "as" }, svg).textContent = fmt(v).replace(/,0(?=\D|$)/, "");
+  }
+  labels.forEach((l, i) => { if (i % 2 === 0) sv("text", { x: X(i), y: H - 8, "text-anchor": "middle", class: "as" }, svg).textContent = l; });
+  const eind = [];
+  for (const s of series) {
+    const d = s.vals.map((v, i) => `${i ? "L" : "M"}${X(i)},${Y(v)}`).join("");
+    sv("path", { d, fill: "none", stroke: s.kleur, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+    eind.push({ s, y: Y(s.vals[s.vals.length - 1]) });
+  }
+  if (eindLabel && series.length > 1) {
+    eind.sort((a, b) => a.y - b.y);
+    for (let i = 1; i < eind.length; i++) if (eind[i].y - eind[i - 1].y < 13) eind[i].y = eind[i - 1].y + 13;
+    for (const e of eind) sv("text", { x: W - m.r + 8, y: e.y + 3.5, class: "as", fill: "#b5aa8d" }, svg).textContent = e.s.naam;
+  }
+  for (const s of series) {
+    const i = markX ?? s.vals.length - 1;
+    sv("circle", { cx: X(i), cy: Y(s.vals[i]), r: 4, fill: s.kleur, stroke: "#1a170f", "stroke-width": 2 }, svg);
+  }
+  if (markX != null && series.length === 1) {
+    const v = series[0].vals[markX];
+    sv("text", { x: X(markX), y: Y(v) - 9, "text-anchor": "middle", class: "as", fill: "#ede5d2", "font-weight": 700 }, svg).textContent = fmt(v);
+  }
+  const haar = sv("line", { y1: m.t, y2: H - m.b, stroke: "#4a4128", "stroke-width": 1, visibility: "hidden" }, svg);
+  const vang = sv("rect", { x: m.l, y: m.t, width: pw, height: ph, fill: "transparent" }, svg);
+  const beweeg = ev => {
+    const r = svg.getBoundingClientRect();
+    const sx = (ev.clientX - r.left) * (W / r.width);
+    const ix = Math.max(0, Math.min(labels.length - 1, Math.round((sx - m.l) / (pw / (labels.length - 1)))));
+    haar.setAttribute("x1", X(ix)); haar.setAttribute("x2", X(ix)); haar.setAttribute("visibility", "visible");
+    tipToon(ev.clientX, ev.clientY, labels[ix], series.map(s => ({ kleur: s.kleur, waarde: fmt(s.vals[ix]), naam: s.tipNaam ? s.tipNaam(ix) : s.naam })));
+  };
+  vang.addEventListener("pointermove", beweeg);
+  vang.addEventListener("pointerleave", () => { haar.setAttribute("visibility", "hidden"); tipWeg(); });
+}
+
+function balkPad(x, y0, y, w, r) {
+  if (y0 - y < r + 1) return `M${x},${y0}H${x + w}V${y}H${x}Z`;
+  return `M${x},${y0}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y0}Z`;
+}
+
+function groepBalken(svg, { labels, series, fmt }) {
+  svg.textContent = "";
+  const W = 560, H = 260, m = { l: 58, r: 14, t: 16, b: 26 };
+  const pw = W - m.l - m.r, ph = H - m.t - m.b;
+  const mx = Math.max(...series.flatMap(s => s.vals));
+  const stap = mooieStap(mx);
+  const yMax = Math.ceil(mx / stap) * stap;
+  const Y = v => m.t + ph * (1 - v / yMax);
+  const band = pw / labels.length;
+  const bw = Math.min(14, (band - 8) / series.length);
+  for (let v = 0; v <= yMax + 1e-9; v += stap) {
+    sv("line", { x1: m.l, y1: Y(v), x2: W - m.r, y2: Y(v), stroke: v === 0 ? "#403927" : "#2b261a", "stroke-width": 1 }, svg);
+    sv("text", { x: m.l - 8, y: Y(v) + 3.5, "text-anchor": "end", class: "as" }, svg).textContent = fmt(v);
+  }
+  labels.forEach((l, i) => {
+    const cx = m.l + band * i + band / 2;
+    if (i % 2 === 0) sv("text", { x: cx, y: H - 8, "text-anchor": "middle", class: "as" }, svg).textContent = l;
+    series.forEach((s, j) => {
+      const x = cx - (bw * series.length + 2 * (series.length - 1)) / 2 + j * (bw + 2);
+      sv("path", { d: balkPad(x, Y(0), Y(s.vals[i]), bw, 3), fill: s.kleur }, svg);
+    });
+    const vang = sv("rect", { x: m.l + band * i, y: m.t, width: band, height: ph, fill: "transparent" }, svg);
+    vang.addEventListener("pointermove", ev =>
+      tipToon(ev.clientX, ev.clientY, MAANDEN[i], series.map(s => ({ kleur: s.kleur, waarde: fmt(s.vals[i]), naam: s.naam }))));
+    vang.addEventListener("pointerleave", tipWeg);
+  });
+}
+
+function dagenGrafiek(svg, plan, daglichtU, maandIx) {
+  svg.textContent = "";
+  const W = 720, H = 300, m = { l: 46, r: 16, t: 24, b: 40 };
+  const pw = W - m.l - m.r, ph = H - m.t - m.b;
+  const maxU = Math.max(...plan.map(d => d.uren), daglichtU, 8);
+  const yMax = Math.ceil((maxU + 0.5) / 2) * 2;
+  const Y = v => m.t + ph * (1 - v / yMax);
+  for (let v = 0; v <= yMax + 1e-9; v += 2) {
+    sv("line", { x1: m.l, y1: Y(v), x2: W - m.r, y2: Y(v), stroke: v === 0 ? "#403927" : "#2b261a", "stroke-width": 1 }, svg);
+    sv("text", { x: m.l - 8, y: Y(v) + 3.5, "text-anchor": "end", class: "as" }, svg).textContent = v + "u";
+  }
+  // referentielijnen: daglicht & 8u-comfort
+  sv("line", { x1: m.l, y1: Y(daglichtU), x2: W - m.r, y2: Y(daglichtU), stroke: "#b493e6", "stroke-width": 1.5, "stroke-dasharray": "5 4" }, svg);
+  sv("text", { x: W - m.r, y: Y(daglichtU) - 5, "text-anchor": "end", class: "as", fill: "#b493e6" }, svg).textContent = `daglicht ${MAAND_KORT[maandIx]} ±${fmtU(daglichtU)}`;
+  if (Math.abs(daglichtU - 8) > 0.8) {
+    sv("line", { x1: m.l, y1: Y(8), x2: W - m.r, y2: Y(8), stroke: "#8a7f66", "stroke-width": 1, "stroke-dasharray": "2 4" }, svg);
+    sv("text", { x: m.l + 4, y: Y(8) - 5, class: "as" }, svg).textContent = "8u-comfortgrens";
+  }
+  const band = pw / plan.length;
+  const bw = Math.min(24, band * 0.55);
+  const maxIx = plan.reduce((mi, d, i) => d.uren > plan[mi].uren ? i : mi, 0);
+  plan.forEach((d, i) => {
+    const cx = m.l + band * i + band / 2;
+    sv("path", { d: balkPad(cx - bw / 2, Y(0), Y(d.uren), bw, 4), fill: VIZ.goud }, svg);
+    sv("text", { x: cx, y: H - 22, "text-anchor": "middle", class: "as" }, svg).textContent = "dag " + (i + 1);
+    sv("text", { x: cx, y: H - 9, "text-anchor": "middle", class: "as", fill: "#6f6650" }, svg).textContent = fmtKm(d.km) + " km";
+    if (i === maxIx) sv("text", { x: cx, y: Y(d.uren) - 6, "text-anchor": "middle", class: "as", fill: "#ede5d2", "font-weight": 700 }, svg).textContent = fmtU(d.uren);
+    const vang = sv("rect", { x: m.l + band * i, y: m.t, width: band, height: ph, fill: "transparent" }, svg);
+    vang.addEventListener("pointermove", ev => tipToon(ev.clientX, ev.clientY, `Dag ${i + 1} · ${d.van} → ${d.naar}`, [
+      { kleur: VIZ.goud, waarde: fmtU(d.uren), naam: "geschatte looptijd" },
+      { waarde: fmtKm(d.km) + " km", naam: "afstand" },
+      { waarde: (d.stijgingM > 0 ? "≈" : "") + Math.round(d.stijgingM) + " m", naam: "stijging" },
+      { waarde: Math.round(100 * d.uren / daglichtU) + "%", naam: "van het daglicht" },
+    ]));
+    vang.addEventListener("pointerleave", tipWeg);
+  });
+}
+
+/* ================= KAART ================= */
+
+const PROJ = { lonMin: -7.573157721768547, latMax: 58.672194539663515, k: 0.549712, sx: 150.3717 };
+const px = (lat, lon) => [(lon - PROJ.lonMin) * PROJ.k * PROJ.sx, (PROJ.latMax - lat) * PROJ.sx];
+const KUSTPAD = "M349 3L376 4L366 24L369 30L374 29L373 35L368 34L372 36L369 45L360 55L346 60L336 75L312 92L295 111L289 108L295 112L294 122L271 122L262 110L245 105L260 110L271 123L279 122L292 129L299 124L304 127L299 129L307 127L314 121L297 147L292 147L295 140L281 148L272 149L259 167L276 151L295 149L287 160L288 165L275 169L279 171L276 176L264 175L256 181L261 177L264 179L276 177L276 181L276 177L281 178L292 167L291 163L306 164L324 152L329 157L326 152L334 152L337 146L350 142L369 151L390 145L413 149L417 153L436 147L445 151L451 146L460 146L475 159L476 174L480 176L475 189L462 205L461 199L456 197L461 199L462 205L452 225L456 230L451 233L457 232L443 256L441 272L424 289L423 296L415 294L425 296L418 304L421 308L416 317L400 332L395 330L374 333L354 348L344 345L340 338L343 345L353 349L341 348L350 351L385 334L394 335L393 345L384 351L393 347L396 352L406 354L411 362L393 374L383 370L377 373L366 384L364 392L345 397L346 401L330 393L321 395L315 387L303 383L312 386L317 392L319 398L316 399L322 396L321 402L329 399L349 402L353 406L363 403L374 410L386 405L393 392L407 393L413 398L409 402L418 401L433 412L449 414L458 430L441 456L433 457L447 482L445 485L433 491L429 500L421 499L414 504L403 526L392 531L381 545L374 544L373 554L366 558L356 557L356 552L356 557L336 553L342 554L335 557L327 542L331 566L329 571L321 569L313 574L310 564L309 580L292 587L291 572L287 587L277 578L280 569L274 577L271 576L264 571L261 559L261 562L256 560L263 568L259 574L256 573L260 573L267 582L266 598L262 601L255 597L237 579L223 572L225 573L216 582L223 607L216 603L216 593L201 574L197 562L199 552L204 549L208 564L213 565L208 548L213 531L224 518L225 504L233 490L244 483L244 475L239 470L239 456L238 461L227 456L221 447L225 438L223 410L230 407L255 413L262 418L256 421L262 419L260 424L262 418L279 426L249 412L248 407L248 411L237 407L226 390L232 403L225 403L223 393L234 371L224 387L220 377L223 389L220 394L221 404L216 401L220 407L214 423L209 421L202 400L206 417L198 412L197 404L193 418L196 428L187 424L184 403L196 383L220 361L209 367L209 363L203 376L185 392L184 398L179 402L176 396L178 422L187 434L175 446L175 466L172 464L167 487L163 488L167 489L170 498L163 506L147 507L147 493L154 485L157 450L177 423L163 438L162 433L158 432L166 411L157 419L156 415L165 394L154 410L154 407L164 388L171 390L166 385L171 373L162 382L168 369L166 366L173 363L163 364L165 352L176 347L168 348L176 333L191 333L193 336L203 328L207 317L194 335L179 333L178 325L174 329L178 323L183 325L194 317L182 323L178 321L186 304L215 294L199 299L192 296L206 276L185 273L203 277L193 287L193 294L187 294L174 309L169 309L172 311L167 319L156 327L149 322L151 317L148 322L138 319L130 304L138 303L144 308L140 304L151 296L157 300L169 298L159 299L148 294L144 300L132 301L111 295L118 287L133 284L143 291L139 284L142 286L151 284L142 277L153 275L158 270L153 274L147 273L152 267L137 269L143 265L140 264L145 258L144 250L153 249L160 256L171 252L162 254L156 246L148 245L153 234L164 234L170 239L181 235L169 236L155 226L160 221L160 214L169 211L177 219L180 216L170 209L179 205L164 211L152 209L156 200L169 198L176 188L167 198L160 196L162 188L152 198L145 197L146 185L141 180L144 164L151 170L154 168L159 175L158 170L161 173L170 171L157 169L145 155L147 147L157 146L145 139L145 122L156 121L157 131L163 136L165 126L158 119L162 112L174 123L178 115L195 125L180 114L183 110L202 120L207 129L205 121L194 112L198 108L187 104L175 89L177 85L183 92L185 89L188 91L191 86L188 83L191 83L188 80L193 79L187 78L190 76L179 66L182 61L187 67L195 63L200 66L199 62L203 64L204 60L218 69L213 63L219 62L206 61L198 48L201 39L211 44L207 41L210 39L203 37L207 33L213 35L202 27L212 7L227 11L228 24L230 11L241 18L233 34L245 24L247 14L259 17L262 23L256 35L267 20L273 20L278 27L275 20L285 15L289 18L294 11L295 16L301 15L304 20L304 16L314 16L323 8L334 7L334 13L340 9L347 12L349 8L344 3L347 0L349 3ZM109 24L115 31L112 46L117 50L99 67L107 70L117 61L117 68L110 74L98 69L100 78L95 80L99 81L89 80L95 83L78 88L94 88L97 84L100 90L99 94L94 94L100 95L98 101L92 98L82 101L93 103L91 110L87 112L85 107L85 114L82 115L77 106L80 114L76 113L72 107L75 93L82 93L73 92L74 94L67 101L75 119L63 116L69 127L64 126L65 130L59 126L61 129L57 131L58 135L54 134L56 137L49 142L36 126L41 130L48 121L55 121L52 115L63 116L55 108L45 108L38 103L41 98L55 94L42 95L46 90L39 90L36 83L39 74L44 75L47 73L42 72L43 66L51 66L59 84L58 73L68 72L69 76L72 73L63 63L66 59L62 59L64 55L85 46L109 24ZM101 145L105 145L119 163L118 187L113 193L119 190L122 200L116 207L125 204L123 211L128 208L139 216L150 210L159 213L155 222L146 225L148 231L139 242L129 249L130 233L143 223L131 226L127 217L123 232L120 222L103 227L106 221L101 224L98 219L102 213L97 217L90 208L94 200L105 206L97 200L98 197L92 200L90 191L87 196L86 189L82 201L65 188L66 183L71 184L71 174L77 185L83 187L77 176L84 175L76 169L78 160L92 177L95 174L94 181L97 172L104 183L97 168L100 163L97 163L95 155L101 151L101 145ZM34 140L34 152L30 153L42 155L39 160L38 156L29 155L35 159L32 162L39 162L38 166L22 168L36 168L35 174L22 175L19 170L18 177L14 169L22 168L11 163L7 166L2 160L7 152L16 157L21 147L20 152L27 153L24 152L30 149L32 146L28 145L34 140ZM120 303L131 315L134 324L147 324L159 333L159 338L155 338L159 339L157 344L151 340L147 347L155 346L144 355L139 353L143 350L140 348L126 358L103 361L99 355L101 350L110 354L109 350L122 350L132 344L114 348L119 334L126 334L130 328L120 331L111 322L102 321L107 315L103 311L109 310L114 314L111 307L120 303ZM120 411L128 449L124 456L112 457L110 463L104 465L102 459L109 453L102 442L109 435L101 434L90 451L87 448L92 439L90 433L92 424L103 418L104 429L104 421L120 411ZM20 190L27 198L25 200L29 199L23 201L32 207L25 218L17 214L26 220L27 227L18 228L27 231L28 237L15 234L9 215L15 207L12 193L20 190ZM154 379L156 385L141 418L135 422L133 433L127 433L123 427L123 417L128 410L143 405L129 406L134 397L154 379ZM19 179L31 182L24 186L30 189L21 189L26 191L22 191L15 188L13 181L19 179ZM10 243L16 255L12 253L11 259L3 259L7 262L2 265L4 249L10 248L10 243Z";
+
+function tekenKaart() {
+  const svg = $("kaart");
+  svg.textContent = "";
+  sv("path", { d: KUSTPAD, class: "kust" }, svg);
+  const zicht = new Set(gefilterd().map(t => t.id));
+  const actief = TRAILS.find(t => t.id === S.trail);
+  for (const t of TRAILS) {
+    if (t.id === S.trail) continue;
+    const [x, y] = px(t.co[0][0], t.co[0][1]);
+    const c = sv("circle", { cx: x, cy: y, r: 5, class: "marker", opacity: zicht.has(t.id) ? 1 : 0.3, tabindex: 0, role: "button", "aria-label": t.naam }, svg);
+    c.addEventListener("pointermove", ev => tipToon(ev.clientX, ev.clientY, t.naam, [{ waarde: t.km + " km", naam: `${t.start} → ${t.einde}` }]));
+    c.addEventListener("pointerleave", tipWeg);
+    c.addEventListener("click", () => selecteer(t.id));
+  }
+  if (actief) {
+    const [x2, y2] = px(actief.co[1][0], actief.co[1][1]);
+    sv("circle", { cx: x2, cy: y2, r: 5, class: "marker eind" }, svg);
+    const [x1, y1] = px(actief.co[0][0], actief.co[0][1]);
+    const c = sv("circle", { cx: x1, cy: y1, r: 7, class: "marker actief" }, svg);
+    c.addEventListener("pointermove", ev => tipToon(ev.clientX, ev.clientY, actief.naam, [{ waarde: actief.km + " km", naam: `${actief.start} → ${actief.einde}` }]));
+    c.addEventListener("pointerleave", tipWeg);
+  }
+}
+
+/* ================= STAAT & VIEWS ================= */
+
+const S = { trail: "whw", dagen: 7, profiel: "gemiddeld", bepakking: "vol", maand: 4 };
+const B = { verblijf: "hostel", maaltijd: "mix", bagage: false, eta: true, vervoer: true };
+const F = { regio: "alle", niveau: 0, dagen: 21 };
+
+const gefilterd = () => TRAILS.filter(t =>
+  (F.regio === "alle" || t.regio === F.regio) &&
+  (F.niveau === 0 || t.niveau === F.niveau) &&
+  t.dagen[0] <= F.dagen);
+
+const NIVEAU_CHIP = { 1: ["n1", "rustig"], 2: ["n2", "gemiddeld"], 3: ["n3", "zwaar"] };
+
+function tekenTrails() {
+  const grid = $("trailgrid");
+  grid.textContent = "";
+  const lijst = gefilterd();
+  $("trailleeg").hidden = lijst.length > 0;
+  $("f-teller").textContent = `${lijst.length} van ${TRAILS.length} trails`;
+  for (const t of lijst) {
+    const kaart = document.createElement("article");
+    kaart.className = "trailkaart" + (t.id === S.trail ? " actief" : "");
+    const [nc, nl] = NIVEAU_CHIP[t.niveau];
+    kaart.innerHTML = `
+      <h3></h3>
+      <div class="route"></div>
+      <div class="cijfers"><span><b>${t.km}</b> km</span><span><b>${t.dagen[0]}–${t.dagen[1]}</b> dagen</span><span><b>${t.stijging != null ? "±" + t.stijging.toLocaleString("nl-BE") : "—"}</b> m↑</span></div>
+      <div class="chips">
+        <span class="chip ${nc}">${nl}</span>
+        ${t.populair ? '<span class="chip uniek">populair</span>' : ""}
+        ${!t.officieel ? '<span class="chip n3">niet bewegwijzerd</span>' : ""}
+        ${t.kano ? '<span class="chip uniek">kanoroute</span>' : ""}
+      </div>
+      <div class="terrein"></div>`;
+    kaart.querySelector("h3").textContent = t.naam;
+    kaart.querySelector(".route").textContent = `${t.start} → ${t.einde} · ${t.regio}`;
+    kaart.querySelector(".terrein").textContent = t.terrein;
+    kaart.addEventListener("click", () => selecteer(t.id));
+    grid.appendChild(kaart);
+  }
+}
+
+function selecteer(id) {
+  S.trail = id;
+  const t = TRAILS.find(x => x.id === id);
+  if (!t.kano) {
+    const n = waypointsVoor(t).wps.length - 1;
+    const doel = Math.round((t.dagen[0] + t.dagen[1]) / 2);
+    S.dagen = Math.max(1, Math.min(n, doel));
+    $("r-dagen").min = 1; $("r-dagen").max = n; $("r-dagen").value = S.dagen;
+  }
+  tekenTrails(); tekenKaart(); tekenPlanner(); tekenBudget();
+}
+
+function melding(soort, ic, html) {
+  return `<div class="melding ${soort}"><span class="ic">${ic}</span><span>${html}</span></div>`;
+}
+
+function tekenPlanner() {
+  const t = TRAILS.find(x => x.id === S.trail);
+  $("pl-naam").textContent = t.naam;
+  $("pl-route").textContent = `${t.start} → ${t.einde} · ${t.km} km`;
+  const [nc, nl] = NIVEAU_CHIP[t.niveau];
+  $("pl-chips").innerHTML = `<span class="chip ${nc}">${nl}</span>` + (!t.officieel ? ' <span class="chip n3">niet bewegwijzerd</span>' : "");
+  $("r-profiel-w").textContent = PROFIELEN[S.profiel].w + " (schatting)";
+  $("r-bepakking-w").textContent = BEPAKKING[S.bepakking].w;
+  $("r-maand-w").textContent = `±${fmtU(DAGLICHT[S.maand])} daglicht · ${ZON[S.maand][0]}–${ZON[S.maand][1]}`;
+  $("r-dagen-w").textContent = S.dagen + (S.dagen === 1 ? " dag" : " dagen");
+
+  if (t.kano) {
+    $("pl-tegels").innerHTML = ""; $("pl-dagtabel").textContent = ""; $("pl-tabel").textContent = "";
+    $("gr-dagen").textContent = ""; $("gr-dagen-sub").textContent = ""; $("gr-dagen-leg").textContent = "";
+    $("pl-voetnoot").textContent = "";
+    $("pl-meldingen").innerHTML = melding("info", "🛶", "Dit is de enige peddel-Great Trail: plan met vaartijden en sluizen (Scottish Canals), niet met wandeltijden. Kies een andere trail voor de wandelplanner.");
+    return;
+  }
+
+  const { wps, geschat, zonderStijging, raster } = waypointsVoor(t);
+  const profiel = PROFIELEN[S.profiel];
+  const tempo = { snelheidKmh: profiel.snelheidKmh, klimMPerUur: profiel.klimMPerUur, pauzeFactor: profiel.pauzeFactor * BEPAKKING[S.bepakking].factor };
+  const plan = verdeelEtappes(wps, S.dagen, tempo);
+  const totKm = plan.reduce((s, d) => s + d.km, 0);
+  const totStijg = plan.reduce((s, d) => s + d.stijgingM, 0);
+  const zwaarst = Math.max(...plan.map(d => d.uren));
+  const daglicht = DAGLICHT[S.maand];
+
+  $("pl-tegels").innerHTML = `
+    <div class="tegel"><div class="tl">Totale afstand</div><div class="tv">${fmtKm(totKm)} km</div><div class="ts">${Math.abs(totKm - t.km) > 1.5 ? "officieel " + t.km + " km" : "&nbsp;"}</div></div>
+    <div class="tegel"><div class="tl">Totale stijging</div><div class="tv">${zonderStijging ? "—" : "≈" + Math.round(totStijg).toLocaleString("nl-BE") + " m"}</div><div class="ts">${zonderStijging ? "geen brondata" : (t.stijgingNoot ?? "routetotaal, verdeeld over de dagen")}</div></div>
+    <div class="tegel"><div class="tl">Zwaarste dag</div><div class="tv">${fmtU(zwaarst)}</div><div class="ts">${Math.round(100 * zwaarst / daglicht)}% van het daglicht in ${MAANDEN[S.maand]}</div></div>
+    <div class="tegel"><div class="tl">Gemiddeld per dag</div><div class="tv">${fmtKm(totKm / S.dagen)} km</div><div class="ts">${S.dagen} wandeldagen</div></div>`;
+
+  const meldingen = [];
+  if (zwaarst > daglicht * 0.9) meldingen.push(melding("kritiek", "⛔", `Je zwaarste dag (${fmtU(zwaarst)}) past niet ruim binnen het daglicht van ${MAANDEN[S.maand]} (±${fmtU(daglicht)}). Voeg dagen toe of kies een lichtere maand.`));
+  else if (zwaarst > 8) meldingen.push(melding("waarschuw", "⚠️", `Zwaarste dag ±${fmtU(zwaarst)} — stevig. Een extra dag maakt het schema vergevingsgezinder.`));
+  if (!t.officieel) meldingen.push(melding("waarschuw", "🧭", "Niet bewegwijzerd: kaart-en-kompasnavigatie en ervaring met ruig terrein zijn vereist."));
+  if (MIDGE[S.maand] >= 2 && t.west) meldingen.push(melding("waarschuw", "🦟", `${MAANDEN[S.maand].charAt(0).toUpperCase() + MAANDEN[S.maand].slice(1)} is ${MIDGE[S.maand] === 3 ? "piek-" : "stevig "}midgeseizoen in het westen — hoofdnet en Smidge mee, kampeer open en winderig.`));
+  if (S.maand <= 2 || S.maand >= 10) meldingen.push(melding("kritiek", "❄️", "Winterse omstandigheden: korte dagen en mogelijk sneeuw en ijs — alleen voor ervaren winterwandelaars."));
+  if (t.id === "cwt") meldingen.push(melding("waarschuw", "🎒", "Bevoorrading is de crux: alleen Ullapool (omweg) en Kinlochbervie. Draag meerdere dagen eten; check de schietoefeningen op het Cape Wrath-terrein."));
+  $("pl-meldingen").innerHTML = meldingen.join("");
+
+  $("gr-dagen-sub").textContent = `Naismith: ${profiel.w} · bepakking: ${BEPAKKING[S.bepakking].w} — tempoprofielen zijn praktijkconsensus, geen exacte bron`;
+  dagenGrafiek($("gr-dagen"), plan, daglicht, S.maand);
+  $("gr-dagen-leg").innerHTML = `<span><i class="blok" style="background:${VIZ.goud}"></i>looptijd per dag</span><span><i style="background:#b493e6"></i>daglicht op de 15e</span><span><i style="background:#8a7f66"></i>8u-comfortgrens</span>`;
+
+  const rijen = plan.map((d, i) => [`Dag ${i + 1}`, `${d.van} → ${d.naar}`, fmtKm(d.km), zonderStijging ? "—" : (geschat ? "≈" : "") + Math.round(d.stijgingM), fmtU(d.uren), Math.round(100 * d.uren / daglicht) + "%"]);
+  vulTabel($("pl-tabel"), ["Dag", "Traject", "km", "↑ m", "Tijd", "Daglicht"], rijen);
+
+  const dt = $("pl-dagtabel");
+  dt.textContent = "";
+  const kop = dt.insertRow();
+  for (const k of ["Dag", "Traject", "km", "↑ m", "Looptijd", "Deel van het daglicht"]) { const th = document.createElement("th"); th.textContent = k; kop.appendChild(th); }
+  plan.forEach((d, i) => {
+    const r = dt.insertRow();
+    r.insertCell().textContent = "Dag " + (i + 1);
+    r.insertCell().textContent = `${d.van} → ${d.naar}`;
+    const c1 = r.insertCell(); c1.textContent = fmtKm(d.km); c1.className = "num";
+    const c2 = r.insertCell(); c2.textContent = zonderStijging ? "—" : (geschat ? "≈" : "") + Math.round(d.stijgingM); c2.className = "num";
+    const c3 = r.insertCell(); c3.textContent = fmtU(d.uren); c3.className = "num";
+    const pct = d.uren / daglicht;
+    const c4 = r.insertCell();
+    c4.innerHTML = `<div class="daglichtbalkje${pct > 0.9 ? " vol" : ""}" title="${Math.round(pct * 100)}%"><i style="width:${Math.min(100, Math.round(pct * 100))}%"></i></div>`;
+  });
+
+  const voet = [];
+  if (raster) voet.push("Voor deze trail is geen gangbare etappe-indeling opgenomen; de route is gelijkmatig verdeeld — echte overnachtingsplekken kunnen elders liggen.");
+  if (geschat && !zonderStijging) voet.push("Hoogtemeters per dag zijn ≈-afgeleid uit het routetotaal" + (t.stijgingNoot ? ` (${t.stijgingNoot})` : "") + ".");
+  if (zonderStijging) voet.push("Voor deze route ontbreekt betrouwbare hoogtedata — looptijden zijn een ondergrens (exclusief klim).");
+  if (ETAPPE_NOOT[t.id]) voet.push(ETAPPE_NOOT[t.id]);
+  $("pl-voetnoot").textContent = voet.join(" ");
+}
+
+/* ---------- budget ---------- */
+
+const POSTKLEUR = { "Verblijf": VIZ.heide, "Eten & drinken": VIZ.goud, "Bagagetransport": VIZ.mos, "Vervoer in Schotland": VIZ.loch, "UK ETA": VIZ.varen };
+
+function tekenBudget() {
+  const t = TRAILS.find(x => x.id === S.trail);
+  const nachten = S.dagen;
+  const eenmalig = [];
+  if (B.vervoer) eenmalig.push({ label: "Vervoer in Schotland", bedrag: (VERVOER[t.id] ?? VERVOER_STD).kosten });
+  if (B.eta) eenmalig.push({ label: "UK ETA", bedrag: ETA_PRIJS });
+  const { posten, totaal } = reisbudget({
+    dagen: S.dagen, nachten,
+    tarieven: {
+      verblijf: Object.fromEntries(VERBLIJF.map(v => [v.id, v.prijs])),
+      maaltijd: Object.fromEntries(MAALTIJD.map(v => [v.id, v.prijs])),
+      bagagePerEtappe: BAGAGE_PER_ETAPPE,
+    },
+    verblijf: B.verblijf, maaltijd: B.maaltijd, bagagetransport: B.bagage, eenmalig,
+  });
+  $("b-kader").textContent = `${S.dagen} wandeldagen · ${nachten} nachten · ${t.naam}`;
+  $("b-totaal").innerHTML = `${fmtGBP(totaal)} <small>p.p.</small>`;
+  const balk = $("b-balk"); balk.textContent = "";
+  for (const p of posten) {
+    if (p.totaal <= 0) continue;
+    const i = document.createElement("i");
+    i.style.width = (100 * p.totaal / totaal) + "%";
+    i.style.background = POSTKLEUR[p.label];
+    balk.appendChild(i);
+  }
+  const lijst = $("b-posten"); lijst.textContent = "";
+  for (const p of posten) {
+    const d = document.createElement("div"); d.className = "post";
+    const sw = document.createElement("i"); sw.style.background = POSTKLEUR[p.label]; d.appendChild(sw);
+    const l = document.createElement("span"); l.className = "pl"; l.textContent = p.label; d.appendChild(l);
+    const s = document.createElement("span"); s.className = "stippel"; d.appendChild(s);
+    const v = document.createElement("span"); v.className = "pv"; v.textContent = fmtGBP(p.totaal); d.appendChild(v);
+    lijst.appendChild(d);
+  }
+  vulTabel($("b-tabel"), ["Post", "Bedrag"], posten.map(p => [p.label, fmtGBP(p.totaal)]).concat([["Totaal", fmtGBP(totaal)]]));
+
+  const meldingen = [];
+  if (t.id === "whw" && S.maand >= 4 && S.maand <= 8) meldingen.push(melding("waarschuw", "🛏️", "Hoogseizoen op de WHW: boek 6–12 maanden vooruit. Flessenhalzen: Inveroran, Kingshouse, Bridge of Orchy, Rowardennan. Start liever niet op zaterdag."));
+  if (t.id === "whw" && (B.verblijf === "wild" || B.verblijf === "camping") && S.maand >= 2 && S.maand <= 8) meldingen.push(melding("info", "⛺", "Oostoever Loch Lomond (mrt–sep): kamperen alleen op een camping of met een vergunning van £4,30 per tent per nacht (max. 3 nachten, tot 4 weken vooraf te boeken)."));
+  if (B.verblijf === "wild") meldingen.push(melding("info", "🌿", "Wildkamperen is legaal onder de Scottish Outdoor Access Code — zie de regels bij <a href='#veilig'>Veilig op pad</a>."));
+  if (B.bagage && t.id !== "whw" && t.id !== "ggw") meldingen.push(melding("waarschuw", "🧳", "Bagagetransport is vooral op de West Highland Way en Great Glen Way een gevestigde dienst — controleer het aanbod voor deze trail."));
+  if (t.id === "hebrides") meldingen.push(melding("info", "⛴️", "Reken naast het busvervoer ook de CalMac-ferry's (Oban → Castlebay heen, Stornoway → Ullapool terug) in je reisschema."));
+  $("b-meldingen").innerHTML = meldingen.join("");
+
+  const info = VERVOER[t.id] ?? VERVOER_STD;
+  $("b-reisinfo").innerHTML = `<h4>Naar de trailkop</h4><p></p><h4>Kleine lettertjes</h4><p>Middenwaarden van prijsranges 2025/2026; verblijf ${VERBLIJF.find(v => v.id === B.verblijf).range}, eten ${MAALTIJD.find(v => v.id === B.maaltijd).range}. UK ETA £20 sinds 8 april 2026 (was £16). Stroom: stekker type G.</p>`;
+  $("b-reisinfo").querySelector("p").textContent = info.info;
+}
+
+/* ---------- seizoen ---------- */
+
+const MIDGE_KLEUR = ["#2c2618", "#3f3260", "#6b4fa0", "#9a74d8"];
+
+function tekenSeizoen() {
+  document.querySelectorAll("#maandkiezer button").forEach((b, i) => b.classList.toggle("aan", i === S.maand));
+  $("s-oordeel").innerHTML = `<b>${MAANDEN[S.maand].charAt(0).toUpperCase() + MAANDEN[S.maand].slice(1)}</b> — zon ${ZON[S.maand][0]}–${ZON[S.maand][1]} (±${fmtU(DAGLICHT[S.maand])}). ${OORDEEL[S.maand]}`;
+
+  lijnGrafiek($("gr-daglicht"), {
+    labels: MAAND_KORT, fmt: v => fmtU(v), markX: S.maand,
+    series: [{ naam: "daglicht", kleur: VIZ.goud, vals: DAGLICHT }],
+  });
+  vulTabel($("s-tabel-daglicht"), ["Maand", "Zon op", "Zon onder", "Daglicht"], MAANDEN.map((m, i) => [m, ZON[i][0], ZON[i][1], fmtU(DAGLICHT[i])]));
+
+  lijnGrafiek($("gr-temp"), {
+    labels: MAAND_KORT, fmt: v => (Math.round(v * 10) / 10).toLocaleString("nl-BE") + "°", markX: S.maand,
+    series: [
+      { naam: "West", kleur: VIZ.loch, vals: KLIMAAT.west.tmax, tipNaam: i => `West, max (min ${KLIMAAT.west.tmin[i].toLocaleString("nl-BE")}°)` },
+      { naam: "Oost", kleur: VIZ.goud, vals: KLIMAAT.oost.tmax, tipNaam: i => `Oost, max (min ${KLIMAAT.oost.tmin[i].toLocaleString("nl-BE")}°)` },
+    ],
+  });
+  $("gr-temp-leg").innerHTML = `<span><i style="background:${VIZ.loch}"></i>West — ${KLIMAAT.west.station}</span><span><i style="background:${VIZ.goud}"></i>Oost — ${KLIMAAT.oost.station}</span>`;
+  vulTabel($("s-tabel-temp"), ["Maand", "West max", "West min", "Oost max", "Oost min"],
+    MAANDEN.map((m, i) => [m, KLIMAAT.west.tmax[i] + "°", KLIMAAT.west.tmin[i] + "°", KLIMAAT.oost.tmax[i] + "°", KLIMAAT.oost.tmin[i] + "°"]));
+
+  groepBalken($("gr-regen"), {
+    labels: MAAND_KORT, fmt: v => v + " mm",
+    series: [
+      { naam: "West (Tulloch Bridge)", kleur: VIZ.loch, vals: KLIMAAT.west.mm },
+      { naam: "Oost (Dyce)", kleur: VIZ.goud, vals: KLIMAAT.oost.mm },
+    ],
+  });
+  $("gr-regen-leg").innerHTML = `<span><i class="blok" style="background:${VIZ.loch}"></i>West — ${KLIMAAT.west.station}</span><span><i class="blok" style="background:${VIZ.goud}"></i>Oost — ${KLIMAAT.oost.station}</span>`;
+  vulTabel($("s-tabel-regen"), ["Maand", "West mm", "West regendagen", "Oost mm", "Oost regendagen"],
+    MAANDEN.map((m, i) => [m, KLIMAAT.west.mm[i], KLIMAAT.west.regendagen[i], KLIMAAT.oost.mm[i], KLIMAAT.oost.regendagen[i]]));
+
+  const strip = $("midgestrip"); strip.textContent = "";
+  MAAND_KORT.forEach((m, i) => {
+    const cel = document.createElement("div");
+    cel.className = "cel" + (i === S.maand ? " aan" : "") + (MIDGE[i] >= 2 ? " fel" : "");
+    cel.style.background = MIDGE_KLEUR[MIDGE[i]];
+    cel.innerHTML = `<span class="m"></span><span class="w">${MIDGE[i]}</span>`;
+    cel.querySelector(".m").textContent = m;
+    cel.title = `${MAANDEN[i]}: ${MIDGE_LABEL[MIDGE[i]]}`;
+    cel.addEventListener("click", () => zetMaand(i));
+    strip.appendChild(cel);
+  });
+}
+
+function zetMaand(i) {
+  S.maand = i;
+  $("r-maand").value = i;
+  tekenSeizoen(); tekenPlanner(); tekenBudget();
+}
+
+/* ================= INIT ================= */
+
+function init() {
+  // filters
+  const regios = [...new Set(TRAILS.map(t => t.regio))];
+  for (const r of regios) { const o = document.createElement("option"); o.value = r; o.textContent = r; $("f-regio").appendChild(o); }
+  $("f-regio").addEventListener("change", e => { F.regio = e.target.value; tekenTrails(); tekenKaart(); });
+  $("f-niveau").querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    F.niveau = Number(b.dataset.n);
+    $("f-niveau").querySelectorAll("button").forEach(x => x.classList.toggle("aan", x === b));
+    tekenTrails(); tekenKaart();
+  }));
+  $("f-dagen").addEventListener("input", e => {
+    F.dagen = Number(e.target.value);
+    $("f-dagen-w").textContent = F.dagen >= 21 ? "alle" : "≤ " + F.dagen;
+    tekenTrails(); tekenKaart();
+  });
+
+  // planner-regelaars
+  $("r-dagen").addEventListener("input", e => { S.dagen = Number(e.target.value); tekenPlanner(); tekenBudget(); });
+  $("r-profiel").addEventListener("change", e => { S.profiel = e.target.value; tekenPlanner(); });
+  $("r-bepakking").addEventListener("change", e => { S.bepakking = e.target.value; tekenPlanner(); });
+  MAANDEN.forEach((m, i) => { const o = document.createElement("option"); o.value = i; o.textContent = m; $("r-maand").appendChild(o); });
+  $("r-maand").value = S.maand;
+  $("r-maand").addEventListener("change", e => zetMaand(Number(e.target.value)));
+
+  // budget-keuzes
+  const radio = (el, opties, veld) => {
+    for (const o of opties) {
+      const lab = document.createElement("label");
+      lab.innerHTML = `<input type="radio" name="${veld}" value="${o.id}"><span>${o.label}</span><span class="prijs">${o.range}</span>`;
+      if (B[veld] === o.id) lab.classList.add("aan");
+      lab.addEventListener("click", () => {
+        B[veld] = o.id;
+        el.querySelectorAll("label").forEach(x => x.classList.remove("aan"));
+        lab.classList.add("aan");
+        tekenBudget();
+      });
+      el.appendChild(lab);
+    }
+  };
+  radio($("k-verblijf"), VERBLIJF, "verblijf");
+  radio($("k-maaltijd"), MAALTIJD, "maaltijd");
+  const wip = (id, veld) => $(id).addEventListener("click", () => {
+    B[veld] = !B[veld];
+    $(id).classList.toggle("aan", B[veld]);
+    $(id).setAttribute("aria-checked", B[veld]);
+    tekenBudget();
+  });
+  wip("k-bagage", "bagage"); wip("k-eta", "eta"); wip("k-vervoer", "vervoer");
+
+  // maandkiezer
+  MAAND_KORT.forEach((m, i) => {
+    const b = document.createElement("button"); b.textContent = m;
+    b.addEventListener("click", () => zetMaand(i));
+    $("maandkiezer").appendChild(b);
+  });
+
+  // paklijst
+  const pak = $("paklijst");
+  const telHer = () => {
+    const af = pak.querySelectorAll("input:checked").length;
+    $("pakteller").textContent = `${af} van ${PAKLIJST.length} aangevinkt${af === PAKLIJST.length ? " — klaar voor de hei." : ""}`;
+  };
+  for (const item of PAKLIJST) {
+    const lab = document.createElement("label");
+    const cb = document.createElement("input"); cb.type = "checkbox";
+    const sp = document.createElement("span"); sp.textContent = item;
+    lab.append(cb, sp);
+    cb.addEventListener("change", () => { lab.classList.toggle("af", cb.checked); telHer(); });
+    pak.appendChild(lab);
+  }
+  telHer();
+
+  // hero-knoppen + nav
+  document.querySelectorAll("[data-ga]").forEach(b => b.addEventListener("click", () => document.querySelector(b.dataset.ga).scrollIntoView({ behavior: "smooth" })));
+  const links = [...document.querySelectorAll("nav.top .links a")];
+  const secties = links.map(a => document.querySelector(a.getAttribute("href")));
+  const zichtbaar = new Set();
+  const obs = new IntersectionObserver(es => {
+    for (const e of es) e.isIntersecting ? zichtbaar.add(e.target) : zichtbaar.delete(e.target);
+    const eerste = secties.find(s => zichtbaar.has(s));
+    links.forEach((a, i) => a.classList.toggle("actief", secties[i] === eerste));
+  }, { rootMargin: "-30% 0px -55% 0px" });
+  secties.forEach(s => obs.observe(s));
+
+  tekenSeizoen();
+  selecteer(S.trail);
+}
+init();
+</script>
+<div id="tip" role="status"></div>
+</body>
+</html>
