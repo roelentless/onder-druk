@@ -10,6 +10,7 @@ Standalone educational demos published through one GitHub Pages site.
 | De School als VZW | `school-entiteit/` | `https://roelentless.github.io/onder-druk/school-entiteit/` |
 | Aquarel Atelier | `aquarel/` | `https://roelentless.github.io/onder-druk/aquarel/` |
 | Trail Schotland | `trail-schotland/` | `https://roelentless.github.io/onder-druk/trail-schotland/` |
+| Reisbijstand Kort | `reisbijstand/` | `https://roelentless.github.io/onder-druk/reisbijstand/` |
 
 Each module owns its source and can be developed independently. The Pages
 workflow assembles the public URL layout without committing generated copies.

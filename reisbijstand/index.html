@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Reisbijstand Kort · Tijdelijke pech- en reisbijstand voor je auto in Europa</title>
+<meta name="description" content="Interactieve gids voor Vlaamse autoreizigers: alle échte kortetermijn-reisbijstandsverzekeringen met pechverhelping voor de eigen wagen (Frankrijk, Spanje, Europa), met kosten, wachttijden, valkuilen en een keuzehulp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asfalt:#0f1317;        /* pagina */
+  --asfalt-2:#141a20;
+  --paneel:#1a2129;
+  --paneel-2:#1f2833;
+  --wit:#e9edf1;
+  --gedempt:#a8b2bc;
+  --vaag:#76828e;
+  --lijn:rgba(233,237,241,.11);
+  --lijn2:rgba(233,237,241,.26);
+  --oranje:#f0913f;        /* signaaloranje — interactie-accent */
+  --oranje-fel:#ffb066;
+  --oranje-diep:#c96f22;
+  --teal:#57b8a6;          /* secundair accent */
+  --goed:#63b263;
+  --let-op:#e0a63a;
+  --ernst:#e05252;
+  --maxw:1180px;--r:16px;
+  --schaduw:0 22px 60px -26px rgba(0,0,0,.85);
+  --sans:"Public Sans",ui-sans-serif,system-ui,sans-serif;
+  --kop:"Space Grotesk",var(--sans);
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:var(--sans);color:var(--wit);background:var(--asfalt);
+  line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+/* nachtelijke autosnelweg-gradient */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(85% 50% at 80% -10%, rgba(240,145,63,.10), transparent 60%),
+    radial-gradient(60% 40% at 5% 10%, rgba(87,184,166,.07), transparent 55%),
+    linear-gradient(180deg,#141a21 0%, #10151a 45%, #0c1014 100%);
+}
+a{color:var(--oranje);text-decoration:none}
+a:hover{color:var(--oranje-fel)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+h1,h2,h3,h4{font-family:var(--kop);font-weight:700;letter-spacing:-.015em;line-height:1.1;margin:0 0 .5em}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button{font-family:var(--sans)}
+
+/* ---------- wegmarkering-scheiding ---------- */
+.wegstreep{border:none;height:4px;margin:0;
+  background:repeating-linear-gradient(90deg,var(--oranje-diep) 0 42px,transparent 42px 78px);
+  opacity:.5;border-radius:2px}
+
+/* ---------- header ---------- */
+header.site{position:sticky;top:0;z-index:50;background:rgba(15,19,23,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--lijn)}
+.nav{display:flex;align-items:center;gap:18px;padding:13px 0;flex-wrap:wrap}
+.logo{font-family:var(--kop);font-weight:700;font-size:1.02rem;letter-spacing:.01em;color:var(--wit);white-space:nowrap}
+.logo b{color:var(--oranje)}
+.nav nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.nav nav a{font-size:.82rem;color:var(--gedempt);padding:6px 10px;border-radius:8px;white-space:nowrap}
+.nav nav a:hover{color:var(--wit);background:var(--paneel)}
+
+/* ---------- hero ---------- */
+.hero{padding:72px 0 40px}
+.kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--oranje);margin-bottom:14px}
+.hero h1{font-size:clamp(1.9rem,4.6vw,3.1rem);max-width:19ch}
+.hero .intro{max-width:66ch;color:var(--gedempt);font-size:1.04rem}
+.hero .intro strong{color:var(--wit)}
+.kernchips{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.kernchip{background:var(--paneel);border:1px solid var(--lijn);border-radius:12px;padding:10px 14px;font-size:.84rem;color:var(--gedempt)}
+.kernchip b{display:block;font-family:var(--kop);font-size:1.05rem;color:var(--wit);letter-spacing:-.01em}
+.kernchip b.orv{color:var(--oranje)}
+
+/* ---------- secties ---------- */
+section{padding:56px 0}
+.sectiekop{max-width:70ch;margin-bottom:30px}
+.sectiekop h2{font-size:clamp(1.4rem,3vw,1.9rem)}
+.sectiekop p{color:var(--gedempt);margin:.4em 0 0}
+.sectiekop p strong{color:var(--wit)}
+
+/* ---------- basisdekking-cards ---------- */
+.basisgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}
+.basiskaart{background:var(--paneel);border:1px solid var(--lijn);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px}
+.basiskaart h3{font-size:1.02rem;margin:0}
+.basiskaart .sub{font-size:.78rem;color:var(--vaag);margin-top:-6px}
+.dekt{list-style:none;margin:0;padding:0;font-size:.85rem;display:flex;flex-direction:column;gap:6px}
+.dekt li{padding-left:22px;position:relative;color:var(--gedempt)}
+.dekt li::before{position:absolute;left:0;font-weight:700}
+.dekt li.wel::before{content:"✓";color:var(--goed)}
+.dekt li.niet::before{content:"✕";color:var(--ernst)}
+.conclusiestrook{margin-top:18px;background:linear-gradient(90deg,rgba(240,145,63,.12),rgba(240,145,63,.04));border:1px solid rgba(240,145,63,.35);border-radius:var(--r);padding:18px 20px;font-size:.95rem}
+.conclusiestrook b{color:var(--oranje-fel)}
+
+/* ---------- aanbieder-cards ---------- */
+.aanbiedergrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
+.akaart{background:var(--paneel);border:1px solid var(--lijn);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--schaduw)}
+.akaart.grensgeval{border-style:dashed;opacity:.92}
+.akop{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.akop h3{font-size:1.15rem;margin:0}
+.akop .verzekeraar{font-size:.74rem;color:var(--vaag);font-family:var(--mono)}
+.prijsblok{font-family:var(--mono);font-size:.86rem;color:var(--oranje-fel);background:rgba(240,145,63,.08);border:1px solid rgba(240,145,63,.25);border-radius:10px;padding:8px 12px}
+.prijsblok .schatting{color:var(--vaag);font-size:.74rem;display:block}
+.chiprij{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:.72rem;font-family:var(--mono);padding:3px 9px;border-radius:99px;border:1px solid var(--lijn2);color:var(--gedempt);white-space:nowrap}
+.chip.groen{border-color:rgba(99,178,99,.5);color:var(--goed)}
+.chip.amber{border-color:rgba(224,166,58,.5);color:var(--let-op)}
+.chip.rood{border-color:rgba(224,82,82,.5);color:var(--ernst)}
+.akaart h4{font-size:.76rem;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--vaag);margin:4px 0 0}
+.akaart ul{margin:0;padding:0 0 0 18px;font-size:.86rem;color:var(--gedempt);display:flex;flex-direction:column;gap:4px}
+.akaart ul li::marker{color:var(--oranje-diep)}
+.akaart ul.minpunten li::marker{color:var(--ernst)}
+.akaart .alink{margin-top:auto;font-size:.82rem}
+.afvallers{margin-top:26px;background:var(--asfalt-2);border:1px solid var(--lijn);border-radius:var(--r);padding:20px 22px}
+.afvallers h3{font-size:.95rem;margin-bottom:10px}
+.afvallers ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px;font-size:.83rem;color:var(--gedempt)}
+.afvallers li b{color:var(--wit)}
+.afvallers li::before{content:"✕ ";color:var(--ernst);font-weight:700}
+
+/* ---------- vergelijkingstabel ---------- */
+.tabelscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--lijn);border-radius:var(--r);background:var(--paneel)}
+table.vgl{border-collapse:collapse;width:100%;min-width:960px;font-size:.82rem}
+table.vgl th,table.vgl td{padding:11px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--lijn)}
+table.vgl thead th{font-family:var(--kop);font-size:.84rem;position:sticky;top:0;background:var(--paneel-2);white-space:nowrap}
+table.vgl tbody th{font-family:var(--mono);font-size:.74rem;color:var(--vaag);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;font-weight:500}
+table.vgl td{color:var(--gedempt)}
+table.vgl td b{color:var(--wit)}
+table.vgl td .plus{color:var(--goed)}
+table.vgl td .min{color:var(--ernst)}
+table.vgl td .let{color:var(--let-op)}
+.tabelnoot{font-size:.76rem;color:var(--vaag);margin-top:10px}
+
+/* ---------- keuzehulp ---------- */
+.wizard{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:20px;align-items:start}
+@media(max-width:900px){.wizard{grid-template-columns:1fr}}
+.wform{background:var(--paneel);border:1px solid var(--lijn);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:18px;position:sticky;top:74px}
+@media(max-width:900px){.wform{position:static}}
+.veld label{display:block;font-size:.78rem;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--vaag);margin-bottom:7px}
+.veld input[type=number],.veld select{width:100%;background:var(--asfalt-2);border:1px solid var(--lijn2);border-radius:10px;color:var(--wit);padding:9px 12px;font-size:.95rem;font-family:var(--sans)}
+.veld input:focus,.veld select:focus{outline:2px solid var(--oranje-diep);outline-offset:1px}
+.togglerij{display:flex;flex-direction:column;gap:9px}
+.toggle{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--gedempt);cursor:pointer}
+.toggle input{accent-color:var(--oranje);width:17px;height:17px;cursor:pointer}
+.radiorij{display:flex;gap:8px;flex-wrap:wrap}
+.radiorij label{flex:1;min-width:88px;text-align:center;border:1px solid var(--lijn2);border-radius:10px;padding:8px 6px;font-size:.82rem;color:var(--gedempt);cursor:pointer}
+.radiorij input{display:none}
+.radiorij input:checked+span{color:var(--oranje-fel)}
+.radiorij label:has(input:checked){border-color:var(--oranje);background:rgba(240,145,63,.08)}
+.wresult{display:flex;flex-direction:column;gap:12px}
+.rkaart{background:var(--paneel);border:1px solid var(--lijn);border-radius:var(--r);padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.rkaart .rkop{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rkaart h3{font-size:1.05rem;margin:0}
+.badge{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;font-weight:600}
+.badge.geschikt{background:rgba(99,178,99,.15);color:var(--goed);border:1px solid rgba(99,178,99,.4)}
+.badge.aandacht{background:rgba(224,166,58,.13);color:var(--let-op);border:1px solid rgba(224,166,58,.4)}
+.badge.ongeschikt{background:rgba(224,82,82,.12);color:var(--ernst);border:1px solid rgba(224,82,82,.4)}
+.rkaart .rprijs{margin-left:auto;font-family:var(--mono);font-size:.84rem;color:var(--oranje-fel)}
+.redenen{margin:0;padding:0;list-style:none;font-size:.84rem;color:var(--gedempt);display:flex;flex-direction:column;gap:4px}
+.redenen li{padding-left:20px;position:relative}
+.redenen li::before{position:absolute;left:0;font-weight:700}
+.redenen li.plus::before{content:"✓";color:var(--goed)}
+.redenen li.waarschuwing::before{content:"!";color:var(--let-op)}
+.redenen li.blokkeert::before{content:"✕";color:var(--ernst)}
+.rkaart.uit{opacity:.55}
+.wtoelichting{font-size:.78rem;color:var(--vaag)}
+
+/* ---------- valkuilen ---------- */
+.valgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.valkaart{background:var(--paneel);border:1px solid var(--lijn);border-left:3px solid var(--let-op);border-radius:var(--r);padding:18px 20px}
+.valkaart h3{font-size:.98rem;margin-bottom:6px}
+.valkaart p{margin:0;font-size:.86rem;color:var(--gedempt)}
+.valkaart p b{color:var(--wit)}
+
+/* ---------- pech onderweg ---------- */
+.stappen{counter-reset:stap;display:flex;flex-direction:column;gap:12px;max-width:760px}
+.stap{background:var(--paneel);border:1px solid var(--lijn);border-radius:var(--r);padding:16px 20px 16px 62px;position:relative;font-size:.9rem;color:var(--gedempt)}
+.stap b{color:var(--wit)}
+.stap::before{counter-increment:stap;content:counter(stap);position:absolute;left:18px;top:14px;width:30px;height:30px;border-radius:50%;background:rgba(240,145,63,.12);border:1px solid var(--oranje-diep);color:var(--oranje-fel);font-family:var(--mono);font-weight:600;display:flex;align-items:center;justify-content:center}
+.frbox{margin-top:26px;background:linear-gradient(135deg,rgba(224,82,82,.08),rgba(224,166,58,.06));border:1px solid rgba(224,166,58,.35);border-radius:var(--r);padding:22px}
+.frbox h3{font-size:1.05rem}
+.frbox p{font-size:.88rem;color:var(--gedempt);max-width:72ch}
+.frbox p b{color:var(--wit)}
+table.tarief{border-collapse:collapse;width:100%;max-width:640px;font-size:.84rem;margin-top:14px}
+table.tarief th,table.tarief td{padding:8px 12px;border-bottom:1px solid var(--lijn);text-align:left}
+table.tarief thead th{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--vaag)}
+table.tarief td{font-family:var(--mono);color:var(--gedempt)}
+table.tarief td:first-child{font-family:var(--sans);color:var(--wit)}
+
+/* ---------- bestelwagen ---------- */
+.bwgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.bwkaart{background:var(--paneel);border:1px solid var(--lijn);border-radius:var(--r);padding:18px 20px;font-size:.86rem;color:var(--gedempt)}
+.bwkaart h3{font-size:.98rem}
+.bwkaart b{color:var(--wit)}
+.bwkaart .mono{color:var(--teal)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--lijn);padding:48px 0 36px;margin-top:40px}
+.bronkolommen{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin-bottom:28px}
+.bronkolommen h4{font-size:.82rem;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--vaag);margin-bottom:10px}
+.bronkolommen ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:.8rem}
+.footer-onder{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--vaag);border-top:1px solid var(--lijn);padding-top:18px}
+.disclaimer{background:var(--asfalt-2);border:1px solid var(--lijn);border-radius:var(--r);padding:16px 20px;font-size:.8rem;color:var(--gedempt);margin-bottom:26px}
+.disclaimer b{color:var(--let-op)}
+@media(max-width:640px){
+  section{padding:44px 0}
+  .hero{padding:52px 0 32px}
+  .nav nav{margin-left:0}
+}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap nav">
+    <div class="logo">Reisbijstand <b>Kort</b></div>
+    <nav>
+      <a href="#basis">Wat heb je al?</a>
+      <a href="#opties">De opties</a>
+      <a href="#vergelijk">Vergelijk</a>
+      <a href="#keuzehulp">Keuzehulp</a>
+      <a href="#bestelwagen">Bestelwagen</a>
+      <a href="#valkuilen">Valkuilen</a>
+      <a href="#pech">Pech onderweg</a>
+      <a href="#bronnen">Bronnen</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="kicker">Vlaanderen → Frankrijk · Spanje · Europa — met de eigen wagen</div>
+    <h1>Tijdelijke reisbijstand mét pechverhelping, zonder jaarcontract</h1>
+    <p class="intro">Je vertrekt één keer (of een paar keer) per jaar met de auto naar Frankrijk of Spanje en wil <strong>voor die ene reis</strong> gedekt zijn: pechverhelping en sleping onderweg, repatriëring van gezin én wagen, vervangwagen, medische kosten. Deze pagina toont <strong>alle Belgische formules die dat écht per reis aanbieden</strong> (geen stilzwijgend verlengde jaarcontracten), met kosten, fijne lettertjes en een keuzehulp.</p>
+    <div class="kernchips">
+      <div class="kernchip"><b class="orv">5</b>échte kortetermijnopties met autobijstand</div>
+      <div class="kernchip"><b>1</b>grensgeval (zonder vervangwagen)</div>
+      <div class="kernchip"><b>7</b>aanbieders vallen af (enkel jaarcontract)</div>
+      <div class="kernchip"><b class="orv">±€25–110</b>indicatief voor 1–3 weken, gezin + wagen</div>
+    </div>
+  </div>
+</div>
+<div class="wrap"><hr class="wegstreep"></div>
+
+<section id="basis">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Stap 1 · Inventaris</div>
+      <h2>Wat je al hebt — en het gat dat overblijft</h2>
+      <p>Vier dingen heb je (waarschijnlijk) al. Geen ervan dekt pechbijstand voor je wagen in het buitenland.</p>
+    </div>
+    <div class="basisgrid">
+      <div class="basiskaart">
+        <h3>BA-autoverzekering + groene kaart</h3>
+        <div class="sub">verplicht — geldig in 39 landen (niet meer in Rusland/Wit-Rusland sinds 30-06-2023)</div>
+        <ul class="dekt">
+          <li class="wel">Schade die jij aan <b>anderen</b> toebrengt, in heel Europa</li>
+          <li class="niet">Schade aan je eigen wagen</li>
+          <li class="niet">Pechverhelping, sleping, vervangwagen</li>
+          <li class="niet">Repatriëring van personen of voertuig</li>
+        </ul>
+      </div>
+      <div class="basiskaart">
+        <h3>EHIC / Europese ziekteverzekeringskaart</h3>
+        <div class="sub">gratis via je ziekenfonds</div>
+        <ul class="dekt">
+          <li class="wel">Noodzakelijke zorg in <b>openbare</b> zorg, aan lokale tarieven</li>
+          <li class="niet">Repatriëring naar België bij ziekte of ongeval</li>
+          <li class="niet">Reddingsoperaties (bv. helikopter)</li>
+          <li class="niet">Privéklinieken, bagage, eigen bijdragen</li>
+        </ul>
+      </div>
+      <div class="basiskaart">
+        <h3>Omnium (als je die hebt)</h3>
+        <div class="sub">check je eigen polis vóór je iets bijkoopt</div>
+        <ul class="dekt">
+          <li class="wel">Bevat soms al bijstand + vervangwagen, ook buitenland</li>
+          <li class="wel">Eigen schade in de groene-kaart-landen</li>
+          <li class="niet">Basisomnium zonder bijstandsoptie: geen pechhulp</li>
+        </ul>
+      </div>
+      <div class="basiskaart">
+        <h3>Gold-kredietkaart</h3>
+        <div class="sub">Mastercard/Visa Gold e.d.</div>
+        <ul class="dekt">
+          <li class="wel">Personenbijstand/annulatie, <b>enkel als je de reis met de kaart betaalde</b></li>
+          <li class="niet">Pechbijstand voor je eigen wagen (vrijwel nooit inbegrepen)</li>
+          <li class="niet">Gezinsleden zonder gelinkte kaart</li>
+        </ul>
+      </div>
+    </div>
+    <div class="conclusiestrook">
+      <b>Wat je dus écht moet bijverzekeren voor een autoreis:</b> pechverhelping + sleping onderweg, repatriëring van het voertuig, een vervangwagen om de vakantie voort te zetten, hotelkosten tijdens herstel, en repatriëring van personen. Eén ding dekt <b>geen enkele</b> bijstandsformule: de herstelkosten van de auto zelf — enkel de praktische hulp errond.
+    </div>
+  </div>
+</section>
+
+<section id="opties">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Stap 2 · Het aanbod</div>
+      <h2>De échte kortetermijnopties (per reis, geen jaarcontract)</h2>
+      <p>Vijf formules bieden per-reis reisbijstand mét pechverhelping voor je eigen wagen; Ethias is een grensgeval zonder vervangwagen. Prijzen met een <span class="mono" style="color:var(--let-op)">≈</span> zijn indicatief — exacte premie enkel via de simulator van de aanbieder.</p>
+    </div>
+    <div class="aanbiedergrid" id="aanbieder-cards"></div>
+    <div class="afvallers">
+      <h3>Deze vallen af — geen tijdelijk product met autobijstand voor de eigen wagen</h3>
+      <ul>
+        <li><b>AXA</b> — tijdelijke reisbijstand dekt enkel personen; autopech = jaarproduct op de autopolis</li>
+        <li><b>AG Insurance</b> — Top Bijstand vereist een AG BA-autopolis (jaar); hun "tijdelijk" product is het Touring-product</li>
+        <li><b>Belfius</b> — reis- en voertuigbijstand enkel op jaarbasis</li>
+        <li><b>P&amp;V / Vivium</b> — voertuigbijstand gekoppeld aan BA-autopolis, jaarcontract</li>
+        <li><b>Qover</b> — digitale tijdelijke reisverzekering, maar géén autopech voor de eigen wagen</li>
+        <li><b>KBC</b> — per-reis autopech loopt via de VAB-formule hiernaast; KBC-VAB Bijstand zelf is een jaar-add-on</li>
+        <li><b>ANWB (NL)</b> — dekking gebouwd rond vertrek vanuit Nederland; niet de route voor Belgische residenten</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="vergelijk">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Stap 3 · Naast elkaar</div>
+      <h2>Vergelijkingstabel</h2>
+      <p>Alle cijfers uit officiële voorwaarden of productpagina's (juli 2026), tenzij als indicatief gemarkeerd. Scroll horizontaal op mobiel.</p>
+    </div>
+    <div class="tabelscroll"><table class="vgl" id="vgl-tabel"></table></div>
+    <p class="tabelnoot">≈ = indicatie van vergelijkingssites of ruwe schatting, niet bevestigd door de aanbieder. Exacte premies hangen af van reisduur, bestemming en gezinsgrootte — altijd de simulator van de aanbieder gebruiken. Vervangwagenduur en hotelbedragen verschillen per polisversie; de algemene voorwaarden zijn leidend.</p>
+  </div>
+</section>
+
+<section id="keuzehulp">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Stap 4 · Kies</div>
+      <h2>Keuzehulp — welke formule past bij jouw reis?</h2>
+      <p>Vul je reis in; elke formule krijgt een oordeel met de redenen erbij. De regels hieronder komen rechtstreeks uit de polisvoorwaarden.</p>
+    </div>
+    <div class="wizard">
+      <form class="wform" id="wform" onsubmit="return false">
+        <div class="veld">
+          <label for="w-duur">Reisduur (dagen)</label>
+          <input type="number" id="w-duur" min="1" max="120" value="14">
+        </div>
+        <div class="veld">
+          <label for="w-personen">Aantal personen</label>
+          <input type="number" id="w-personen" min="1" max="9" value="4">
+        </div>
+        <div class="veld">
+          <label for="w-vertrek">Vertrek over … dagen</label>
+          <input type="number" id="w-vertrek" min="0" max="365" value="14">
+        </div>
+        <div class="veld">
+          <label>Voertuig</label>
+          <div class="radiorij" id="w-voertuig">
+            <label><input type="radio" name="voertuig" value="auto" checked><span>Personenwagen</span></label>
+            <label><input type="radio" name="voertuig" value="bestelwagen"><span>Bestelwagen ≤3,5&nbsp;t</span></label>
+            <label><input type="radio" name="voertuig" value="mobilhome"><span>Mobilhome ≤3,5&nbsp;t</span></label>
+          </div>
+        </div>
+        <div class="togglerij">
+          <label class="toggle"><input type="checkbox" id="w-hoog"> Hoger dan 3&nbsp;m (bv. hoog dak)</label>
+          <label class="toggle"><input type="checkbox" id="w-lang"> Langer dan 6,5&nbsp;m</label>
+          <label class="toggle"><input type="checkbox" id="w-ev"> Elektrische wagen</label>
+        </div>
+        <div class="veld">
+          <label>Caravan / aanhangwagen mee?</label>
+          <div class="radiorij" id="w-caravan">
+            <label><input type="radio" name="caravan" value="geen" checked><span>Nee</span></label>
+            <label><input type="radio" name="caravan" value="licht"><span>&lt;&nbsp;1,5&nbsp;t</span></label>
+            <label><input type="radio" name="caravan" value="zwaar"><span>1,5–3,5&nbsp;t</span></label>
+          </div>
+        </div>
+        <div class="togglerij">
+          <label class="toggle"><input type="checkbox" id="w-vervang" checked> Vervangwagen is belangrijk</label>
+          <label class="toggle"><input type="checkbox" id="w-medisch"> Hoog medisch plafond is belangrijk</label>
+          <label class="toggle"><input type="checkbox" id="w-eilanden"> Bestemming: Canarische Eilanden / overzees gebied</label>
+        </div>
+      </form>
+      <div class="wresult" id="wresult"></div>
+    </div>
+  </div>
+</section>
+
+<section id="bestelwagen">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Speciaal geval</div>
+      <h2>Bestelwagen / lichte vracht ≤ 3,5 ton</h2>
+      <p>De universele grens is <strong>3,5 ton MTM</strong>. Daaronder valt een bestelwagen bij bijna alle formules gewoon onder de standaarddekking — zonder toeslag. Daarboven bestaat er géén tijdelijk particulier product.</p>
+    </div>
+    <div class="bwgrid">
+      <div class="bwkaart">
+        <h3>Wie dekt wat</h3>
+        <p><b>Touring</b> noemt de bestelwagen letterlijk (≤3,5&nbsp;t, ≤7&nbsp;m, geen hoogtelimiet). <b>Allianz</b> ook (&lt;3,5&nbsp;t, max 8 plaatsen). <b>Europ Assistance</b>: alles ≤3,5&nbsp;t MTM, registreren als "auto". <b>Baloise</b>: expliciet, privé én professioneel. <b>VAB</b> is de uitzondering: de tijdelijke polis noemt enkel <span class="mono">"auto, motorhome of motorfiets"</span> — een bestelwagen op lichte-vrachtplaat is er <b>niet hard bevestigd</b>; vooraf navragen.</p>
+      </div>
+      <div class="bwkaart">
+        <h3>De echte uitsluitingsgrond</h3>
+        <p>Niet de carrosserie maar het gebruik: <b>bezoldigd goederen- of personenvervoer</b>, koerier- en thuisbezorgdiensten, en handelaars-/transitplaten zijn overal uitgesloten. Privégebruik of eigen (niet-betaald) beroepsgebruik is toegelaten. Boven 3,5&nbsp;t: aparte professionele vlootpolis (bv. VAB-Bedrijfsservice tot 5,5&nbsp;t, Baloise Mobility Safe).</p>
+      </div>
+      <div class="bwkaart">
+        <h3>Onderweg: hogere kosten</h3>
+        <p>Franse tol: hoogte 2–3&nbsp;m = <b>categorie 2</b> (duurder; dakkoffer telt niet mee). Wettelijk depannageforfait op de Franse autosnelweg (2026): <span class="mono">€186,72</span> voor 1,8–3,5&nbsp;t tegenover <span class="mono">€151,00</span> voor een gewone wagen — nog eens +50% 's nachts en in het weekend. Let bij hoge bussen op de <b>VAB-hoogtelimiet van 3&nbsp;m</b> en lengtelimieten (VAB 6,5&nbsp;m / Touring 7&nbsp;m).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="valkuilen">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Fijne lettertjes</div>
+      <h2>Valkuilen die je vóór het boeken wil kennen</h2>
+    </div>
+    <div class="valgrid">
+      <div class="valkaart">
+        <h3>Wachttijden bij last-minute afsluiten</h3>
+        <p><b>VAB:</b> pechbijstand geldt pas vanaf de <b>4e dag</b> na onderschrijving. <b>Europ Assistance:</b> technische pannes in de eerste <b>5 dagen</b> niet gedekt. <b>Touring Explore:</b> vandaag afsluiten, morgen vertrekken kan — maar een <b>bijkomende</b> persoon toevoegen kent 30 dagen wachttijd. Sluit dus ruim vóór vertrek af.</p>
+      </div>
+      <div class="valkaart">
+        <h3>Herstelkosten: nooit gedekt</h3>
+        <p>Geen enkele bijstandsformule betaalt de <b>reparatie</b> van je auto. Gedekt is de logistiek: depanneur, sleping, vervangwagen, hotel, repatriëring. Onderdelen en werkuren in de garage betaal je altijd zelf.</p>
+      </div>
+      <div class="valkaart">
+        <h3>Caravanpech ≠ vervangwagen</h3>
+        <p>Een defect aan de <b>aanhangwagen of caravan</b> geeft (o.a. bij VAB) géén recht op een vervangwagen — en de vervangwagen heeft niet gegarandeerd een trekhaak. Touring dekt getrokken caravans tot <b>1,5&nbsp;t</b>, Allianz en VAB tot 3,5&nbsp;t (met maatlimieten bij Allianz: 6&nbsp;×&nbsp;2,5&nbsp;×&nbsp;2,5&nbsp;m). Aanhanger &gt;750&nbsp;kg: aparte groene kaart nodig in o.a. Spanje en Duitsland.</p>
+      </div>
+      <div class="valkaart">
+        <h3>Vervangwagen buitenland verschilt enorm</h3>
+        <p><b>Allianz: tot 10 dagen</b> (cat. B) — de ruimste. Baloise ±7, Touring en VAB ±5 dagen (compacte klasse). <b>Europ Assistance tijdelijk en Ethias: géén vervangwagen in het buitenland.</b> Wie de vakantie wil uitrijden na zware pech, kiest hierop.</p>
+      </div>
+      <div class="valkaart">
+        <h3>Elektrisch rijden</h3>
+        <p>Een lege batterij telt enkel als pech mét voertuigoptie. <b>Ethias</b> dekt het expliciet (opgeleide pechverhelpers); <b>Baloise</b> sluit lege batterij <b>aan de eigen woonplaats</b> uit; Touring beperkt tot 2 interventies per 12 maanden. Ter geruststelling: &lt;10% van EV-pech is een lege hoogspanningsaccu.</p>
+      </div>
+      <div class="valkaart">
+        <h3>Geografische kleine lettertjes</h3>
+        <p><b>VAB "Europa"</b> sluit de <b>Canarische Eilanden</b>, Madeira/Azoren en Franse overzeese gebieden uit (Balearen wél gedekt). Allianz dekt het Europese continent + Middellandse-Zee-eilanden. Pech <b>in België zelf</b> valt bij Touring en VAB buiten de tijdelijke dekking (Touring: wel op de eerste en laatste reisdag); Europ Assistance en Allianz dekken wél vanaf de woonplaats (Allianz pas vanaf 10&nbsp;km).</p>
+      </div>
+      <div class="valkaart">
+        <h3>Vaker dan 1× per jaar weg?</h3>
+        <p>Test-Aankoop (editie 2026, 82 formules vergeleken): wie meer dan één keer per jaar reist, is met een <b>jaarcontract</b> vrijwel altijd goedkoper uit (voertuigbijstand mét vervangwagen: ±€80–140/jaar; bv. Belfius Direct Start €145, Federale F-Selection €140). Deze pagina focust op de éénmalige reis.</p>
+      </div>
+      <div class="valkaart">
+        <h3>Zelf een depanneur bellen = risico</h3>
+        <p>Bel <b>altijd eerst je bijstandscentrale</b>. Wie op eigen houtje een lokale depanneur regelt zonder akkoord, riskeert dat de kosten niet (volledig) terugbetaald worden. Enige uitzondering: de Franse autosnelweg (zie hieronder), waar de wet de volgorde omdraait — daar betaal je eerst het forfait en vordert je nadien terug.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pech">
+  <div class="wrap">
+    <div class="sectiekop">
+      <div class="kicker">Als het misgaat</div>
+      <h2>Pech onderweg — zo werkt het</h2>
+    </div>
+    <div class="stappen">
+      <div class="stap"><b>Bel je bijstandscentrale</b> (nummer op je polis/app) vóór je iets anders doet. Zij organiseren én betalen de interventie en geven je een <b>dossiernummer</b>.</div>
+      <div class="stap"><b>Noteer alles.</b> Dossiernummer, naam depanneur, locatie. Maak foto's van het voertuig en de situatie.</div>
+      <div class="stap"><b>Bewaar elke factuur</b> — depannage, taxi, hotel, huurwagen. Terugbetaling gebeurt achteraf op voorlegging van bewijzen.</div>
+      <div class="stap"><b>Volg de instructies van de centrale</b> voor vervangwagen of repatriëring. Eigen initiatief zonder akkoord = mogelijk niet vergoed.</div>
+    </div>
+    <div class="frbox">
+      <h3>Uitzondering: pech op de Franse (tol)autosnelweg</h3>
+      <p>Frankrijk kent geen wegenwacht op de snelweg: daar mag <b>alleen een door de overheid erkende depanneur</b> je helpen — je eigen bijstandsorganisatie mag niet langs de rijbaan komen. Oproepen via de <b>oranje praatpalen</b> (elke ±2&nbsp;km), de app <b>SOS Autoroute</b> of <b>112</b>. De depanneur sleept je naar een aire of garage (of een plek ≤5&nbsp;km voorbij de afrit), rekent het <b>wettelijke forfait</b> aan en is verplicht een factuur te geven. Dat forfait betaal je ter plaatse en vorder je daarna terug bij je verzekeraar — verwittig die dus zo snel mogelijk.</p>
+      <table class="tarief">
+        <thead><tr><th>Forfait 2026 (arrêté 08-12-2025)</th><th>Werkdag 8–18u</th><th>Nacht / weekend / feestdag (+50%)</th></tr></thead>
+        <tbody>
+          <tr><td>Voertuig ≤ 1,8 t</td><td>€ 151,00</td><td>€ 226,50</td></tr>
+          <tr><td>Voertuig 1,8 – 3,5 t</td><td>€ 186,72</td><td>€ 280,08</td></tr>
+          <tr><td>&gt; 3,5 t</td><td colspan="2">geen gereglementeerd tarief — vrije (hoge) prijzen</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:12px;font-size:.8rem;color:var(--vaag)">Het forfait dekt de verplaatsing van de depanneur + 30 minuten herstel ter plaatse; lukt dat niet, dan is sleping naar de dichtstbijzijnde aire/garage inbegrepen. Buiten de snelweg zijn de tarieven vrij.</p>
+    </div>
+  </div>
+</section>
+
+<footer id="bronnen">
+  <div class="wrap">
+    <div class="sectiekop" style="margin-bottom:22px">
+      <div class="kicker">Verantwoording</div>
+      <h2 style="font-size:1.6rem">Bronnen</h2>
+      <p>Geraadpleegd juli 2026. Dekkingscijfers komen uit officiële algemene voorwaarden en productpagina's; premies zonder officiële publicatie zijn als indicatief gemarkeerd en komen van vergelijkingssites.</p>
+    </div>
+    <div class="disclaimer"><b>Geen verzekeringsadvies.</b> Deze pagina is een educatief overzicht. Polisvoorwaarden veranderen; de algemene voorwaarden en IPID van de aanbieder zijn altijd leidend. Bereken de exacte premie via de simulator van de aanbieder en lees de voorwaarden vóór je afsluit.</div>
+    <div class="bronkolommen">
+      <div>
+        <h4>Aanbieders (officieel)</h4>
+        <ul>
+          <li><a href="https://www.touring.be/nl/producten/reisbijstand-buitenland" rel="noopener">Touring Explore — product</a></li>
+          <li><a href="https://www.touring.be/nl/faqs/welk-voertuig-verzekerd-0" rel="noopener">Touring FAQ — verzekerd voertuig</a></li>
+          <li><a href="https://vab.be/nl/pechverhelping-en-reisverzekering/reizen/reisverzekering-tijdelijk/" rel="noopener">VAB Reisverzekering tijdelijk</a></li>
+          <li><a href="https://www.europ-assistance.be/reisverzekering-tijdelijk" rel="noopener">Europ Assistance tijdelijk</a></li>
+          <li><a href="https://www.allianz-partners.com/nl_BE/producten-diensten/tijdelijke-formules.html" rel="noopener">Allianz Assistance — tijdelijke formules</a></li>
+          <li><a href="https://www.baloise.be/nl/prive/auto/pechverhelping.html" rel="noopener">Baloise Travel Safe / Assistance</a></li>
+          <li><a href="https://www.ethias.be/part/nl/verzekeringen/vrije-tijd/reisverzekering-reisbijstand/tijdelijke-assistance-family-verzekering.html" rel="noopener">Ethias tijdelijke Assistance Family</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Algemene voorwaarden (PDF)</h4>
+        <ul>
+          <li><a href="https://www.touring.be/sites/default/files/2023-07/Touring%20Explore_1.pdf" rel="noopener">Touring Explore AV (ed. 07/2023)</a></li>
+          <li><a href="https://groups.debuckagency.com/Media/DEBU/Documenten/Verzekering/VAB/VAB-Vakantiepakket-%20tijdelijke%20polis%20-%20alg%20vwn.pdf" rel="noopener">VAB tijdelijke polis AV</a></li>
+          <li><a href="https://www.allianz-partners.com/content/dam/onemarketing/awp/azpartnerscom/belgium/tijdelijke-formules/2024/Assistance_Only_TC_BEnl_2407.pdf" rel="noopener">Allianz Assistance Only AV (2407)</a></li>
+          <li><a href="https://vab.be/-/media/vab-online/files/actuele-documenten/algemene-voorwaarden/old-terms/pechbijstand_algemene-voorwaarden-(3).pdf" rel="noopener">VAB pechbijstand AV</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Context &amp; consumentenadvies</h4>
+        <ul>
+          <li><a href="https://www.test-aankoop.be/geld/reisbijstandsverzekeringen/nieuws/beste-reisbijstandsverzekeringen-belgie" rel="noopener">Test-Aankoop — beste reisbijstand (2026)</a></li>
+          <li><a href="https://europa.eu/youreurope/citizens/health/unplanned-healthcare/temporary-stays/faq/index_nl.htm" rel="noopener">EHIC — wat dekt de kaart (EU)</a></li>
+          <li><a href="https://www.test-aankoop.be/geld/autoverzekeringen/dossier/groene-kaart" rel="noopener">Test-Aankoop — groene kaart</a></li>
+          <li><a href="https://www.eccbe.eu/ontdek-je-rechten/auto/rijden-in-europa/autopech-in-frankrijk/" rel="noopener">ECC — autopech in Frankrijk</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Frankrijk &amp; tarieven</h4>
+        <ul>
+          <li><a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053165360" rel="noopener">Arrêté 08-12-2025 — depannageforfait 2026</a></li>
+          <li><a href="https://tolwegen.nl/frankrijk/tariefklassen-tol-frankrijk/" rel="noopener">Tolklassen Frankrijk</a></li>
+          <li><a href="https://pechverhelpingen.be/tijdelijke-pechverhelping/" rel="noopener">pechverhelpingen.be (indicatieve premies)</a></li>
+          <li><a href="https://pechverhelping.com/europ-assistance/" rel="noopener">pechverhelping.com (indicatieve premies)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-onder">
+      <span>Onder Druk — educatieve demo's · reisbijstand</span>
+      <span>Deze pagina is gegenereerd met AI research (juli 2026). Controleer voorwaarden en premies via de officiële bronnen vóór je afsluit.</span>
+    </div>
+  </div>
+</footer>
+<script>
+"use strict";
+/* Eén databron voor kaarten, tabel en keuzehulp.
+   Cijfers: officiële AV/productpagina's juli 2026; prijzen met indicatief:true
+   komen van vergelijkingssites en zijn NIET door de aanbieder bevestigd. */
+const PROVIDERS = [
+  {
+    id:"touring",
+    naam:"Touring Explore",
+    verzekeraar:"AG Insurance · per reis",
+    url:"https://www.touring.be/nl/producten/reisbijstand-buitenland",
+    prijs:{tekst:"€10 p.p. medisch + €35 voertuigoptie", indicatief:false,
+           detail:"+€10,90 bagage · +€36 annulatie (opties). Exacte premie via simulator touring.be."},
+    prijsBerekening:(d,p)=>({min:10*p+35, max:10*p+35, zeker:false}),
+    maxDagen:90, maxDagenLabel:"±3 maanden (gebeurtenissen daarna uitgesloten)",
+    wachttijdPech:0, wachttijdLabel:"geen — vandaag afsluiten, morgen vertrekken (bijkomende persoon: 30 d)",
+    medisch:{plafond:Infinity, label:"onbeperkt, geen franchise", score:3},
+    vervangwagen:{dagen:5, label:"tot 5 dagen"},
+    pechBelgie:"enkel eerste en laatste reisdag",
+    voertuig:{mtm:3.5, lengte:7, hoogte:null, bestelwagen:"ja", bestelwagenNoot:"expliciet genoemd in de voorwaarden"},
+    caravanMaxTon:1.5,
+    geo:"Europa (EU + VK, Balkan…), excl. België onderweg",
+    eilanden:"Spanje volledig gedekt volgens Europa-lijst",
+    plus:["Onbeperkte medische kosten, geen franchise","Pech gedekt op eerste en laatste reisdag in België","Bestelwagen expliciet gedekt (≤3,5 t, ≤7 m, geen hoogtelimiet)","Transparante prijsopbouw op de site","Direct online, geschikt voor last-minute"],
+    min:["Caravan enkel tot 1,5 t","Vervangwagen beperkt tot 5 dagen","Oldtimers en taxi's uitgesloten","Bijkomende persoon toevoegen: 30 dagen wachttijd"]
+  },
+  {
+    id:"vab",
+    naam:"VAB Reisverzekering tijdelijk",
+    verzekeraar:"KBC Verzekeringen · pech door VAB",
+    url:"https://vab.be/nl/pechverhelping-en-reisverzekering/reizen/reisverzekering-tijdelijk/",
+    prijs:{tekst:"≈ €3,40–4,25 /dag voertuigoptie (min €25)", indicatief:true,
+           detail:"Geen publiek tarief; cijfer van vergelijkingssites. Vanaf 5e verzekerde geen extra premie. Exact: simulator vab.be."},
+    prijsBerekening:(d,p)=>({min:Math.max(25,Math.round(3.4*d)), max:Math.max(25,Math.round(4.25*d)), zeker:false}),
+    maxDagen:90, maxDagenLabel:"max 90 dagen per reis",
+    wachttijdPech:4, wachttijdLabel:"pechbijstand vanaf 4e dag na onderschrijving (interactie met tijdelijke optie: navragen)",
+    medisch:{plafond:1000000, label:"€1.000.000 · nazorg €6.200", score:2},
+    vervangwagen:{dagen:5, label:"klasse B, ±5 dagen (AV-versies verschillen: tot €50/dag)"},
+    pechBelgie:"niet gedekt (optie geldt Europa excl. België)",
+    voertuig:{mtm:3.5, lengte:6.5, hoogte:3, bestelwagen:"onzeker", bestelwagenNoot:"AV noemt enkel auto/motorhome/motorfiets — navragen"},
+    caravanMaxTon:3.5,
+    geo:"Europa excl. België; Spanje excl. Canarische Eilanden",
+    eilanden:"Canarische Eilanden, Madeira/Azoren en Frans overzees gebied uitgesloten",
+    plus:["Vermoedelijk goedkoopste voor lange reizen (dagtarief)","Eigen wegenwachters + eigen vervangwagenvloot (thuisgeleverd)","Caravan tot 3,5 t mee te verzekeren","Voertuigrepatriëring ongeacht ouderdom wagen","Hotel €75/dag (max 7 d) bij immobilisatie"],
+    min:["Tarief niet publiek — enkel via simulator","Wachttijd 4 dagen voor pechdekking","Strengste maten: ≤6,5 m en ≤3 m hoog","Bestelwagen niet expliciet gedekt","Canarische Eilanden uitgesloten"]
+  },
+  {
+    id:"europ",
+    naam:"Europ Assistance tijdelijk mét voertuig",
+    verzekeraar:"Europ Assistance Belgium · per reis",
+    url:"https://www.europ-assistance.be/reisverzekering-tijdelijk",
+    prijs:{tekst:"≈ vanaf €61 (3 nachten, met voertuig)", indicatief:true,
+           detail:"Formule Frankrijk: ≈€49 (1 p) / €78 (2 p) / €107 (gezin). Peildatum 30-05-2025, vergelijkingssites. Exact: simulator."},
+    prijsBerekening:(d,p)=>({min:p>=3?107:(p===2?78:49), max:Math.round((p>=3?107:(p===2?78:49))*(1+Math.max(0,d-7)*0.05)), zeker:false}),
+    maxDagen:45, maxDagenLabel:"max 45 aaneengesloten dagen",
+    wachttijdPech:5, wachttijdLabel:"technische pannes eerste 5 dagen niet gedekt",
+    medisch:{plafond:250000, label:"€250.000", score:1},
+    vervangwagen:{dagen:0, label:"géén vervangwagen buitenland (tijdelijke formule)"},
+    pechBelgie:"gedekt vanaf de woonplaats",
+    voertuig:{mtm:3.5, lengte:null, hoogte:null, bestelwagen:"ja", bestelwagenNoot:"FAQ: alles ≤3,5 t MTM, registreren als auto"},
+    caravanMaxTon:null,
+    geo:"heel Europa, vanaf de woonplaats",
+    eilanden:"bestemmingsvarianten (Frankrijk/Europa/Wereld) — check formule",
+    plus:["Pech gedekt vanaf je voordeur (ook België)","Bestelwagen ≤3,5 t expliciet oké","Snow-variant voor wintersport","Geen leeftijdslimiet voertuig gevonden"],
+    min:["Geen vervangwagen in het buitenland — grootste beperking","Wachttijd 5 dagen voor technische pannes","Laagste medisch plafond van de vijf (€250.000)","Max 45 dagen","Premies enkel via simulator"]
+  },
+  {
+    id:"allianz",
+    naam:"Allianz Assistance + voertuigoptie",
+    verzekeraar:"AWP P&C (Allianz Partners) · per reis",
+    url:"https://www.allianz-partners.com/nl_BE/producten-diensten/tijdelijke-formules.html",
+    prijs:{tekst:"≈ €10 p.p. korte EU-trip (ruwe indicatie)", indicatief:true,
+           detail:"Geen publieke tarieven; grove indicatie HelloSafe. Voertuigbijstand = optie bovenop Assistance Only / Travel Selection."},
+    prijsBerekening:(d,p)=>({min:10*p, max:Math.round(10*p+d*p*1.5), zeker:false}),
+    maxDagen:90, maxDagenLabel:"max 90 aaneengesloten dagen",
+    wachttijdPech:0, wachttijdLabel:"geen wachttijd gevonden (herroeping 14 d)",
+    medisch:{plafond:Infinity, label:"kostprijs (secundair aan mutualiteit) · nazorg €6.250", score:2},
+    vervangwagen:{dagen:10, label:"buitenland tot 10 dagen, cat. B — de ruimste"},
+    pechBelgie:"gedekt vanaf 10 km van de woonplaats",
+    voertuig:{mtm:3.5, lengte:null, hoogte:null, bestelwagen:"ja", bestelwagenNoot:"expliciet, max 8 plaatsen, EU/CH-plaat"},
+    caravanMaxTon:3.5,
+    geo:"Europees continent (excl. GOS) + Middellandse-Zee-eilanden, VK, Ierland",
+    eilanden:"Canarische Eilanden niet expliciet in dekkingsgebied — navragen",
+    plus:["Vervangwagen buitenland tot 10 dagen — langste van allemaal","Bestelwagen expliciet gedekt, geen maatlimiet op trekker","Caravan tot 3,5 t (max 6 × 2,5 × 2,5 m)","Medische zorg aan kostprijs, accommodatie €100/nacht"],
+    min:["Voertuigrepatriëring geplafonneerd op €500 — laag","Pech pas vanaf 10 km van huis","Premie enkel op aanvraag/simulator","Medisch secundair: eerst je mutualiteit"]
+  },
+  {
+    id:"baloise",
+    naam:"Baloise Travel Safe",
+    verzekeraar:"Baloise · kortetermijn, via makelaar",
+    url:"https://www.baloise.be/nl/prive/auto/pechverhelping.html",
+    prijs:{tekst:"op offerte (makelaar/simulatie)", indicatief:true,
+           detail:"Modulair: 5 waarborgen vrij te combineren, incl. optionele tijdelijke omnium."},
+    prijsBerekening:null,
+    maxDagen:31, maxDagenLabel:"max 1 maand",
+    wachttijdPech:0, wachttijdLabel:"geen wachttijd gevonden",
+    medisch:{plafond:null, label:"aparte waarborg personenbijstand (bedragen via makelaar)", score:1},
+    vervangwagen:{dagen:7, label:"±7 dagen (jaar-AV, indicatief; na 2u BE / 24u buitenland niet hersteld)"},
+    pechBelgie:"gedekt (niet bij lege batterij aan de woonplaats)",
+    voertuig:{mtm:3.5, lengte:null, hoogte:null, bestelwagen:"ja", bestelwagenNoot:"expliciet, privé én professioneel gebruik"},
+    caravanMaxTon:null,
+    geo:"Europa (waarborgafhankelijk)",
+    eilanden:"check per waarborg bij de makelaar",
+    plus:["Dekt ook een geleende wagen (van ouders/vrienden)","Optionele tijdelijke omnium — uniek in dit rijtje","Diefstal, sleutelverlies en verkeerd tanken gedekt","Tot 9 personen","Bestelwagen expliciet, ook professioneel gebruik"],
+    min:["Max 1 maand — te kort voor lange rondreizen","Enkel via makelaar, geen directe online prijs","Geen bijstand bij lege EV-batterij aan huis","Dekkingsbedragen personen niet publiek"]
+  },
+  {
+    id:"ethias",
+    naam:"Ethias tijdelijke Assistance",
+    verzekeraar:"Ethias · grensgeval",
+    grensgeval:true,
+    url:"https://www.ethias.be/part/nl/verzekeringen/vrije-tijd/reisverzekering-reisbijstand/tijdelijke-assistance-family-verzekering.html",
+    prijs:{tekst:"op offerte", indicatief:true, detail:"Tijdelijke variant van Assistance Family; autoluik uitgekleed."},
+    prijsBerekening:null,
+    maxDagen:90, maxDagenLabel:"per reis (variant van jaarformule)",
+    wachttijdPech:0, wachttijdLabel:"geen wachttijd gevonden",
+    medisch:{plafond:75000, label:"hospitalisatie buitenland €75.000", score:0},
+    vervangwagen:{dagen:0, label:"géén vervangwagen"},
+    pechBelgie:"gedekt",
+    voertuig:{mtm:3.5, lengte:null, hoogte:null, bestelwagen:"ja", bestelwagenNoot:"vierwielers ≤3,5 t MTM"},
+    caravanMaxTon:null,
+    geo:"enkel geografisch Europa",
+    eilanden:"enkel geografisch Europa",
+    plus:["Lege EV-batterij expliciet gedekt, opgeleide pechverhelpers","Caravans en boottrailers uitdrukkelijk vermeld","Aangepaste dekking voor voertuigen ≥15 jaar"],
+    min:["Géén vervangwagen — vakantie voortzetten wordt moeilijk","Geen herstelkosten (zoals overal)","Laagste medisch plafond (€75.000)","Enkel Europa"]
+  }
+];
+
+const $ = id => document.getElementById(id);
+const euro = n => "€" + n.toLocaleString("nl-BE");
+
+/* ---------- aanbiederkaarten ---------- */
+function renderKaarten(){
+  $("aanbieder-cards").innerHTML = PROVIDERS.map(p => `
+    <article class="akaart${p.grensgeval ? " grensgeval" : ""}">
+      <div class="akop"><h3>${p.naam}</h3><span class="verzekeraar">${p.verzekeraar}</span></div>
+      <div class="prijsblok">${p.prijs.indicatief ? "≈ " : ""}${p.prijs.tekst}
+        <span class="schatting">${p.prijs.detail}</span></div>
+      <div class="chiprij">
+        <span class="chip">${p.maxDagenLabel}</span>
+        <span class="chip ${p.wachttijdPech > 0 ? "amber" : "groen"}">wachttijd pech: ${p.wachttijdPech > 0 ? p.wachttijdPech + " dagen" : "geen"}</span>
+        <span class="chip ${p.vervangwagen.dagen === 0 ? "rood" : (p.vervangwagen.dagen >= 7 ? "groen" : "")}">vervangwagen: ${p.vervangwagen.dagen === 0 ? "geen" : "±" + p.vervangwagen.dagen + " d"}</span>
+        <span class="chip">medisch: ${p.medisch.plafond === Infinity ? "onbeperkt/kostprijs" : (p.medisch.plafond ? euro(p.medisch.plafond) : "op offerte")}</span>
+      </div>
+      <h4>Sterk</h4><ul>${p.plus.map(x => `<li>${x}</li>`).join("")}</ul>
+      <h4>Let op</h4><ul class="minpunten">${p.min.map(x => `<li>${x}</li>`).join("")}</ul>
+      <a class="alink" href="${p.url}" rel="noopener">→ officiële productpagina</a>
+    </article>`).join("");
+}
+
+/* ---------- vergelijkingstabel ---------- */
+function renderTabel(){
+  const rijen = [
+    ["Prijs (per reis)", p => `${p.prijs.indicatief ? '<span class="let">≈</span> ' : ""}${p.prijs.tekst}`],
+    ["Max reisduur", p => p.maxDagenLabel],
+    ["Wachttijd pech", p => p.wachttijdPech > 0 ? `<span class="min">${p.wachttijdLabel}</span>` : `<span class="plus">${p.wachttijdLabel}</span>`],
+    ["Medisch plafond", p => p.medisch.label],
+    ["Vervangwagen buitenland", p => p.vervangwagen.dagen === 0 ? `<span class="min">${p.vervangwagen.label}</span>` : (p.vervangwagen.dagen >= 7 ? `<span class="plus">${p.vervangwagen.label}</span>` : p.vervangwagen.label)],
+    ["Pech in België", p => p.pechBelgie],
+    ["Voertuiglimieten", p => {
+      const v = p.voertuig;
+      const maat = [v.lengte ? "≤" + String(v.lengte).replace(".", ",") + " m lang" : null, v.hoogte ? "≤" + v.hoogte + " m hoog" : null].filter(Boolean).join(", ");
+      return `MTM ≤${String(v.mtm).replace(".", ",")} t${maat ? ", " + maat : ""}`;
+    }],
+    ["Bestelwagen ≤3,5 t", p => p.voertuig.bestelwagen === "ja" ? `<span class="plus">ja</span> — ${p.voertuig.bestelwagenNoot}` : `<span class="let">onzeker</span> — ${p.voertuig.bestelwagenNoot}`],
+    ["Caravan/aanhanger", p => p.caravanMaxTon ? `tot ${String(p.caravanMaxTon).replace(".", ",")} t` : "niet publiek — navragen"],
+    ["Dekkingsgebied", p => p.geo],
+    ["Afsluiten", p => p.id === "baloise" ? "via makelaar" : "online (simulator)"]
+  ];
+  $("vgl-tabel").innerHTML =
+    `<thead><tr><th></th>${PROVIDERS.map(p => `<th>${p.naam}${p.grensgeval ? ' <span class="let">*</span>' : ""}</th>`).join("")}</tr></thead>` +
+    `<tbody>${rijen.map(([label, fn]) => `<tr><th>${label}</th>${PROVIDERS.map(p => `<td>${fn(p)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+}
+
+/* ---------- keuzehulp ---------- */
+function lees(){
+  return {
+    duur: Number($("w-duur").value),
+    personen: Number($("w-personen").value),
+    vertrek: Number($("w-vertrek").value),
+    voertuig: document.querySelector('#w-voertuig input:checked').value,
+    hoog: $("w-hoog").checked,
+    lang: $("w-lang").checked,
+    ev: $("w-ev").checked,
+    caravan: document.querySelector('#w-caravan input:checked').value,
+    vervangBelangrijk: $("w-vervang").checked,
+    medischBelangrijk: $("w-medisch").checked,
+    eilanden: $("w-eilanden").checked
+  };
+}
+
+function beoordeel(p, s){
+  const r = []; // {type:'plus'|'waarschuwing'|'blokkeert', tekst}
+  const blok = t => r.push({type:"blokkeert", tekst:t});
+  const waar = t => r.push({type:"waarschuwing", tekst:t});
+  const plus = t => r.push({type:"plus", tekst:t});
+
+  if (s.duur > p.maxDagen) blok(`Reis van ${s.duur} dagen overschrijdt het maximum (${p.maxDagenLabel}).`);
+
+  if (p.voertuig.hoogte && s.hoog) blok(`Voertuig hoger dan ${p.voertuig.hoogte} m valt buiten de dekking.`);
+  if (p.voertuig.lengte && s.lang && p.voertuig.lengte <= 6.5) blok(`Voertuig langer dan ${String(p.voertuig.lengte).replace(".", ",")} m valt buiten de dekking.`);
+  if (p.voertuig.lengte && s.lang && p.voertuig.lengte > 6.5) waar(`Lengtelimiet ${String(p.voertuig.lengte).replace(".", ",")} m — meet je voertuig na.`);
+
+  if (s.voertuig === "bestelwagen"){
+    if (p.voertuig.bestelwagen === "ja") plus(`Bestelwagen gedekt: ${p.voertuig.bestelwagenNoot}.`);
+    else waar(`Bestelwagen niet hard bevestigd: ${p.voertuig.bestelwagenNoot}.`);
+  }
+
+  if (s.caravan !== "geen"){
+    if (p.caravanMaxTon === null) waar("Caravandekking niet publiek — navragen vóór afsluiten.");
+    else if (s.caravan === "zwaar" && p.caravanMaxTon < 3.5) blok(`Caravan boven ${String(p.caravanMaxTon).replace(".", ",")} t niet gedekt.`);
+    else plus(`Getrokken caravan/aanhanger gedekt tot ${String(p.caravanMaxTon).replace(".", ",")} t.`);
+    if (p.id === "vab") waar("Caravanpech geeft geen recht op een vervangwagen.");
+    if (p.id === "allianz") waar("Caravan max 6 m lang en 2,5 m breed/hoog (lading inbegrepen).");
+  }
+
+  if (p.wachttijdPech > 0 && s.vertrek <= p.wachttijdPech + 1)
+    waar(`Wachttijd: ${p.wachttijdLabel} — bij vertrek over ${s.vertrek} dag(en) start je (deels) ongedekt.`);
+  else if (p.wachttijdPech > 0) waar(`Wachttijd van ${p.wachttijdPech} dagen — sluit ruim vóór vertrek af.`);
+  else if (s.vertrek <= 2) plus("Geen wachttijd — geschikt voor last-minute afsluiten.");
+
+  if (s.vervangBelangrijk){
+    if (p.vervangwagen.dagen === 0) blok(`Geen vervangwagen in het buitenland (${p.vervangwagen.label}).`);
+    else if (p.vervangwagen.dagen >= 7) plus(`Vervangwagen: ${p.vervangwagen.label}.`);
+    else waar(`Vervangwagen beperkt: ${p.vervangwagen.label}.`);
+  }
+
+  if (s.medischBelangrijk){
+    if (p.medisch.score >= 3) plus(`Medisch: ${p.medisch.label}.`);
+    else if (p.medisch.score === 2) waar(`Medisch plafond: ${p.medisch.label}.`);
+    else blok(`Medisch plafond te laag voor deze prioriteit: ${p.medisch.label}.`);
+  }
+
+  if (s.eilanden){
+    if (p.id === "vab") blok("Canarische Eilanden en overzeese gebieden uitgesloten bij VAB.");
+    else waar(`Eilanden/overzees: ${p.eilanden}.`);
+  }
+
+  if (s.ev){
+    if (p.id === "ethias") plus("Lege EV-batterij expliciet gedekt.");
+    else if (p.id === "baloise") waar("Lege batterij aan de eigen woonplaats niet gedekt.");
+    else waar("Lege batterij telt als pech binnen de voertuigoptie; herhaalde interventies kunnen beperkt zijn.");
+  }
+
+  if (s.personen >= 5 && p.id === "vab") plus("Vanaf de 5e verzekerde geen extra premie.");
+  if (s.voertuig === "mobilhome" && p.id === "vab") waar("Motorhome 3,5–6,5 t of >6,5 m/3 m: enkel mits bijpremie.");
+
+  const geblokkeerd = r.some(x => x.type === "blokkeert");
+  const status = geblokkeerd ? "ongeschikt" : (r.some(x => x.type === "waarschuwing") ? "aandacht" : "geschikt");
+  const score = (geblokkeerd ? -100 : 0)
+    + r.filter(x => x.type === "plus").length * 2
+    - r.filter(x => x.type === "waarschuwing").length
+    - r.filter(x => x.type === "blokkeert").length * 10;
+  return {status, score, redenen:r};
+}
+
+function prijsIndicatie(p, s){
+  if (!p.prijsBerekening) return "op offerte";
+  const b = p.prijsBerekening(s.duur, s.personen);
+  const pre = p.prijs.indicatief || !b.zeker ? "≈ " : "";
+  return b.min === b.max ? pre + euro(b.min) + "+" : pre + euro(b.min) + "–" + euro(b.max);
+}
+
+function renderWizard(){
+  const s = lees();
+  if (!Number.isFinite(s.duur) || s.duur < 1 || !Number.isFinite(s.personen) || s.personen < 1 || !Number.isFinite(s.vertrek) || s.vertrek < 0){
+    $("wresult").innerHTML = '<p class="wtoelichting">Vul reisduur, aantal personen en vertrektermijn in.</p>';
+    return;
+  }
+  const beoordeeld = PROVIDERS.map(p => ({p, ...beoordeel(p, s)}))
+    .sort((a, b) => b.score - a.score);
+  $("wresult").innerHTML = beoordeeld.map(({p, status, redenen}) => `
+    <article class="rkaart${status === "ongeschikt" ? " uit" : ""}">
+      <div class="rkop">
+        <span class="badge ${status}">${status}</span>
+        <h3>${p.naam}</h3>
+        <span class="rprijs">${prijsIndicatie(p, s)}</span>
+      </div>
+      <ul class="redenen">${redenen.map(x => `<li class="${x.type}">${x.tekst}</li>`).join("")}</ul>
+    </article>`).join("")
+    + '<p class="wtoelichting">Volgorde = geschiktheid voor jouw invoer. Prijzen met ≈ zijn indicatief (vergelijkingssites of eenvoudige extrapolatie) — de simulator van de aanbieder geeft de echte premie. Dit is een educatieve gids, geen verzekeringsadvies.</p>';
+}
+
+renderKaarten();
+renderTabel();
+renderWizard();
+document.querySelectorAll("#wform input").forEach(el => el.addEventListener("input", renderWizard));
+</script>
+</body>
+</html>

@@ -31,15 +31,19 @@ jobs:
       - name: Test Trail Schotland engine
         run: node trail-schotland/engine.test.mjs
 
+      - name: Test Reisbijstand engine
+        run: node reisbijstand/engine.test.mjs
+
       - name: Assemble site
         run: |
-          mkdir -p _site/vo2max _site/woningaankoop _site/school-entiteit _site/aquarel _site/trail-schotland
+          mkdir -p _site/vo2max _site/woningaankoop _site/school-entiteit _site/aquarel _site/trail-schotland _site/reisbijstand
           cp duikplanner/index.html _site/index.html
           cp vo2max/index.html _site/vo2max/index.html
           cp woningaankoop/index.html _site/woningaankoop/index.html
           cp school-entiteit/index.html _site/school-entiteit/index.html
           cp aquarel/index.html _site/aquarel/index.html
           cp trail-schotland/index.html _site/trail-schotland/index.html
+          cp reisbijstand/index.html _site/reisbijstand/index.html
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
